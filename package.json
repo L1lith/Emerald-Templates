@@ -1,0 +1,31 @@
+{
+  "name": "emerald-templates",
+  "version": "0.0.1",
+  "description": "Intelligent Template Generation",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "emerald-templates": "src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/L1lith/Emerald-Templates.git"
+  },
+  "keywords": [
+    "intelligent",
+    "template",
+    "generation",
+    "emerald",
+    "templates",
+    "code",
+    "project",
+    "preset"
+  ],
+  "author": "L1lith",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/L1lith/Emerald-Templates/issues"
+  },
+  "homepage": "https://github.com/L1lith/Emerald-Templates#readme"
+}
