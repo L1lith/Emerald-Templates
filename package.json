@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/L1lith/Emerald-Templates/issues"
   },
-  "homepage": "https://github.com/L1lith/Emerald-Templates#readme"
+  "homepage": "https://github.com/L1lith/Emerald-Templates#readme",
+  "dependencies": {
+    "arg": "^4.1.0"
+  }
 }
