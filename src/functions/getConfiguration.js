@@ -1,21 +1,17 @@
 let result = null
 
 function getConfiguration() {
-  if (result) {
-    if (result instanceof Error) {
-      throw result
-    } else {
-      return result
+  if (!result) {
+    try {
+      result = require('../../emerald-config.json')
+    } catch (error) {
+      const emeraldError = new Error('Emerald Templates has not been configured, please run "emerald-templates -c"')
+      result = emeraldError
     }
   }
-  try {
-    result = require('../../emerald-config.json')
-    return result
-  } catch (error) {
-    const emeraldError = new Error('Emerald Templates has not been configured, please run "emerald-templates -c"')
-    result = emeraldError
-    throw emeraldError
-  }
+  if (result instanceof Error) throw result
+  if (typeof result.templateFolder != 'string' || result.templateFolder.length < 1) throw new Error("Missing the Template Folder from the config")
+  return result
 }
 
 module.exports = getConfiguration
