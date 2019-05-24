@@ -2,7 +2,8 @@ const {join} = require('path')
 const getConfiguration = require('../functions/getConfiguration')
 const directoryExists = require('directory-exists')
 const resolvePath = require('../functions/resolvePath')
-const copydir = require('copy-dir')
+const {promisify} = require('util')
+const {copy} = require('fs-extra')
 
 async function generate(options) {
   const rootTemplateFolder = getConfiguration().templateFolder
@@ -14,13 +15,12 @@ async function generate(options) {
 
   let outputFolder = (options['--outputFolder'] || options._[1] || "").trim()
   if (!outputFolder) throw new Error("You must specify the output folder")
-  let outputFolder = resolvePath(outputFolder, process.cwd())
-  if (!(await directoryExists(join(outputFolder, '..')))) throw new Error(`The output folder's parent directory does not exist`
+  outputFolder = resolvePath(outputFolder, process.cwd())
+  if (!(await directoryExists(join(outputFolder, '..')))) throw new Error(`The output folder's parent directory does not exist`)
   if (await directoryExists(outputFolder)) throw new Error(`The output folder "${outputFolder}" already exists.`)
-
-  copydir.sync(templateFolder, outputFolder)
+  console.log(templateFolder, outputFolder)
+  await copy(templateFolder, outputFolder)
   console.log("Project Generated!")
-)
 
 }
 

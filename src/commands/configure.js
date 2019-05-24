@@ -20,7 +20,7 @@ async function configure(options) {
   }
 
   writeFileSync(configPath, JSON.stringify(config))
-  console.log("Emerald Configured.")
+  console.log("Emerald Templates Configured.")
 }
 
 module.exports = configure

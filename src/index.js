@@ -7,7 +7,7 @@ const args = arg({
   '-g': '--generate',
   '--template': String,
   '-t': '--template',
-  '--outputFolder',
+  '--outputFolder': Boolean,
   '--output': '--outputFolder',
   '-o': '--outputFolder'
 })
