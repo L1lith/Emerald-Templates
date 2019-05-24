@@ -6,7 +6,10 @@ const args = arg({
   '--generate': Boolean,
   '-g': '--generate',
   '--template': String,
-  '-t': '--template'
+  '-t': '--template',
+  '--outputFolder',
+  '--output': '--outputFolder',
+  '-o': '--outputFolder'
 })
 
 const primaryOptionNames = ["--configure", "--generate"]
