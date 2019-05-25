@@ -33,7 +33,7 @@ async function generate(options) {
   try {
     packageJSON = require(join(outputFolder, "package.json"))
   } catch(error) {console.log(error)}
-  if (config.automaticallyInstallNodeModules === true && packageJSON && ((typeof packageJSON.dependencies == 'object' && Object.keys(packageJSON.dependencies).length > 0) || (typeof packageJSON.devDependencies == 'object' && Object.keys(packageJSON.devDependencies).length > 0))) {
+  if (config.automaticallyInstallNodeModules !== false && packageJSON && ((typeof packageJSON.dependencies == 'object' && Object.keys(packageJSON.dependencies).length > 0) || (typeof packageJSON.devDependencies == 'object' && Object.keys(packageJSON.devDependencies).length > 0))) {
     console.log("Detected missing dependencies, installing.")
     await exec("npm install", {cwd: outputFolder})
   }
