@@ -10,6 +10,7 @@ async function findFilesByExtension(directory, extension) {
     const fileName = files[i]
     const filePath = join(directory, fileName)
     if ((await stat(filePath)).isDirectory()) {
+      if (fileName === "node_modules") continue // Don't look for templates in the node modules
       output = output.concat(await findFilesByExtension(filePath, extension))
     } else {
       if (extname(filePath) === extension) {
