@@ -3,7 +3,7 @@ const getConfiguration = require('../functions/getConfiguration')
 const directoryExists = require('directory-exists')
 const resolvePath = require('../functions/resolvePath')
 const {promisify} = require('util')
-const {copy, readdir, rmdir} = require('fs-extra')
+const {copy, readdir, rmdir, readFile, unlink} = require('fs-extra')
 const populateEmerald = require('../functions/populateEmerald')
 const findFilesByExtension = require('../functions/findFilesByExtension')
 const exec = promisify(require('child_process').exec)
@@ -28,11 +28,6 @@ async function generate(options) {
   }
   console.log("Copying The Template")
   await copy(templateFolder, outputFolder)
-  console.log("Populating the .emerald files")
-  const emeralds = await findFilesByExtension(outputFolder, '.emerald')
-  for (let i = 0; i < emeralds.length; i++) {
-    await populateEmerald(emeralds[i], config.templateEngine)
-  }
   let packageJSON = null
   try {
     packageJSON = require(join(outputFolder, "package.json"))
@@ -41,9 +36,28 @@ async function generate(options) {
     console.log("Detected missing dependencies, installing.")
     await exec("npm install", {cwd: outputFolder})
   }
+  const emeralds = await findFilesByExtension(outputFolder, '.emerald')
+  if (emeralds.length > 0) console.log("Populating the .emerald files")
+  for (let i = 0; i < emeralds.length; i++) {
+    await populateEmerald(emeralds[i], config.templateEngine)
+  }
+  const emeraldScripts = await findFilesByExtension(outputFolder, '.emerald-script')
+  if (emeraldScripts.length > 0) console.log("Running the emerald scripts")
+  for (let i = 0; i < emeraldScripts.length; i++) {
+    const lines = (await readFile(emeraldScripts[i], 'utf8')).split('\n').map(line => line.trim())
+    for (let x = 0; x < lines.length; x++) {
+      const line = lines[x]
+      if (line.length < 1) continue
+      try {
+        await exec(line, {cwd: path.join(emeraldScripts[i], '..')})
+      } catch(error) {
+        console.error(error)
+      }
+    }
+    await unlink(emeraldScripts[i])
+  }
 
-  console.log("Project Generated!")
-
+  console.log("Project Generated Successfully!")
 }
 
 module.exports = generate
