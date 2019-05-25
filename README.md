@@ -1,5 +1,12 @@
 # Emerald Templates
 ## Getting Started
+### Installing
+To install emerald templates run the following command in your console
+```bash
+npm install -g emerald-templates
+```
+
+### Configuring
 In order to use Emerald Templates you must first supply a templates folder. This is a folder containing a bunch of subfolders (templates). Simply Run the following command, and it will help you configure emerald templates
 ```bash
 emerald-templates -c
