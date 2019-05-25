@@ -8,7 +8,8 @@ const populateEmerald = require('../functions/populateEmerald')
 const findFilesByExtension = require('../functions/findFilesByExtension')
 
 async function generate(options) {
-  const rootTemplateFolder = getConfiguration().templateFolder
+  const config = getConfiguration()
+  const rootTemplateFolder = config.templateFolder
   if (!(await directoryExists(rootTemplateFolder))) throw new Error("The folder configured to contain the templates does not exist")
   let templateFolder = (options['--template'] || options._[0] || "").trim()
   if (!templateFolder) throw new Error("Please specify which template folder you would like to use")
@@ -24,6 +25,7 @@ async function generate(options) {
   await copy(templateFolder, outputFolder)
   console.log("Populating the .emerald files")
   const emeralds = await findFilesByExtension(outputFolder, '.emerald')
+  console.log(emeralds)
   for (let i = 0; i < emeralds.length; i++) {
     await populateEmerald(emeralds[i], config.templateEngine)
   }

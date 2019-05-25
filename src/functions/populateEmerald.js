@@ -1,8 +1,9 @@
 const args = require('yargs').argv
 const Mustache = require('mustache')
+const Handlebars = require('handlebars')
 const {readFile, writeFile, unlink} = require('fs-extra')
 
-async function populateEmerald(filePath, templateEngine="mustache") {
+async function populateEmerald(filePath, templateEngine="handlebars") {
   const outputFilePath = filePath.replace(/.emerald$/, '')
   const rawFile = await readFile(filePath, 'utf8')
   let output
