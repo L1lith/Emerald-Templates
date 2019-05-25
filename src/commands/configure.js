@@ -22,6 +22,9 @@ async function configure(options) {
   const templateEngineResponse = (await askQuestion("Which templating engine would you like to use? (defaults to ejs)\nOptions: "+templateEngines.join(", ") + "\n> ")).trim()
   if (templateEngineResponse.length > 0 && !templateEngines.includes(templateEngineResponse)) throw new Error("Invalid Template Engine Response Name")
   if (templateEngineResponse) config.templateEngine = templateEngineResponse
+  const automaticallyInstallNodeModules = (await askQuestion("Would you like to automatically install the node modules if there is a package.json with dependencies but no node_modules folder? (yes/no)\n> ")).trim().toLowerCase()
+  if (automaticallyInstallNodeModules.length > 0 && !["yes", "no"]) throw new Error("You must respond with yes or no.")
+  if (automaticallyInstallNodeModules.length > 0) config.automaticallyInstallNodeModules = automaticallyInstallNodeModules === "yes"
   writeFileSync(configPath, JSON.stringify(config))
   console.log("Emerald Templates Configured.")
 }
