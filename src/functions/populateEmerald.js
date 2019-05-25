@@ -6,6 +6,7 @@ const nunjucks = require('nunjucks')
 const {readFile, writeFile, unlink} = require('fs-extra')
 
 async function populateEmerald(filePath, templateEngine="handlebars") {
+  console.log(filePath)
   const outputFilePath = filePath.replace(/.emerald$/, '')
   const rawFile = await readFile(filePath, 'utf8')
   let output

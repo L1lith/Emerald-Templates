@@ -6,6 +6,7 @@ const {promisify} = require('util')
 const {copy} = require('fs-extra')
 const populateEmerald = require('../functions/populateEmerald')
 const findFilesByExtension = require('../functions/findFilesByExtension')
+const exec = promisify(require('child_process').exec)
 
 async function generate(options) {
   const config = getConfiguration()
@@ -25,10 +26,18 @@ async function generate(options) {
   await copy(templateFolder, outputFolder)
   console.log("Populating the .emerald files")
   const emeralds = await findFilesByExtension(outputFolder, '.emerald')
-  console.log(emeralds)
   for (let i = 0; i < emeralds.length; i++) {
     await populateEmerald(emeralds[i], config.templateEngine)
   }
+  let packageJSON = null
+  try {
+    packageJSON = require(join(outputFolder, "package.json"))
+  } catch(error) {console.log(error)}
+  if (config.automaticallyInstallNodeModules === true && packageJSON && ((typeof packageJSON.dependencies == 'object' && Object.keys(packageJSON.dependencies).length > 0) || (typeof packageJSON.devDependencies == 'object' && Object.keys(packageJSON.devDependencies).length > 0))) {
+    console.log("Detected missing dependencies, installing.")
+    await exec("npm install", {cwd: outputFolder})
+  }
+
   console.log("Project Generated!")
 
 }

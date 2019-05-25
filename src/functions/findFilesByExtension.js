@@ -10,7 +10,7 @@ async function findFilesByExtension(directory, extension) {
     const fileName = files[i]
     const filePath = join(directory, fileName)
     if ((await stat(filePath)).isDirectory()) {
-      result = result.concat(findFilesByExtension(filePath, extension))
+      output = output.concat(await findFilesByExtension(filePath, extension))
     } else {
       if (extname(filePath) === extension) {
         output.push(filePath)
