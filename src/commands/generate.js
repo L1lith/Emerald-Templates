@@ -4,6 +4,8 @@ const directoryExists = require('directory-exists')
 const resolvePath = require('../functions/resolvePath')
 const {promisify} = require('util')
 const {copy} = require('fs-extra')
+const populateEmerald = require('../functions/populateEmerald')
+const findFilesByExtension = require('../functions/findFilesByExtension')
 
 async function generate(options) {
   const rootTemplateFolder = getConfiguration().templateFolder
@@ -21,6 +23,10 @@ async function generate(options) {
   console.log("Copying The Template")
   await copy(templateFolder, outputFolder)
   console.log("Populating the .emerald files")
+  const emeralds = await findFilesByExtension(outputFolder, '.emerald')
+  for (let i = 0; i < emeralds.length; i++) {
+    await populateEmerald(emeralds[i])
+  }
   console.log("Project Generated!")
 
 }
