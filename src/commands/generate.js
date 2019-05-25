@@ -1,4 +1,4 @@
-const {join} = require('path')
+const {join, basename} = require('path')
 const getConfiguration = require('../functions/getConfiguration')
 const directoryExists = require('directory-exists')
 const resolvePath = require('../functions/resolvePath')
@@ -44,17 +44,28 @@ async function generate(options) {
   const emeraldScripts = await findFilesByExtension(outputFolder, '.emerald-script')
   if (emeraldScripts.length > 0) console.log("Running the emerald scripts")
   for (let i = 0; i < emeraldScripts.length; i++) {
-    const lines = (await readFile(emeraldScripts[i], 'utf8')).split('\n').map(line => line.trim())
+    const scriptPath = emeraldScripts[i]
+    const rawScript = await readFile(emeraldScripts[i], 'utf8')
+    const lines = rawScript.split('\n').map(line => line.trim())
     for (let x = 0; x < lines.length; x++) {
       const line = lines[x]
       if (line.length < 1) continue
-      try {
-        await exec(line, {cwd: path.join(emeraldScripts[i], '..')})
-      } catch(error) {
-        console.error(error)
+      const baseExtension = basename(scriptPath).split('.').splice(-2)[0]
+      if (baseExtension === 'js') {
+        try {
+          require(scriptPath)
+        } catch(error) {
+          console.error(error)
+        }
+      } else {
+        try {
+          await exec(line, {cwd: join(scriptPath, '..')})
+        } catch(error) {
+          console.error(error)
+        }
       }
     }
-    await unlink(emeraldScripts[i])
+    await unlink(scriptPath)
   }
 
   console.log("Project Generated Successfully!")
