@@ -18,8 +18,9 @@ async function generate(options) {
   outputFolder = resolvePath(outputFolder, process.cwd())
   if (!(await directoryExists(join(outputFolder, '..')))) throw new Error(`The output folder's parent directory does not exist`)
   if (await directoryExists(outputFolder)) throw new Error(`The output folder "${outputFolder}" already exists.`)
-  console.log(templateFolder, outputFolder)
+  console.log("Copying The Template")
   await copy(templateFolder, outputFolder)
+  console.log("Populating the .emerald files")
   console.log("Project Generated!")
 
 }
