@@ -13,7 +13,7 @@ async function populateEmerald(filePath, templateEngine="handlebars") {
   } else if (templateEngine === "handlebars") {
     output = Handlebars.compile(rawFile)(args)
   } else if (templateEngine === "ejs") {
-    output = ejs.compile(rawFile)(args)
+    output = ejs.render(rawFile, args)
   } else {
     throw new Error("Unrecognized template engine")
   }
