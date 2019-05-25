@@ -5,7 +5,7 @@ const {join} = require('path')
 const directoryExists = require('directory-exists')
 
 const configPath = join(__dirname, '..', '..', 'emerald-config.json')
-const templateEngines = ["mustache"]
+const templateEngines = ["mustache", "handlebars"]
 
 async function configure(options) {
   let config = {}

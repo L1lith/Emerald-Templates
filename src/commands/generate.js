@@ -25,7 +25,7 @@ async function generate(options) {
   console.log("Populating the .emerald files")
   const emeralds = await findFilesByExtension(outputFolder, '.emerald')
   for (let i = 0; i < emeralds.length; i++) {
-    await populateEmerald(emeralds[i])
+    await populateEmerald(emeralds[i], config.templateEngine)
   }
   console.log("Project Generated!")
 

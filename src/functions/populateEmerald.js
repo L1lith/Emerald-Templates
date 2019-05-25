@@ -8,6 +8,8 @@ async function populateEmerald(filePath, templateEngine="mustache") {
   let output
   if (templateEngine === "mustache") {
     output = Mustache.render(rawFile, args)
+  } else if (templateEngine === "handlebars") {
+    output = Handlebars.compile(rawFile)(args)
   } else {
     throw new Error("Unrecognized template engine")
   }
