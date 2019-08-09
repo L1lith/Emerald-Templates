@@ -1,12 +1,12 @@
 {
   "name": "emerald-templates",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Intelligent Template Generation",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "emerald-templates": "src/index.js"
+    "emerald-templates": "node ./src/index.js"
   },
   "repository": {
     "type": "git",

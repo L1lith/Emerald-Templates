@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const arg = require('arg')
 
 const args = arg({
