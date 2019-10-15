@@ -3,6 +3,7 @@ const arg = require('arg')
 
 const args = arg({
   '--configure': Boolean,
+  '--config': '--configure',
   '-c': '--configure',
   '--generate': Boolean,
   '-g': '--generate',
