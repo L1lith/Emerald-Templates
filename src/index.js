@@ -6,6 +6,8 @@ const args = arg({
   '-c': '--configure',
   '--generate': Boolean,
   '-g': '--generate',
+  '--list': Boolean,
+  '-l': "--list",
   '--template': String,
   '-t': '--template',
   '--outputFolder': String,
@@ -13,7 +15,7 @@ const args = arg({
   '-o': '--outputFolder'
 }, {permissive: true})
 
-const primaryOptionNames = ["--configure", "--generate"]
+const primaryOptionNames = ["--configure", "--generate", "--list"]
 
 const primaryOptions = Object.entries(args).filter(([name, value]) => primaryOptionNames.includes(name) && value === true)
 if (primaryOptions.length > 1) throw new Error("Too Many Primary Options")
