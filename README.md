@@ -39,5 +39,8 @@ Available Templates:
 - basic-express, browser-extension, electron-next, next-app, npm-web, p5
 ```
 
+## Additional Features
+You can configure it (with the configure command) to automatically install the node modules so you always have freshly updated dependencies and don't have to waste storage space in your templates (a.k.a. you can delete the node_modules folder in your template and it will be replaced upon project generation).
+
 ## Known Issues
 The mustache and handlebar templating libraries expect your code used to generate templates to be separate from the templates themselves, so at the moment they cannot support javascript code, only injecting your cli arguments into the template. For this reason it's currently recommend to use ejs or nunjucks if you want to use code in your templates.
