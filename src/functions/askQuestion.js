@@ -6,7 +6,7 @@ function askQuestion(question) {
     output: process.stdout
   })
   return new Promise((resolve, reject) => {
-    if (typeof question != 'string' || question.length < 1) throw new Error("Must supply a question")
+    if (typeof question != 'string' || question.length < 1) reject(new Error("Must supply a question"))
     rl.question(question, answer => {
       // TODO: Log the answer in a database
       resolve(answer)
