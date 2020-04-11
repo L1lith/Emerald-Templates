@@ -1,10 +1,8 @@
-const {join, basename} = require('path')
 const findFilesByExtension = require('../functions/findFilesByExtension')
 const processEmeraldLink = require('./processEmeraldLink')
 const populateEmerald = require('./populateEmerald')
-const {copy, readdir, rmdir, readFile, unlink} = require('fs-extra')
-const {promisify} = require('util')
-const exec = promisify(require('child_process').exec)
+const processEmeraldScript = require('./processEmeraldScript')
+
 
 async function processOutputFolder(outputFolder) {
   let emeraldLinks = [null]
@@ -28,27 +26,7 @@ async function processOutputFolder(outputFolder) {
   if (emeraldScripts.length > 0) console.log("Running the emerald scripts")
   for (let i = 0; i < emeraldScripts.length; i++) {
     const scriptPath = emeraldScripts[i]
-    const rawScript = await readFile(emeraldScripts[i], 'utf8')
-    const lines = rawScript.split('\n').map(line => line.trim())
-    for (let x = 0; x < lines.length; x++) {
-      const line = lines[x]
-      if (line.length < 1) continue
-      const baseExtension = basename(scriptPath).split('.').splice(-2)[0]
-      if (baseExtension === 'js') {
-        try {
-          require(scriptPath)
-        } catch(error) {
-          console.error(error)
-        }
-      } else {
-        try {
-          await exec(line, {cwd: join(scriptPath, '..')})
-        } catch(error) {
-          console.error(error)
-        }
-      }
-    }
-    await unlink(scriptPath)
+    await processEmeraldScript(scriptPath)
   }
 }
 

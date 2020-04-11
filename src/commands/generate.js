@@ -27,16 +27,16 @@ async function generate(options) {
   }
   console.log("Copying The Template")
   await copy(templateFolder, outputFolder)
+  console.log("Handling any scripts, links, etc")
   await processOutputFolder(outputFolder)
   let packageJSON = null
   try {
     packageJSON = require(join(outputFolder, "package.json"))
-  } catch(error) {console.log(error)}
+  } catch(error) {console.log("Could not find or access the package.json")}
   if (config.automaticallyInstallNodeModules !== false && packageJSON && ((typeof packageJSON.dependencies == 'object' && Object.keys(packageJSON.dependencies).length > 0) || (typeof packageJSON.devDependencies == 'object' && Object.keys(packageJSON.devDependencies).length > 0))) {
     console.log("Installing Dependencies")
     await exec("npm install", {cwd: outputFolder})
   }
-  console.log("Handling any scripts, links, etc")
 
   console.log("Project Generated Successfully!")
 }
