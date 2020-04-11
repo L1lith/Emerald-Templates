@@ -2,10 +2,9 @@ const {join, basename} = require('path')
 const getConfiguration = require('../functions/getConfiguration')
 const directoryExists = require('directory-exists')
 const resolvePath = require('../functions/resolvePath')
-const {promisify} = require('util')
 const {copy, readdir, rmdir, readFile, unlink} = require('fs-extra')
-const populateEmerald = require('../functions/populateEmerald')
-const findFilesByExtension = require('../functions/findFilesByExtension')
+const processOutputFolder = require('../functions/processOutputFolder')
+const {promisify} = require('util')
 const exec = promisify(require('child_process').exec)
 
 async function generate(options) {
@@ -28,45 +27,16 @@ async function generate(options) {
   }
   console.log("Copying The Template")
   await copy(templateFolder, outputFolder)
+  await processOutputFolder(outputFolder)
   let packageJSON = null
   try {
     packageJSON = require(join(outputFolder, "package.json"))
   } catch(error) {console.log(error)}
   if (config.automaticallyInstallNodeModules !== false && packageJSON && ((typeof packageJSON.dependencies == 'object' && Object.keys(packageJSON.dependencies).length > 0) || (typeof packageJSON.devDependencies == 'object' && Object.keys(packageJSON.devDependencies).length > 0))) {
-    console.log("Detected missing dependencies, installing.")
+    console.log("Installing Dependencies")
     await exec("npm install", {cwd: outputFolder})
   }
-  const emeralds = await findFilesByExtension(outputFolder, '.emerald')
-  if (emeralds.length > 0) console.log("Populating the .emerald files")
-  for (let i = 0; i < emeralds.length; i++) {
-    await populateEmerald(emeralds[i], config.templateEngine)
-  }
-  const emeraldScripts = await findFilesByExtension(outputFolder, '.emerald-script')
-  if (emeraldScripts.length > 0) console.log("Running the emerald scripts")
-  for (let i = 0; i < emeraldScripts.length; i++) {
-    const scriptPath = emeraldScripts[i]
-    const rawScript = await readFile(emeraldScripts[i], 'utf8')
-    const lines = rawScript.split('\n').map(line => line.trim())
-    for (let x = 0; x < lines.length; x++) {
-      const line = lines[x]
-      if (line.length < 1) continue
-      const baseExtension = basename(scriptPath).split('.').splice(-2)[0]
-      if (baseExtension === 'js') {
-        try {
-          require(scriptPath)
-        } catch(error) {
-          console.error(error)
-        }
-      } else {
-        try {
-          await exec(line, {cwd: join(scriptPath, '..')})
-        } catch(error) {
-          console.error(error)
-        }
-      }
-    }
-    await unlink(scriptPath)
-  }
+  console.log("Handling any scripts, links, etc")
 
   console.log("Project Generated Successfully!")
 }
