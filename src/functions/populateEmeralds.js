@@ -4,6 +4,7 @@ const ejs = require('ejs')
 const Handlebars = require('handlebars')
 const nunjucks = require('nunjucks')
 const {readFile, writeFile, unlink} = require('fs-extra')
+const findFilesByExtension = require('../functions/findFilesByExtension')
 
 async function populateEmerald(filePath, templateEngine="handlebars") {
   const outputFilePath = filePath.replace(/.emerald$/, '')

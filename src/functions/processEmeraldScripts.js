@@ -4,6 +4,7 @@ const {join, basename, dirname} = require('path')
 const exec = promisify(require('child_process').exec)
 const args = require('yargs').argv
 const ensureArguments = require('./ensureArguments')
+const findFilesByExtension = require('../functions/findFilesByExtension')
 
 const packageNameRegex = /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/
 
