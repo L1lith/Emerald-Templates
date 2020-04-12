@@ -17,7 +17,8 @@ async function configure(options) {
     const templateFolder = resolvePath(templateFolderResponse, process.cwd())
     if (!(await directoryExists(templateFolder))) throw new Error(`The folder "${templateFolder}" does not exist`)
     console.log(`Setting the templates folder path as "${templateFolder}"`)
-    config.templateFolder = templateFolder
+    config.templateFolders = (config.templateFolders || []))
+    if (!config.templateFolders.includes(templateFolder)) config.templateFolders.concat(templateFolder)
   }
   const templateEngineResponse = (await askQuestion("Which templating engine would you like to use? (defaults to ejs)\nOptions: "+templateEngines.join(", ") + "\n> ")).trim()
   if (templateEngineResponse.length > 0 && !templateEngines.includes(templateEngineResponse)) throw new Error("Invalid Template Engine Response Name")
