@@ -4,6 +4,7 @@ const directoryExists = require('directory-exists')
 const resolvePath = require('../functions/resolvePath')
 const {copy, readdir, rmdir, readFile, unlink} = require('fs-extra')
 const processOutputFolder = require('../functions/processOutputFolder')
+const copyTemplate = require('../functions/copyTemplate')
 const {promisify} = require('util')
 const exec = promisify(require('child_process').exec)
 
@@ -29,7 +30,7 @@ async function generate(options) {
   }
   process.env.OUTPUT_FOLDER = outputFolder
   console.log("Copying The Template")
-  await copy(templateFolder, outputFolder)
+  await copyTemplate(templateFolder, outputFolder)
   console.log("Handling any scripts, links, etc")
   await processOutputFolder(outputFolder)
   let packageJSON = null
