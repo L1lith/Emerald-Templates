@@ -31,8 +31,10 @@ async function processEmeraldLink(linkPath, outputFolder, templateFolder) {
 
 async function processEmeraldLinks(outputFolder, templateFolder) {
   let emeraldLinks = [null]
-  while (emeraldLinks.length > 0) {
+  let processedLinks = 0
+  if (emeraldLinks.length > 0) {
     emeraldLinks = await findFilesByExtension(outputFolder, '.emerald-link')
+    processedLinks += emeraldLinks.length
     if (emeraldLinks.length > 0) {
       console.log("Processing the .emerald-link link files")
       for (let i = 0; i < emeraldLinks.length; i++) {
@@ -40,6 +42,7 @@ async function processEmeraldLinks(outputFolder, templateFolder) {
       }
     }
   }
+  return processedLinks
 }
 
 module.exports = processEmeraldLinks

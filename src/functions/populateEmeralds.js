@@ -33,6 +33,7 @@ async function populateEmeralds(outputFolder) {
       await populateEmerald(emeralds[i], config.templateEngine)
     }
   }
+  return emeralds.length
 }
 
 module.exports = populateEmeralds

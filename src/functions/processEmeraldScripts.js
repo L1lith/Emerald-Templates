@@ -94,6 +94,7 @@ async function processEmeraldScripts(outputFolder) {
     const scriptPath = emeraldScripts[i]
     await processEmeraldScript(scriptPath)
   }
+  return emeraldScripts.length
 }
 
 module.exports = processEmeraldScripts
