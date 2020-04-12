@@ -30,7 +30,6 @@
   },
   "homepage": "https://github.com/L1lith/Emerald-Templates#readme",
   "dependencies": {
-    "@wrote/clone": "^1.2.1",
     "arg": "^4.1.0",
     "deglob": "^4.0.1",
     "directory-exists": "^2.0.1",

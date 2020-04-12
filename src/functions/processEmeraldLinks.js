@@ -1,7 +1,6 @@
 const findFilesByExtension = require('../functions/findFilesByExtension')
 const {basename, dirname, join, relative, extname} = require('path')
 const {readFile, unlink} = require('fs-extra')
-const clone = require('@wrote/clone')
 const areRelatedPaths = require("./areRelatedPaths")
 const mkdirp = require('mkdirp')
 const mvdir = require('mvdir')

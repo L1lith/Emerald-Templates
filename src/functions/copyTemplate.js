@@ -3,7 +3,6 @@ const deglob = promisify(require('deglob'))
 const {join, dirname, relative} = require('path')
 const {copy} = require('fs-extra')
 const mkdirp = require('mkdirp')
-const clone = require('@wrote/clone')
 const mvdir = require('mvdir')
 
 async function copyTemplate(templateFolder, outputFolder) {
