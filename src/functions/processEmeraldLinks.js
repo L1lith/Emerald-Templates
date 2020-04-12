@@ -1,6 +1,6 @@
 const findFilesByExtension = require('../functions/findFilesByExtension')
 const {basename, dirname, join} = require('path')
-const {readFile} = require('fs-extra')
+const {readFile, unlink} = require('fs-extra')
 const clone = require('@wrote/clone')
 const areRelatedPaths = require("./areRelatedPaths")
 
@@ -13,7 +13,9 @@ async function processEmeraldLink(linkPath) {
   const sourceLines = sourceCode.split(/[\n\,]+/g).map(line => line.trim()).filter(line => line.length > 0 && !line.startsWith('#')) // ignore comment lines
   if (sourceLines.length < 0) throw new Error("Must supply a source path")
   const [source] = sourceLines
+  if (areRelatedPaths(source, output)) throw new Error(`Cannot clone related paths: "${source}", "${output}"`)
   await clone(source, output)
+  await unlink(linkPath)
 }
 
 async function processEmeraldLinks(outputFolder) {

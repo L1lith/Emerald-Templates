@@ -86,4 +86,13 @@ async function processEmeraldScript(scriptPath) {
   delete process.env.EMERALD_SCRIPT_ARGS
 }
 
-module.exports = processEmeraldScript
+async function processEmeraldScripts(outputFolder) {
+  const emeraldScripts = await findFilesByExtension(outputFolder, '.emerald-script')
+  if (emeraldScripts.length > 0) console.log("Running the emerald scripts")
+  for (let i = 0; i < emeraldScripts.length; i++) {
+    const scriptPath = emeraldScripts[i]
+    await processEmeraldScript(scriptPath)
+  }
+}
+
+module.exports = processEmeraldScripts

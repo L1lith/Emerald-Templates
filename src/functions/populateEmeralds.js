@@ -24,4 +24,14 @@ async function populateEmerald(filePath, templateEngine="handlebars") {
   await unlink(filePath)
 }
 
-module.exports = populateEmerald
+async function populateEmeralds(outputFolder) {
+  const emeralds = await findFilesByExtension(outputFolder, '.emerald')
+  if (emeralds.length > 0) {
+    console.log("Populating the .emerald files")
+    for (let i = 0; i < emeralds.length; i++) {
+      await populateEmerald(emeralds[i], config.templateEngine)
+    }
+  }
+}
+
+module.exports = populateEmeralds
