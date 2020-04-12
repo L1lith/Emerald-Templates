@@ -1,15 +1,16 @@
 const {promisify} = require('util')
 const deglob = promisify(require('deglob'))
 const {join, dirname, relative} = require('path')
-const {copy} = require('fs-extra')
+const {copy, readFile} = require('fs-extra')
 const mkdirp = require('mkdirp')
 const mvdir = require('mvdir')
 
 async function copyTemplate(templateFolder, outputFolder) {
+  const ignores = (await readFile(join(templateFolder, '.emignore'), 'utf8')).split('\n').map(line => line.trim()).filter(line => line.length > 0)
   const options = {
     cwd: templateFolder,
-    ignore: ['/node_modules/'],
-    useGitIgnore: true,
+    ignore: ['/node_modules/', ...ignores],
+    //useGitIgnore: true,
     usePackageJson: false,
     gitIgnoreFile: '.emignore'
   }
@@ -19,7 +20,6 @@ async function copyTemplate(templateFolder, outputFolder) {
     await mkdirp(dirname(file))
     const relativePath = relative(templateFolder, file)
     const outputPath = join(outputFolder, relativePath)
-    console.log(file, outputPath)
     await mvdir(file, outputPath, { copy: true })
   }
 }
