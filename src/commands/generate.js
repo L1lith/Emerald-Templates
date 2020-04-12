@@ -37,8 +37,8 @@ async function generate(options) {
   try {
     packageJSON = require(join(outputFolder, "package.json"))
   } catch(error) {console.log("Could not find or access the package.json")}
-  if (config.automaticallyInstallNodeModules !== false && packageJSON && ((typeof packageJSON.dependencies == 'object' && Object.keys(packageJSON.dependencies).length > 0) || (typeof packageJSON.devDependencies == 'object' && Object.keys(packageJSON.devDependencies).length > 0))) {
-    console.log("Installing Dependencies")
+  console.log("Installing Dependencies", config.automaticallyInstallNodeModules !== false, !!packageJSON)
+  if (config.automaticallyInstallNodeModules !== false && packageJSON) {
     await exec("npm install", {cwd: outputFolder})
   }
 

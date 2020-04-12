@@ -6,13 +6,15 @@ const mkdirp = require('mkdirp')
 const clone = require('@wrote/clone')
 
 async function copyTemplate(templateFolder, outputFolder) {
-  const files = await deglob(['*'], {
+  const options = {
     cwd: templateFolder,
     ignore: ['/node_modules/'],
     useGitIgnore: true,
     usePackageJson: false,
-    gitIngoreFile: '.emignore'
-  })
+    gitIgnoreFile: '.emignore'
+  }
+  const files = await deglob(['*'], options)
+  console.log(files, options)
   for (let i = 0; i < files.length; i++) {
     const file = files[i]
     await mkdirp(dirname(file))
