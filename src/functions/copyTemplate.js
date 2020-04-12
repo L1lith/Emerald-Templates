@@ -19,7 +19,6 @@ async function copyTemplate(templateFolder, outputFolder) {
     const sourcePath = join(templateFolder, file)
     const outputPath = join(outputFolder, file)
     await mkdirp(dirname(outputPath))
-    console.log()
     await mvdir(sourcePath, outputPath, { copy: true })
   }
 }

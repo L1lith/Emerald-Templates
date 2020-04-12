@@ -10,7 +10,11 @@ function getConfiguration() {
     }
   }
   if (result instanceof Error) throw result
-  if (typeof result.templateFolder != 'string' || result.templateFolder.length < 1) throw new Error("Missing the Template Folder from the config")
+  if (!result.hasOwnProperty('templateFolders')) {
+    result.templateFolders = []
+  } else if (!Array.isArray(result.templateFolders) || result.templateFolders.some(value => typeof value != 'string' || value.length < 1)) {
+    throw new Error("Template folders is not an array of non-empty path strings")
+  }
   return result
 }
 
