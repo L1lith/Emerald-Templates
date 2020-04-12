@@ -32,7 +32,7 @@ async function generate(options) {
   console.log("Copying The Template")
   await copyTemplate(templateFolder, outputFolder)
   console.log("Handling any scripts, links, etc")
-  await processOutputFolder(outputFolder)
+  await processOutputFolder(outputFolder, templateFolder)
   let packageJSON = null
   try {
     packageJSON = require(join(outputFolder, "package.json"))

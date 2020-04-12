@@ -3,10 +3,10 @@ const processEmeraldLinks = require('./processEmeraldLinks')
 const populateEmeralds = require('./populateEmeralds')
 const processEmeraldScripts = require('./processEmeraldScripts')
 
-async function processOutputFolder(outputFolder) {
-  await processEmeraldLinks(outputFolder)
-  await populateEmeralds(outputFolder)
-  await processEmeraldScripts(outputFolder)
+async function processOutputFolder(outputFolder, templateFolder) {
+  await processEmeraldLinks(outputFolder, templateFolder)
+  await populateEmeralds(outputFolder, templateFolder)
+  await processEmeraldScripts(outputFolder, templateFolder)
 }
 
 module.exports = processOutputFolder
