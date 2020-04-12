@@ -4,6 +4,7 @@ const {join, dirname, relative} = require('path')
 const {copy} = require('fs-extra')
 const mkdirp = require('mkdirp')
 const clone = require('@wrote/clone')
+const mvdir = require('mvdir')
 
 async function copyTemplate(templateFolder, outputFolder) {
   const options = {
@@ -14,13 +15,13 @@ async function copyTemplate(templateFolder, outputFolder) {
     gitIgnoreFile: '.emignore'
   }
   const files = await deglob(['*'], options)
-  console.log(files, options)
   for (let i = 0; i < files.length; i++) {
     const file = files[i]
     await mkdirp(dirname(file))
     const relativePath = relative(templateFolder, file)
     const outputPath = join(outputFolder, relativePath)
-    await clone(file, outputPath)
+    console.log(file, outputPath)
+    await mvdir(file, outputPath, { copy: true })
   }
 }
 

@@ -1,14 +1,15 @@
 const findFilesByExtension = require('../functions/findFilesByExtension')
-const {basename, dirname, join, relative} = require('path')
+const {basename, dirname, join, relative, extname} = require('path')
 const {readFile, unlink} = require('fs-extra')
 const clone = require('@wrote/clone')
 const areRelatedPaths = require("./areRelatedPaths")
 const mkdirp = require('mkdirp')
+const mvdir = require('mvdir')
 
 async function processEmeraldLink(linkPath, outputFolder, templateFolder) {
   const relativePath = relative(outputFolder, linkPath)
   const relativeLinkFolder = dirname(relativePath)
-  const fileName = basename(linkPath)
+  const fileName = basename(linkPath, extname(linkPath))
   const linkFolder = dirname(linkPath)
   if (fileName.length < 1) throw new Error("Emerald Link Error, Filename not given")
   const output = join(linkFolder, fileName)
@@ -25,7 +26,7 @@ async function processEmeraldLink(linkPath, outputFolder, templateFolder) {
   source = source.replace(/\{LINK_PATH\}/g, linkPath)
   if (areRelatedPaths(source, output)) throw new Error(`Cannot clone related paths: "${source}", "${output}"`)
   await mkdirp(linkFolder)
-  await clone(source, output)
+  await await mvdir(source, output, { copy: true })
   await unlink(linkPath)
 }
 
