@@ -18,7 +18,7 @@ async function getTemplateFolders() {
       const childDirectory = childDirectories[i]
       const fullPath = join(templateFolder, childDirectory)
       try {
-        if (await exists(join())) continue // ignore because it has a .noproject file
+        if (await exists(join(fullPath, '.noproject'))) continue // ignore because it has a .noproject file
       } catch(error) {}
       if (!outputFolders.includes(fullPath)) outputFolders.push(fullPath)
     }
@@ -26,4 +26,4 @@ async function getTemplateFolders() {
   return outputFolders
 }
 
-module.exports = list
+module.exports = getTemplateFolders
