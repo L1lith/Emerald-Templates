@@ -8,7 +8,6 @@ const ensureArguments = require('./ensureArguments')
 const packageNameRegex = /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/
 
 async function processEmeraldScript(scriptPath) {
-  process.env.EMERALD_ARGS = args
   const scriptDirectory = dirname(scriptPath)
   const baseExtension = basename(scriptPath).split('.').splice(-2)[0]
   const rawScript = await readFile(scriptPath, 'utf8')
@@ -32,10 +31,11 @@ async function processEmeraldScript(scriptPath) {
     }
     // handle the config
     const dependenciesToRemove = []
+    const scriptArgs = config !== null && config.hasOwnProperty('defaultArguments') ? {...config.defaultArguments, ...args} : {...args}
     if (config !== null) {
       const {dependencies, requiredArguments} = config
       if (config.hasOwnProperty('requiredArguments')) {
-        ensureArguments(requiredArguments)
+        ensureArguments(scriptArgs, requiredArguments)
       }
       if (config.hasOwnProperty("dependencies")) {
         if (!Array.isArray(dependencies)) throw new Error("Dependencies must be an array")
@@ -56,6 +56,7 @@ async function processEmeraldScript(scriptPath) {
         }
       }
     }
+    process.env.EMERALD_SCRIPT_ARGS = JSON.stringify(scriptArgs)
     try {
       let output = await require(scriptPath)
       if (typeof output == 'function') {
@@ -82,6 +83,7 @@ async function processEmeraldScript(scriptPath) {
     }
   }
   await unlink(scriptPath)
+  delete process.env.EMERALD_SCRIPT_ARGS
 }
 
 module.exports = processEmeraldScript

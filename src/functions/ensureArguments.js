@@ -1,11 +1,10 @@
 const {sanitize} = require('sandhands')
-const args = require('yargs').argv
 
-function ensureArguments(argumentObject) {
+function ensureArguments(argumentObject, sanitizeArguments) {
   if (typeof argumentObject != 'object' || argumentObject === null) throw new Error("Argument object is not an object")
-  Object.entries(argumentObject).forEach(([key, value]) => {
+  Object.entries(sanitizeArguments).forEach(([key, value]) => {
     try {
-      const input = args[key]
+      const input = sanitizeArguments[key]
       let format = value
       try {
         format = eval(format)
