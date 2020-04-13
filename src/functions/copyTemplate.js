@@ -16,6 +16,7 @@ async function copyTemplate(templateFolder, outputFolder) {
   })
   for (let i = 0; i < files.length; i++) {
     const file = files[i]
+    if (file === "node_modules" || file === ".git") continue
     const sourcePath = join(templateFolder, file)
     const outputPath = join(outputFolder, file)
     await mkdirp(dirname(outputPath))

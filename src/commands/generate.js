@@ -7,16 +7,17 @@ const processOutputFolder = require('../functions/processOutputFolder')
 const copyTemplate = require('../functions/copyTemplate')
 const {promisify} = require('util')
 const exec = promisify(require('child_process').exec)
+const findTemplateFolder = require('../functions/findTemplateFolder')
 
 async function generate(options) {
   const config = process.env.EMERALD_CONFIG = getConfiguration()
 
-  const rootTemplateFolder = config.templateFolder
-  if (!(await directoryExists(rootTemplateFolder))) throw new Error("The folder configured to contain the templates does not exist")
+  // const rootTemplateFolder = config.templateFolder
+  // if (!(await directoryExists(rootTemplateFolder))) throw new Error("The folder configured to contain the templates does not exist")
   let templateFolder = (options['--template'] || options._[0] || "").trim()
   if (!templateFolder) throw new Error("Please specify which template folder you would like to use")
-  templateFolder = join(rootTemplateFolder, templateFolder)
-  if (!(await directoryExists(templateFolder))) throw new Error(`Could not find the template folder "${templateFolder}"`)
+  templateFolder = await findTemplateFolder(templateFolder)
+  if (templateFolder === null || !(await directoryExists(templateFolder))) throw new Error(`Could not find the template folder "${templateFolder}"`)
   process.env.TEMPLATE_FOLDER = templateFolder
 
   let outputFolder = (options['--outputFolder'] || options._[1] || "").trim()
@@ -37,8 +38,8 @@ async function generate(options) {
   try {
     packageJSON = require(join(outputFolder, "package.json"))
   } catch(error) {console.log("Could not find or access the package.json")}
-  console.log("Installing Dependencies", config.automaticallyInstallNodeModules !== false, !!packageJSON)
   if (config.automaticallyInstallNodeModules !== false && packageJSON) {
+    console.log("Installing Dependencies")
     await exec("npm install", {cwd: outputFolder})
   }
 
