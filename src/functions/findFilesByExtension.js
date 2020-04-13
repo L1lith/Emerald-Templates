@@ -1,4 +1,4 @@
-const {join, extname} = require('path')
+const {join, extname, basename} = require('path')
 const {readdir, stat} = require('fs-extra')
 
 async function findFilesByExtension(directory, extension) {
@@ -12,7 +12,7 @@ async function findFilesByExtension(directory, extension) {
       if (fileName === "node_modules") continue // Don't look for templates in the node modules
       output = output.concat(await findFilesByExtension(filePath, extension))
     } else {
-      if (extname(filePath) === extension) {
+      if (extname(filePath) === extension || basename(filePath) === extension) {
         output.push(filePath)
       }
     }

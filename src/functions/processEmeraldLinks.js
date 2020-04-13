@@ -1,18 +1,22 @@
 const findFilesByExtension = require('../functions/findFilesByExtension')
 const {basename, dirname, join, relative, extname} = require('path')
-const {readFile, unlink} = require('fs-extra')
+const {readFile} = require('fs-extra')
 const areRelatedPaths = require("./areRelatedPaths")
 const mkdirp = require('mkdirp')
+const rimraf = require('delete').promise
 const mvdir = require('mvdir')
 const resolvePath = require('./resolvePath')
+const smartCopy = require('./smartCopy')
+
+const endingEmeraldLinkRegex = /\.emerald-link$/i
 
 async function processEmeraldLink(linkPath, outputFolder, templateFolder) {
   const relativePath = relative(outputFolder, linkPath)
   const relativeLinkFolder = dirname(relativePath)
   const fileName = basename(linkPath, extname(linkPath))
   const linkFolder = dirname(linkPath)
-  if (fileName.length < 1) throw new Error("Emerald Link Error, Filename not given")
-  const output = join(linkFolder, fileName)
+  //if (fileName.length < 1) throw new Error("Emerald Link Error, Filename not given")
+  const output = join(linkFolder, fileName.replace(endingEmeraldLinkRegex, ''))
   const sourceCode = (await readFile(linkPath)).toString()
   const sourceLines = sourceCode.split(/[\n\,]+/g).map(line => line.trim()).filter(line => line.length > 0 && !line.startsWith('#')) // ignore comment lines
   if (sourceLines.length < 0) throw new Error("Must supply a source path")
@@ -26,8 +30,9 @@ async function processEmeraldLink(linkPath, outputFolder, templateFolder) {
   source = resolvePath(source, relativeLinkFolder)
   if (areRelatedPaths(source, output)) throw new Error(`Cannot clone related paths: "${source}", "${output}"`)
   await mkdirp(linkFolder)
-  await await mvdir(source, output, { copy: true })
-  await unlink(linkPath)
+  await smartCopy(source, output)
+  //await mvdir(source, output, { copy: true, overwrite: false })
+  await rimraf(linkPath)
 }
 
 async function processEmeraldLinks(outputFolder, templateFolder) {
@@ -35,6 +40,7 @@ async function processEmeraldLinks(outputFolder, templateFolder) {
   let processedLinks = 0
   if (emeraldLinks.length > 0) {
     emeraldLinks = await findFilesByExtension(outputFolder, '.emerald-link')
+    console.log({outputFolder, emeraldLinks})
     processedLinks += emeraldLinks.length
     if (emeraldLinks.length > 0) {
       console.log("Processing the .emerald-link link files")

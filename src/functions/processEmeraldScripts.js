@@ -1,4 +1,5 @@
-const {copy, readdir, rmdir, readFile, unlink, exists} = require('fs-extra')
+const {copy, readdir, rmdir, readFile, exists} = require('fs-extra')
+const rimraf = require('delete').promise
 const {promisify} = require('util')
 const {join, basename, dirname} = require('path')
 const exec = promisify(require('child_process').exec)
@@ -66,10 +67,13 @@ async function processEmeraldScript(scriptPath) {
       error.message = "The following error occured while processing a .emerald-script (this script will continue anyways): " + error.message
       console.error(error)
     }
-    for (const dependency of dependenciesToRemove) {
-      await exec('npm uninstall ' + dependency, {
-        cwd: scriptDirectory
-      })
+    if (dependenciesToRemove.length > 0) {
+      console.log("Uninstalling Temporary Dependencies")
+      for (const dependency of dependenciesToRemove) {
+        await exec('npm uninstall ' + dependency, {
+          cwd: scriptDirectory
+        })
+      }
     }
   } else {
     for (let x = 0; x < lines.length; x++) {
@@ -81,7 +85,7 @@ async function processEmeraldScript(scriptPath) {
       }
     }
   }
-  await unlink(scriptPath)
+  await rimraf(scriptPath)
   delete process.env.EMERALD_SCRIPT_ARGS
 }
 

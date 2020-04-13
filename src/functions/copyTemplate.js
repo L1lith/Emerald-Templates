@@ -7,7 +7,7 @@ const mvdir = require('mvdir')
 const {isFile, isDirectory} = require('path-type')
 const walk = require('ignore-walk')
 
-async function copyTemplate(templateFolder, outputFolder) {
+async function copyTemplate(templateFolder, outputFolder, overwrite=false) {
   await mkdirp(outputFolder)
   const files = await walk({
     path: templateFolder,
@@ -19,7 +19,7 @@ async function copyTemplate(templateFolder, outputFolder) {
     const sourcePath = join(templateFolder, file)
     const outputPath = join(outputFolder, file)
     await mkdirp(dirname(outputPath))
-    await mvdir(sourcePath, outputPath, { copy: true })
+    await mvdir(sourcePath, outputPath, { copy: true, overwrite })
   }
 }
 

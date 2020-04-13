@@ -3,34 +3,54 @@ const Mustache = require('mustache')
 const ejs = require('ejs')
 const Handlebars = require('handlebars')
 const nunjucks = require('nunjucks')
-const {readFile, writeFile, unlink} = require('fs-extra')
+const {basename, relative, dirname, extname} = require('path')
+const {readFile, writeFile} = require('fs-extra')
+const rimraf = require('delete').promise
 const findFilesByExtension = require('../functions/findFilesByExtension')
+const getConfiguration = require('./getConfiguration')
 
-async function populateEmerald(filePath, templateEngine="handlebars") {
-  const outputFilePath = filePath.replace(/.emerald$/, '')
+async function populateEmerald(outputFolder, filePath, templateEngine="ejs") {
+  const sourceFile = filePath
   const rawFile = await readFile(filePath, 'utf8')
+  filePath = filePath.replace(/.emerald$/, '')
+  const relativePath = relative(outputFolder, filePath)
+  const fileName = basename(filePath, extname(filePath))
+  const parentFolder = dirname(filePath)
+
+  const location = {
+    filePath,
+    parentFolder,
+    relativePath,
+    outputFolder
+  }
+  const scriptArgs = {
+    args,
+    location,
+    require: require
+  }
   let output
   if (templateEngine === "mustache") {
-    output = Mustache.render(rawFile, args)
+    output = Mustache.render(rawFile, scriptArgs)
   } else if (templateEngine === "handlebars") {
-    output = Handlebars.compile(rawFile)(args)
+    output = Handlebars.compile(rawFile)(scriptArgs)
   } else if (templateEngine === "ejs") {
-    output = ejs.render(rawFile, args)
+    output = ejs.render(rawFile, scriptArgs)
   } else if (templateEngine === "nunjucks") {
-    output = nunjucks.renderString(rawFile, args)
+    output = nunjucks.renderString(rawFile, scriptArgs)
   } else {
     throw new Error("Unrecognized template engine")
   }
-  await writeFile(outputFilePath, output)
-  await unlink(filePath)
+  await writeFile(filePath, output)
+  await rimraf(sourceFile)
 }
 
 async function populateEmeralds(outputFolder) {
+  const config = getConfiguration()
   const emeralds = await findFilesByExtension(outputFolder, '.emerald')
   if (emeralds.length > 0) {
     console.log("Populating the .emerald files")
     for (const emerald of emeralds) {
-      await populateEmerald(emerald, config.templateEngine)
+      await populateEmerald(outputFolder, emerald, config.templateEngine)
     }
   }
   return emeralds.length
