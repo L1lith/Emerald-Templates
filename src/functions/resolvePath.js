@@ -1,12 +1,15 @@
 const isAbsolute = require('./isAbsolute')
-const {join} = require('path')
+const {join, normalize} = require('path')
 
 function resolvePath(path, workingDirectory) {
+  let output
   if (isAbsolute(path)) {
-    return path
+    output = path
   } else {
-    return join(workingDirectory, path)
+    output = join(workingDirectory, path)
   }
+  output = normalize(output)
+  return output
 }
 
 module.exports = resolvePath
