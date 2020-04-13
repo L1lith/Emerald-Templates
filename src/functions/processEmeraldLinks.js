@@ -22,7 +22,6 @@ async function processEmeraldLink(linkPath, outputFolder, templateFolder) {
   source = source.replace(/\{LINK_FOLDER\}/g, linkFolder)
   source = source.replace(/\{LINK_RELATIVE_FOLDER\}/g, relativeLinkFolder)
   source = source.replace(/\{RELATIVE_PATH\}/g, relativePath)
-  source = source.replace(/\{LINK_PATH\}/g, linkPath)
   if (areRelatedPaths(source, output)) throw new Error(`Cannot clone related paths: "${source}", "${output}"`)
   await mkdirp(linkFolder)
   await await mvdir(source, output, { copy: true })
