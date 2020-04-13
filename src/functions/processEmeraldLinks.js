@@ -4,6 +4,7 @@ const {readFile, unlink} = require('fs-extra')
 const areRelatedPaths = require("./areRelatedPaths")
 const mkdirp = require('mkdirp')
 const mvdir = require('mvdir')
+const resolvePath = require('./resolvePath')
 
 async function processEmeraldLink(linkPath, outputFolder, templateFolder) {
   const relativePath = relative(outputFolder, linkPath)
@@ -22,6 +23,7 @@ async function processEmeraldLink(linkPath, outputFolder, templateFolder) {
   source = source.replace(/\{LINK_FOLDER\}/g, linkFolder)
   source = source.replace(/\{LINK_RELATIVE_FOLDER\}/g, relativeLinkFolder)
   source = source.replace(/\{RELATIVE_PATH\}/g, relativePath)
+  source = resolvePath(source)
   if (areRelatedPaths(source, output)) throw new Error(`Cannot clone related paths: "${source}", "${output}"`)
   await mkdirp(linkFolder)
   await await mvdir(source, output, { copy: true })
