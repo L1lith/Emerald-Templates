@@ -36,8 +36,8 @@ async function processEmeraldLinks(outputFolder, templateFolder) {
     processedLinks += emeraldLinks.length
     if (emeraldLinks.length > 0) {
       console.log("Processing the .emerald-link link files")
-      for (let i = 0; i < emeraldLinks.length; i++) {
-        await processEmeraldLink(emeraldLinks[i], outputFolder, templateFolder)
+      for (const emeraldLink of emeraldLinks) {
+        await processEmeraldLink(emeraldLink, outputFolder, templateFolder)
       }
     }
   }

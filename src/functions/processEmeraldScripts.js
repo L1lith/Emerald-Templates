@@ -42,8 +42,7 @@ async function processEmeraldScript(scriptPath) {
         if (!Array.isArray(dependencies)) throw new Error("Dependencies must be an array")
         if (dependencies.some(value => typeof value != 'string' || !(packageNameRegex.test(value)))) throw new Error("All dependencies must be valid package name strings")
         console.log("Installing "+ dependencies.length +" Temporary Dependencies")
-        for (let i = 0; i < dependencies.length; i++) {
-          const dependency = dependencies[i]
+        for (const dependency of dependencies) {
           let exists = false
           try {
             exists = await exists(join(scriptDirectory, 'node_modules', dependency))
@@ -67,8 +66,7 @@ async function processEmeraldScript(scriptPath) {
       error.message = "The following error occured while processing a .emerald-script (this script will continue anyways): " + error.message
       console.error(error)
     }
-    for (let i = 0; i < dependenciesToRemove.length; i++) {
-      const dependency = dependenciesToRemove[i]
+    for (const dependency of dependenciesToRemove) {
       await exec('npm uninstall ' + dependency, {
         cwd: scriptDirectory
       })

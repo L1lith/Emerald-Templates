@@ -14,8 +14,7 @@ async function copyTemplate(templateFolder, outputFolder) {
     ignoreFiles: [".emignore"],
     follow: false
   })
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i]
+  for (const file of files) {
     if (file === "node_modules" || file === ".git") continue
     const sourcePath = join(templateFolder, file)
     const outputPath = join(outputFolder, file)
@@ -23,38 +22,5 @@ async function copyTemplate(templateFolder, outputFolder) {
     await mvdir(sourcePath, outputPath, { copy: true })
   }
 }
-
-// async function copy(source, output, options={}) {
-//   const {ignoreRules=[], deep=true} = options
-//   const sourceType = (await isFile(source)) ? 'file' : (await isDirectory(source) ? 'directory': 'other')
-//   //if (sourceType === 'other') return // Don't copy symlinks or other things like that
-//   if (sourceType === "directory") {
-//     try {
-//       const foundIgnoreRules = (await readFile(join(source, '.emignore'), 'utf8')).split('\n').map(line => line.trim()).filter(line => line.length > 0)
-//       const newIgnoreRules = [...ignoreRules]
-//       foundIgnoreRules.forEach(rule => {
-//         if (!newIgnoreRules.includes(rule)) newIgnoreRules.push(rule)
-//       })
-//       options.ignoreRules = ignoreRules = newIgnoreRules
-//     } catch(error) {
-//       console.log(error)
-//     }
-//     await mkdirp(output)
-//     if (deep === true) {
-//
-//     }
-//   } else if (sourceType === "file") {
-//
-//   } else {
-//     // Do Nothing
-//   }
-//   for (let i = 0; i < files.length; i++) {
-//     const file = files[i]
-//     await mkdirp(dirname(file))
-//     const relativePath = relative(templateFolder, file)
-//     const outputPath = join(outputFolder, relativePath)
-//     await mvdir(file, outputPath, { copy: true })
-//   }
-// }
 
 module.exports = copyTemplate
