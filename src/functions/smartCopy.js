@@ -3,11 +3,11 @@ const {copy, lstat} = require('fs-extra')
 const rimraf = require('delete').promise
 
 async function smartCopy(source, destination, options={}) {
-  const {move=false} = options
+  const {move=false, templateOptions} = options
   let output
   const sourceStats = await lstat(source)
   if (sourceStats.isDirectory()) {
-    output = await copyTemplate(source, destination)
+    output = await copyTemplate(source, destination, templateOptions)
   } else if (sourceStats.isFile()) {
     output = await copy(source, destination)
   }
