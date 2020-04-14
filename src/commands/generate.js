@@ -43,9 +43,7 @@ async function generate(options) {
   }
   process.env.OUTPUT_FOLDER = outputFolder
   console.log("Copying The Template")
-  console.log('a')
-  await copyTemplate(templateFolder, outputFolder, overwriteMode === "overwrite")
-  console.log('b')
+  await copyTemplate(templateFolder, outputFolder, {overwrite: overwriteMode === "overwrite"})
   console.log("Handling any scripts, links, etc")
   await processOutputFolder(outputFolder, templateFolder)
   let packageJSON = null

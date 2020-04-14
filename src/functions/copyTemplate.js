@@ -8,7 +8,7 @@ const {isFile, isDirectory} = require('path-type')
 const walk = require('ignore-walk')
 
 async function copyTemplate(templateFolder, outputFolder, options={}) {
-  const {overwrite=false}
+  const {overwrite=false} = options
   await mkdirp(outputFolder)
   const files = await walk({
     path: templateFolder,
