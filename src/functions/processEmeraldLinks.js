@@ -30,9 +30,9 @@ async function processEmeraldLink(linkPath, outputFolder, templateFolder) {
   source = resolvePath(source, relativeLinkFolder)
   if (areRelatedPaths(source, output)) throw new Error(`Cannot clone related paths: "${source}", "${output}"`)
   await mkdirp(linkFolder)
+  await rimraf(linkPath)
   await smartCopy(source, output)
   //await mvdir(source, output, { copy: true, overwrite: false })
-  await rimraf(linkPath)
 }
 
 async function processEmeraldLinks(outputFolder, templateFolder) {
@@ -40,7 +40,7 @@ async function processEmeraldLinks(outputFolder, templateFolder) {
   let processedLinks = 0
   if (emeraldLinks.length > 0) {
     emeraldLinks = await findFilesByExtension(outputFolder, '.emerald-link')
-    console.log({outputFolder, emeraldLinks})
+    //console.log({outputFolder, emeraldLinks})
     processedLinks += emeraldLinks.length
     if (emeraldLinks.length > 0) {
       console.log("Processing the .emerald-link link files")
