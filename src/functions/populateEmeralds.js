@@ -5,6 +5,7 @@ const Handlebars = require('handlebars')
 const nunjucks = require('nunjucks')
 const {basename, relative, dirname, extname} = require('path')
 const {readFile, writeFile} = require('fs-extra')
+const {readFileSync} = require('fs')
 const rimraf = require('delete').promise
 const findFilesByExtension = require('../functions/findFilesByExtension')
 const getConfiguration = require('./getConfiguration')
@@ -26,7 +27,8 @@ async function populateEmerald(outputFolder, filePath, templateEngine="ejs") {
   const scriptArgs = {
     args,
     location,
-    require: require
+    require: require,
+    loadFile: path => readFileSync(path, 'uft8')
   }
   let output
   if (templateEngine === "mustache") {
