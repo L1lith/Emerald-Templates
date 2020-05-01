@@ -1,5 +1,5 @@
 const copyTemplate = require('./copyTemplate')
-const {copy, lstat} = require('fs-extra')
+const {copy, lstat, exists} = require('fs-extra')
 const rimraf = require('delete').promise
 
 async function smartCopy(source, destination, options={}) {
@@ -9,6 +9,7 @@ async function smartCopy(source, destination, options={}) {
   if (sourceStats.isDirectory()) {
     output = await copyTemplate(source, destination, templateOptions)
   } else if (sourceStats.isFile()) {
+    if (await exists(destination)) return // Don't overwrite files
     output = await copy(source, destination)
   }
   if (move === true) {

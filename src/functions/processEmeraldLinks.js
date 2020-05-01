@@ -1,6 +1,6 @@
 const findFilesByExtension = require('../functions/findFilesByExtension')
 const {basename, dirname, join, relative, extname} = require('path')
-const {readFile} = require('fs-extra')
+const {readFile, exists} = require('fs-extra')
 const areRelatedPaths = require("./areRelatedPaths")
 const mkdirp = require('mkdirp')
 const rimraf = require('delete').promise

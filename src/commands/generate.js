@@ -28,6 +28,7 @@ async function generate(options) {
   if (!outputFolder) throw new Error("You must specify the output folder")
   outputFolder = resolvePath(outputFolder, process.cwd())
   if (!(await directoryExists(join(outputFolder, '..')))) throw new Error(`The output folder's parent directory does not exist`)
+  process.env.OUTPUT_FOLDER = outputFolder
   const exists = await directoryExists(outputFolder)
   let overwriteMode = null
   if (exists) {
@@ -41,7 +42,6 @@ async function generate(options) {
       throw new Error("Stop requested")
     }
   }
-  process.env.OUTPUT_FOLDER = outputFolder
   console.log("Copying The Template")
   await copyTemplate(templateFolder, outputFolder, {overwrite: overwriteMode === "overwrite"})
   console.log("Handling any scripts, links, etc")
