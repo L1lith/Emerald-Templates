@@ -46,6 +46,7 @@
     "path-type": "^4.0.0",
     "rimraf": "^3.0.2",
     "sandhands": "^1.6.1",
+    "sanitize-filename": "^1.6.3",
     "subdir": "0.0.3",
     "yargs": "^13.2.4"
   }

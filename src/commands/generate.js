@@ -10,6 +10,7 @@ const rimraf = require('delete').promise
 const exec = promisify(require('child_process').exec)
 const findTemplateFolder = require('../functions/findTemplateFolder')
 const askQuestion = require('../functions/askQuestion')
+const sanitize = require("sanitize-filename")
 
 const validPrexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
@@ -26,7 +27,7 @@ async function generate(options) {
 
   let outputFolder = (options['--outputFolder'] || options._.slice(1).join(" ") || "").trim()
   if (!outputFolder) throw new Error("You must specify the output folder")
-  const outputFolderPath = resolvePath(outputFolder, process.cwd())
+  const outputFolderPath = resolvePath(sanitize(outputFolder.replace(/\s+/g,'-')), process.cwd())
   if (!(await directoryExists(join(outputFolderPath, '..')))) throw new Error(`The output folder's parent directory does not exist`)
 
   console.log(`Creating a new project "${outputFolder}"`)
