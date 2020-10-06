@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const arg = require('arg')
 
-const args = arg({
+const argsTemplate = {
   '--configure': Boolean,
   '--config': '--configure',
   '-c': '--configure',
@@ -24,7 +24,9 @@ const args = arg({
   '--gd': '--getDirectory',
   '--version': Boolean,
   '-v': '--version'
-}, {permissive: true})
+}
+
+const args = arg(argsTemplate, {permissive: true})
 
 const primaryOptionNames = ["--configure", "--generate", "--list", "--help", "--open", "--describe", '--getDirectory', '--version']
 const primaryOptions = Object.entries(args).filter(([name, value]) => primaryOptionNames.includes(name) && value === true)
