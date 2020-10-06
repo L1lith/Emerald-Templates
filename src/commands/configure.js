@@ -23,10 +23,10 @@ async function configure(options) {
     config.templateFolders = config.templateFolders || []
     if (!config.templateFolders.includes(templateFolder)) config.templateFolders.push(templateFolder)
   }
-  const templateEngineResponse = await askQuestion(`Which templating engine would you like to use? (defaults to ${(chalk.bold(chalk.green("ejs")))})\nOptions: ${(templateEngines.map(value => chalk.green(value)).join(", ") + "\n> ").trim().toLowerCase()}`)
+  const templateEngineResponse = await askQuestion(`Which templating engine would you like to use? (defaults to ${(chalk.bold(chalk.green("ejs")))})\nOptions: ${(templateEngines.map(value => chalk.green(value)).join(", ") + "\n> ")}`).trim().toLowerCase()
   if (templateEngineResponse.length > 0 && !templateEngines.includes(templateEngineResponse)) throw new Error("Invalid Template Engine Response Name")
   if (templateEngineResponse) config.templateEngine = templateEngineResponse
-  const automaticallyInstallNodeModules = (await askQuestion(`Would you like to automatically install the node modules if there is a package.json with dependencies but no node_modules folder? (${chalk.bold(chalk.green("yes"))}/${chalk.green("no")})\n> `.trim().toLowerCase()))
+  const automaticallyInstallNodeModules = (await askQuestion(`Would you like to automatically install the node modules if there is a package.json with dependencies but no node_modules folder? (${chalk.bold(chalk.green("yes"))}/${chalk.green("no")})\n> `)).trim().toLowerCase()
   console.log(automaticallyInstallNodeModules)
   if (automaticallyInstallNodeModules.length > 0 && !yesOrNo.includes(automaticallyInstallNodeModules)) throw new Error("You must respond with yes or no.")
   if (automaticallyInstallNodeModules.length > 0) config.automaticallyInstallNodeModules = automaticallyInstallNodeModules === "yes"
