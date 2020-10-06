@@ -14,6 +14,7 @@ async function configure(options) {
   try {
     config = require(configPath)
   } catch(error) {}
+  console.log(chalk.cyan("To choose not to configure an option, simply enter nothing."))
   const templateFolderResponse = (await askQuestion("Please enter the path to your templates storage folder\n> ")).trim()
   if (templateFolderResponse.length > 0) {
     const templateFolder = resolvePath(templateFolderResponse, process.cwd())
