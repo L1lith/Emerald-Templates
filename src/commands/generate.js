@@ -20,22 +20,25 @@ async function generate(options) {
   // if (!(await directoryExists(rootTemplateFolder))) throw new Error("The folder configured to contain the templates does not exist")
   let templateFolder = (options['--template'] || options._[0] || "").trim()
   if (!templateFolder) throw new Error("Please specify which template folder you would like to use")
-  templateFolder = await findTemplateFolder(templateFolder)
-  if (templateFolder === null || !(await directoryExists(templateFolder))) throw new Error(`Could not find the template folder "${templateFolder}"`)
-  process.env.TEMPLATE_FOLDER = templateFolder
+  const templateFolderPath = await findTemplateFolder(templateFolder)
+  if (templateFolderPath === null || !(await directoryExists(templateFolderPath))) throw new Error(`Could not find the template folder "${templateFolder}"`)
+  process.env.TEMPLATE_FOLDER = templateFolderPath
 
-  let outputFolder = (options['--outputFolder'] || options._[1] || "").trim()
+  let outputFolder = (options['--outputFolder'] || options._.slice(1).join(" ") || "").trim()
   if (!outputFolder) throw new Error("You must specify the output folder")
-  outputFolder = resolvePath(outputFolder, process.cwd())
-  if (!(await directoryExists(join(outputFolder, '..')))) throw new Error(`The output folder's parent directory does not exist`)
-  process.env.OUTPUT_FOLDER = outputFolder
-  const exists = await directoryExists(outputFolder)
+  const outputFolderPath = resolvePath(outputFolder, process.cwd())
+  if (!(await directoryExists(join(outputFolderPath, '..')))) throw new Error(`The output folder's parent directory does not exist`)
+
+  console.log(`Creating a new project "${outputFolder}"`)
+
+  process.env.OUTPUT_FOLDER = outputFolderPath
+  const exists = await directoryExists(outputFolderPath)
   let overwriteMode = null
   if (exists) {
-    //throw new Error(`The output folder "${outputFolder}" already exists and is not empty.`)
+    //throw new Error(`The output folder "${outputFolderPath}" already exists and is not empty.`)
     while (!validPrexistingOptions.includes(overwriteMode)) overwriteMode = (await askQuestion("That folder already exists, how would you like to proceed?\nOptions: \n- "+ validPrexistingOptions.join(', ')  + "\n> ")).toLowerCase().trim()
     if (overwriteMode === "erase") {
-      await rimraf(outputFolder)
+      await rimraf(outputFolderPath)
     } else if (overwriteMode === "available") {
       // Do Nothing
     } else if (overwriteMode === "stop") {
@@ -43,16 +46,16 @@ async function generate(options) {
     }
   }
   console.log("Copying The Template")
-  await copyTemplate(templateFolder, outputFolder, {overwrite: overwriteMode === "overwrite"})
+  await copyTemplate(templateFolderPath, outputFolderPath, {overwrite: overwriteMode === "overwrite"})
   console.log("Handling any scripts, links, etc")
-  await processOutputFolder(outputFolder, templateFolder)
+  await processOutputFolder(outputFolderPath, templateFolderPath)
   let packageJSON = null
   try {
-    packageJSON = require(join(outputFolder, "package.json"))
+    packageJSON = require(join(outputFolderPath, "package.json"))
   } catch(error) {console.log("Could not find or access the package.json")}
   if (config.automaticallyInstallNodeModules !== false && packageJSON) {
     console.log("Installing Dependencies")
-    await exec("npm install", {cwd: outputFolder})
+    await exec("npm install", {cwd: outputFolderPath})
   }
 
   console.log("Project Generated Successfully!")
