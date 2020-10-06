@@ -34,7 +34,7 @@ async function processEmeraldLink(linkPath, outputFolder, templateFolder) {
   await smartCopy(source, output, {templateOptions: {overwrite: false}})
 }
 
-async function processEmeraldLinks(outputFolder, templateFolder) {
+async function processEmeraldLinks(outputFolder, templateFolder, projectConfig, firstRun) {
   let emeraldLinks = [null]
   let processedLinks = 0
   if (emeraldLinks.length > 0) {
@@ -42,7 +42,7 @@ async function processEmeraldLinks(outputFolder, templateFolder) {
     //console.log({outputFolder, emeraldLinks})
     processedLinks += emeraldLinks.length
     if (emeraldLinks.length > 0) {
-      console.log("Processing the .emerald-link link files")
+      console.log(`Processing ${firstRun ? "the" : "additional"} .emerald-link link files`)
       for (const emeraldLink of emeraldLinks) {
         await processEmeraldLink(emeraldLink, outputFolder, templateFolder)
       }

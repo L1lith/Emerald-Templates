@@ -46,11 +46,11 @@ async function populateEmerald(outputFolder, filePath, templateEngine="ejs") {
   await rimraf(sourceFile)
 }
 
-async function populateEmeralds(outputFolder) {
+async function populateEmeralds(outputFolder, templateFolder, projectConfig, firstRun) {
   const config = getConfiguration()
   const emeralds = await findFilesByExtension(outputFolder, '.emerald')
   if (emeralds.length > 0) {
-    console.log("Populating the .emerald files")
+    console.log(`Populating ${firstRun ? "the" : "additional"} .emerald files`)
     for (const emerald of emeralds) {
       await populateEmerald(outputFolder, emerald, config.templateEngine)
     }

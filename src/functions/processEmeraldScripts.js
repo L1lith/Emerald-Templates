@@ -89,9 +89,9 @@ async function processEmeraldScript(scriptPath) {
   delete process.env.EMERALD_SCRIPT_ARGS
 }
 
-async function processEmeraldScripts(outputFolder) {
+async function processEmeraldScripts(outputFolder, templateFolder, projectConfig, firstRun) {
   const emeraldScripts = await findFilesByExtension(outputFolder, '.emerald-script')
-  if (emeraldScripts.length > 0) console.log("Running the emerald scripts")
+  if (emeraldScripts.length > 0) console.log(`Running ${firstRun ? "the" : "additional"} emerald scripts`)
   for (let i = 0; i < emeraldScripts.length; i++) {
     const scriptPath = emeraldScripts[i]
     await processEmeraldScript(scriptPath)

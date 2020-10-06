@@ -11,26 +11,25 @@ const walk = require('ignore-walk')
 async function copyTemplate(templateFolder, outputFolder, options={}) {
   const {overwrite=false} = options
   await mkdirp(outputFolder)
-  const files = await walk({
+  let files = await walk({
     path: templateFolder,
     ignoreFiles: [".emignore"],
     follow: false
   })
+  files = files.filter(file => !(file.includes("node_modules") || file.endsWith(".git")))
   for (const file of files) {
-    if (file.includes("node_modules") || file.endsWith(".git")) continue
     const sourcePath = join(templateFolder, file)
     const outputPath = join(outputFolder, file)
-
     if (!overwrite) {
       if (await exists(outputPath)) {
-        return // Prevent Overwriting Files
+        continue // Prevent Overwriting Files
       } else {
         let finalPath = outputPath
         while (finalPath.endsWith('.emerald')) {
           finalPath = finalPath.split('.').slice(0, -1).join('.')
         }
         if (finalPath !== outputPath && await exists(finalPath)) {
-          return // Prevent Overwriting with .emerald files
+          continue // Prevent Overwriting with .emerald files
         }
       }
     }

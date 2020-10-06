@@ -7,6 +7,7 @@ async function smartCopy(source, destination, options={}) {
   let output
   const sourceStats = await lstat(source)
   if (sourceStats.isDirectory()) {
+    //console.log('copying directory', source, destination)
     output = await copyTemplate(source, destination, templateOptions)
   } else if (sourceStats.isFile()) {
     if (await exists(destination)) return // Don't overwrite files

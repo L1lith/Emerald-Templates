@@ -16,10 +16,12 @@ const args = arg({
   '--outputFolder': String,
   '--output': '--outputFolder',
   '--open': String,
-  '-o': '--open'
+  '-o': '--open',
+  '--describe': String,
+  '-d': '--describe'
 }, {permissive: true})
 
-const primaryOptionNames = ["--configure", "--generate", "--list", "--help", "--open"]
+const primaryOptionNames = ["--configure", "--generate", "--list", "--help", "--open", "--describe"]
 const primaryOptions = Object.entries(args).filter(([name, value]) => primaryOptionNames.includes(name) && value === true)
 
 if (primaryOptions.length < 1 && primaryOptionNames.includes('--' + args._[0])) {
