@@ -1,7 +1,6 @@
 const findTemplateFolder = require('../functions/findTemplateFolder')
-const openExplorer = require('../functions/openExplorerAsync')
 
-async function describe(options) {
+async function getDirectory(options) {
   let targetTemplate = (options['--targetFolder'] || options._[0] || "").trim()
   if (typeof targetTemplate != 'string' || targetTemplate.length < 1) throw new Error("Must specify a valid template name")
   const templateFolder = await findTemplateFolder(targetTemplate)
@@ -9,4 +8,4 @@ async function describe(options) {
   await openExplorer(templateFolder)
 }
 
-module.exports = describe
+module.exports = getDirectory

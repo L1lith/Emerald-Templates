@@ -30,7 +30,7 @@ emt <template folder name> <output folder (relative or absolute)> --age 12
 
 ## Listing
 The list command can be used to list your available templates
-```
+```bash
 emt list
 ```
 Returns something like this depending on your template folders
@@ -38,6 +38,13 @@ Returns something like this depending on your template folders
 Available Templates:
 - basic-express, browser-extension, electron-next, next-app, npm-web, p5
 ```
+
+## Describe a Template
+The following command can be run in order to get more information about a template
+```bash
+emt describe <template folder name>
+```
+
 ## Scripting
 Any file ending with `.emerald-script` will automatically be executed. If it ends with .js.emerald-script it will be ran inside the current node context, otherwise it's contents will be split by lines, and executed one by one through the command line.
 
