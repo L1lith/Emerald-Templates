@@ -8,6 +8,7 @@ const args = arg({
   '--generate': Boolean,
   '-g': '--generate',
   '--list': Boolean,
+  '--ls': '--list',
   '-l': "--list",
   '--help': Boolean,
   '-h': '--help',
