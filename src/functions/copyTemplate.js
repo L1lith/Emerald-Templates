@@ -16,7 +16,7 @@ async function copyTemplate(templateFolder, outputFolder, options={}) {
     ignoreFiles: [".emignore"],
     follow: false
   })
-  files = files.filter(file => !(file.includes("node_modules") || file.endsWith(".git")))
+  files = files.filter(file => !(file.includes("node_modules") || file.endsWith(".git") || file.endsWith("emerald-config.js") || file.endsWith("emerald-config.json")))
   for (const file of files) {
     const sourcePath = join(templateFolder, file)
     const outputPath = join(outputFolder, file)

@@ -11,6 +11,7 @@ const exec = promisify(require('child_process').exec)
 const findTemplateFolder = require('../functions/findTemplateFolder')
 const askQuestion = require('../functions/askQuestion')
 const sanitize = require("sanitize-filename")
+const chalk = require('chalk')
 
 const validPrexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
@@ -30,7 +31,7 @@ async function generate(options) {
   const outputFolderPath = resolvePath(sanitize(outputFolder.replace(/\s+/g,'-')), process.cwd())
   if (!(await directoryExists(join(outputFolderPath, '..')))) throw new Error(`The output folder's parent directory does not exist`)
 
-  console.log(`Creating a new project "${outputFolder}"`)
+  console.log(chalk.green("Creating a new project at ") + chalk.cyan('"' + outputFolderPath + '"'))
 
   process.env.OUTPUT_FOLDER = outputFolderPath
   const exists = await directoryExists(outputFolderPath)
@@ -59,7 +60,7 @@ async function generate(options) {
     await exec("npm install", {cwd: outputFolderPath})
   }
 
-  console.log("Project Generated Successfully!")
+  console.log(chalk.green("Project Generated Successfully!"))
 }
 
 module.exports = generate

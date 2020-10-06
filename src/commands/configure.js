@@ -3,6 +3,7 @@ const resolvePath = require('../functions/resolvePath')
 const {writeFileSync} = require('fs')
 const {join} = require('path')
 const directoryExists = require('directory-exists')
+const chalk = require('chalk')
 
 const configPath = join(__dirname, '..', '..', 'emerald-config.json')
 const templateEngines = ["ejs", "nunjucks", "handlebars", "mustache"]
@@ -20,14 +21,14 @@ async function configure(options) {
     config.templateFolders = config.templateFolders || []
     if (!config.templateFolders.includes(templateFolder)) config.templateFolders.push(templateFolder)
   }
-  const templateEngineResponse = (await askQuestion("Which templating engine would you like to use? (defaults to ejs)\nOptions: "+templateEngines.join(", ") + "\n> ")).trim().toLowerCase()
+  const templateEngineResponse = await askQuestion(`Which templating engine would you like to use? (defaults to ${(chalk.bold(chalk.green("ejs")))})\nOptions: ${(templateEngines.map(value => chalk.green(value)).join(", ") + "\n> ").trim().toLowerCase()}`)
   if (templateEngineResponse.length > 0 && !templateEngines.includes(templateEngineResponse)) throw new Error("Invalid Template Engine Response Name")
   if (templateEngineResponse) config.templateEngine = templateEngineResponse
-  const automaticallyInstallNodeModules = (await askQuestion("Would you like to automatically install the node modules if there is a package.json with dependencies but no node_modules folder? (yes/no)\n> ")).trim().toLowerCase()
+  const automaticallyInstallNodeModules = (await askQuestion(`Would you like to automatically install the node modules if there is a package.json with dependencies but no node_modules folder? (${chalk.green("yes")}/${chalk.green("no")})\n> `)).trim().toLowerCase()
   if (automaticallyInstallNodeModules.length > 0 && !["yes", "no"]) throw new Error("You must respond with yes or no.")
   if (automaticallyInstallNodeModules.length > 0) config.automaticallyInstallNodeModules = automaticallyInstallNodeModules === "yes"
   writeFileSync(configPath, JSON.stringify(config))
-  console.log("Emerald Templates Configured.")
+  console.log(chalk.bold(chalk.green("Emerald Templates Configured.")))
 }
 
 module.exports = configure
