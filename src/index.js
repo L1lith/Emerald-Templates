@@ -15,10 +15,11 @@ const args = arg({
   '-t': '--template',
   '--outputFolder': String,
   '--output': '--outputFolder',
-  '-o': '--outputFolder'
+  '--open': String,
+  '-o': '--open'
 }, {permissive: true})
 
-const primaryOptionNames = ["--configure", "--generate", "--list", "--help"]
+const primaryOptionNames = ["--configure", "--generate", "--list", "--help", "--open"]
 const primaryOptions = Object.entries(args).filter(([name, value]) => primaryOptionNames.includes(name) && value === true)
 
 if (primaryOptions.length < 1 && primaryOptionNames.includes('--' + args._[0])) {
