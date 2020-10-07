@@ -21,15 +21,19 @@ const argsTemplate = {
   '--describe': String,
   '--info': '--describe',
   '-d': '--describe',
-  '--getDirectory': String,
-  '--gd': '--getDirectory',
+  '--get-directory': String,
+  '--gd': '--get-directory',
   '--version': Boolean,
-  '-v': '--version'
+  '-v': '--version',
+  '--add-root': String,
+  '--ar': '--add-root',
+  '--add-template': String,
+  '--at': '--add-template'
 }
 
 const args = arg(argsTemplate, {permissive: true})
 
-const primaryOptionNames = ["--configure", "--generate", "--list", "--help", "--open", "--describe", '--getDirectory', '--version']
+const primaryOptionNames = ["--configure", "--generate", "--list", "--help", "--open", "--describe", '--get-directory', '--version', '--add-root', '--add-template']
 const primaryOptions = Object.entries(args).filter(([name, value]) => primaryOptionNames.includes(name) && value === true)
 
 if (primaryOptions.length < 1 && primaryOptionNames.includes('--' + args._[0])) {

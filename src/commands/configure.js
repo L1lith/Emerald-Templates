@@ -1,6 +1,7 @@
 const askQuestion = require('../functions/askQuestion')
 const resolvePath = require('../functions/resolvePath')
-const {writeFileSync} = require('fs')
+const saveConfig = require('../functions/saveConfig')
+const loadConfig = require('../functions/loadConfig')
 const {join} = require('path')
 const directoryExists = require('directory-exists')
 const chalk = require('chalk')
@@ -10,18 +11,15 @@ const templateEngines = ["ejs", "nunjucks", "handlebars", "mustache"]
 const yesOrNo = ["yes", "no"]
 
 async function configure(options) {
-  let config = {}
-  try {
-    config = require(configPath)
-  } catch(error) {}
+  let config = loadConfig()
   console.log(chalk.cyan("To choose not to configure an option, simply enter nothing."))
-  const templateFolderResponse = (await askQuestion("Please enter the path to your templates storage folder\n> ")).trim()
-  if (templateFolderResponse.length > 0) {
-    const templateFolder = resolvePath(templateFolderResponse, process.cwd())
-    if (!(await directoryExists(templateFolder))) throw new Error(`The folder "${templateFolder}" does not exist`)
-    console.log(`Setting the templates folder path as "${templateFolder}"`)
-    config.templateFolders = config.templateFolders || []
-    if (!config.templateFolders.includes(templateFolder)) config.templateFolders.push(templateFolder)
+  const rootFolder = (await askQuestion("Please enter the path to your root templates storage folder\n> ")).trim()
+  if (rootFolder.length > 0) {
+    const rootFolderPath = resolvePath(rootFolder, process.cwd())
+    if (!(await directoryExists(templateFolderPath))) throw new Error(`The folder "${rootFolder}" does not exist`)
+    config.rootFolders = config.rootFolders || []
+    if (!config.rootFolders.includes(templateFolderPath)) config.rootFolders.push(templateFolderPath)
+    console.log(`Added the following root template folder path: "${templateFolderPath}"`)
   }
   const templateEngineResponse = (await askQuestion(`Which templating engine would you like to use? (defaults to ${(chalk.bold(chalk.green("ejs")))})\nOptions: ${(templateEngines.map(value => chalk.green(value)).join(", ") + "\n> ")}`)).trim().toLowerCase()
   if (templateEngineResponse.length > 0 && !templateEngines.includes(templateEngineResponse)) throw new Error("Invalid Template Engine Response Name")
@@ -42,7 +40,7 @@ async function configure(options) {
     config.automaticallyInitializeGitRepo = automaticallyInitializeGitRepo === "yes"
     console.log(chalk.green(`Set automaticallyInitializeGitRepo flag as ${chalk.bold(config.automaticallyInitializeGitRepo)}`))
   }
-  writeFileSync(configPath, JSON.stringify(config))
+  saveConfig(config)
   console.log(chalk.bold(chalk.green("Emerald Templates Configured.")))
 }
 
