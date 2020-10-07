@@ -23,16 +23,25 @@ async function configure(options) {
     config.templateFolders = config.templateFolders || []
     if (!config.templateFolders.includes(templateFolder)) config.templateFolders.push(templateFolder)
   }
-  const templateEngineResponse = await askQuestion(`Which templating engine would you like to use? (defaults to ${(chalk.bold(chalk.green("ejs")))})\nOptions: ${(templateEngines.map(value => chalk.green(value)).join(", ") + "\n> ")}`).trim().toLowerCase()
+  const templateEngineResponse = (await askQuestion(`Which templating engine would you like to use? (defaults to ${(chalk.bold(chalk.green("ejs")))})\nOptions: ${(templateEngines.map(value => chalk.green(value)).join(", ") + "\n> ")}`)).trim().toLowerCase()
   if (templateEngineResponse.length > 0 && !templateEngines.includes(templateEngineResponse)) throw new Error("Invalid Template Engine Response Name")
-  if (templateEngineResponse) config.templateEngine = templateEngineResponse
+  if (templateEngineResponse) {
+    config.templateEngine = templateEngineResponse
+    console.log(chalk.green(`Set templateEngine flag as ${chalk.bold('"' + config.templateEngine + '"')}`))
+  }
   const automaticallyInstallNodeModules = (await askQuestion(`Would you like to automatically install the node modules if there is a package.json with dependencies but no node_modules folder? (${chalk.bold(chalk.green("yes"))}/${chalk.green("no")})\n> `)).trim().toLowerCase()
   console.log(automaticallyInstallNodeModules)
   if (automaticallyInstallNodeModules.length > 0 && !yesOrNo.includes(automaticallyInstallNodeModules)) throw new Error("You must respond with yes or no.")
-  if (automaticallyInstallNodeModules.length > 0) config.automaticallyInstallNodeModules = automaticallyInstallNodeModules === "yes"
+  if (automaticallyInstallNodeModules.length > 0) {
+    config.automaticallyInstallNodeModules = automaticallyInstallNodeModules === "yes"
+    console.log(chalk.green(`Set automaticallyInstallNodeModules flag as ${chalk.bold(config.automaticallyInstallNodeModules)}`))
+  }
   const automaticallyInitializeGitRepo = (await askQuestion(`Would you like to automatically initialize an empty git repo in newly generated projects? (${chalk.bold(chalk.green("yes"))}/${chalk.green("no")})\n> `)).trim().toLowerCase()
   if (automaticallyInitializeGitRepo.length > 0 && !yesOrNo.includes(automaticallyInitializeGitRepo)) throw new Error("You must respond with yes or no.")
-  if (automaticallyInitializeGitRepo.length > 0) config.automaticallyInitializeGitRepo = automaticallyInitializeGitRepo === "yes"
+  if (automaticallyInitializeGitRepo.length > 0) {
+    config.automaticallyInitializeGitRepo = automaticallyInitializeGitRepo === "yes"
+    console.log(chalk.green(`Set automaticallyInitializeGitRepo flag as ${chalk.bold(config.automaticallyInitializeGitRepo)}`))
+  }
   writeFileSync(configPath, JSON.stringify(config))
   console.log(chalk.bold(chalk.green("Emerald Templates Configured.")))
 }

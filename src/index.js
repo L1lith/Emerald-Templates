@@ -19,6 +19,7 @@ const argsTemplate = {
   '--open': String,
   '-o': '--open',
   '--describe': String,
+  '--info': '--describe',
   '-d': '--describe',
   '--getDirectory': String,
   '--gd': '--getDirectory',
