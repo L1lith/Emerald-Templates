@@ -32,20 +32,24 @@ const argsTemplate = {
   '--add-root': String,
   '--ar': '--add-root',
   '--add-template': String,
-  '--at': '--add-template'
+  '--at': '--add-template',
+  '--remove-root': String,
+  '--rr': '--remove-root',
+  '--remove-template': String,
+  '--rt': '--remove-template'
 }
 
 const args = arg(argsTemplate, {permissive: true})
 const removeLeadingDashes = /^[\-]*/
 
-const primaryOptionNames = ["configure", "generate", "list", "help", "open", "describe", 'get-directory', 'version', 'add-root', 'add-template', 'list-roots']
+const primaryOptionNames = ["configure", "generate", "list", "help", "open", "describe", 'get-directory', 'version', 'add-root', 'add-template', 'list-roots', 'remove-root', 'remove-template']
 let primaryOptions = Object.entries(args)
 primaryOptions = primaryOptions.map(([originalName, value]) => {
   let name = originalName
   if (name === "_") {
     name = (value[0] || "").toString()
     value = value.slice(1)
-    if (value.length < 1) value = [true]
+    //if (value.length < 1) value = []
   } else if (!name.startsWith('-')) {
     name = "--" + name
   }
@@ -61,8 +65,15 @@ primaryOptions = primaryOptions.map(([originalName, value]) => {
   name = name.replace(removeLeadingDashes, '')
   if (!args.hasOwnProperty("--" + name)) args["--" + name] = []
   if (originalName === "_") {
-    if (!primaryOptionNames.includes(name)) name = "generate"
-    args["--" + name] = args["--" + name].concat((args._ || []).slice(1))
+    if (!primaryOptionNames.includes(name)) {
+      if (value.length < 1) {
+        name = "help"
+      } else {
+        name = "generate"
+      }
+    }
+
+    args["--" + name] = (args["--" + name] || []).concat((args._ || []).slice(1))
     delete args._
   }
   return name
@@ -80,7 +91,7 @@ primaryOptions = primaryOptions.map(([originalName, value]) => {
 if (primaryOptions.length > 1) throw new Error("Too Many Primary Options")
 //if (primaryOptions.length < 1) primaryOptions[0] = ["help"]
 
-const primaryOption = primaryOptions[0] || "generate"
+const primaryOption = primaryOptions[0] || "help"
 const commandFunction = require("./commands/" + primaryOption)
 const result = commandFunction(args)
 

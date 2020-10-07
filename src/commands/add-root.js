@@ -7,7 +7,7 @@ const askQuestion = require('../functions/askQuestion')
 const chalk = require('chalk')
 
 async function addRoot(options) {
-  let rootPath = options['add-root'][0]
+  let rootPath = options['--add-root'][0]
   if (typeof rootPath != 'string') {
     rootPath = (await askQuestion("Please enter the path to your root templates storage folder\n> ")).trim()
   }
