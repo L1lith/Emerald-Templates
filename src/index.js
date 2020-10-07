@@ -74,7 +74,8 @@ primaryOptions = primaryOptions.map(([originalName, value]) => {
   name = name.replace(removeLeadingDashes, '')
   if (!args.hasOwnProperty("--" + name)) args["--" + name] = []
   if (originalName === "_") {
-    args["--" + name] = (Array.isArray(args["--" + name]) ? args["--" + name] : []).concat((value || []))
+    if (args["--" + name] === true) args["--" + name] = []
+    args["--" + name] = (Array.isArray(args["--" + name]) ? args["--" + name] : [args["--" + name]]).concat((value || []))
     delete args._
   }
   return name
@@ -91,7 +92,7 @@ primaryOptions = primaryOptions.map(([originalName, value]) => {
 // }
 if (primaryOptions.length > 1) throw new Error("Too Many Primary Options")
 //if (primaryOptions.length < 1) primaryOptions[0] = ["help"]
-
+//console.log({args})
 const primaryOption = primaryOptions[0] || "help"
 const commandFunction = require("./commands/" + primaryOption)
 
