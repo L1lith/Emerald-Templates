@@ -1,5 +1,5 @@
 const {join} = require('path')
-const loadConfig = require('../functions/loadConfig')
+const getConfiguration = require('../functions/getConfiguration')
 const saveConfig = require('../functions/saveConfig')
 const resolvePath = require('../functions/resolvePath')
 const directoryExists = require('directory-exists')
@@ -13,8 +13,8 @@ async function addRoot(options) {
   }
   const rootFolder = resolvePath(rootPath, process.cwd())
   if (!(await directoryExists(rootFolder))) throw new Error(`The folder "${rootPath}" does not exist`)
-  let config = loadConfig()
-  config.rootFolders = config.rootFolders || []
+  let config = getConfiguration()
+  config.rootFolders = config.rootFolders
   if (config.rootFolders.includes(rootFolder)) throw new Error("That folder has already been added")
   config.rootFolders.push(rootFolder)
   saveConfig(config)
