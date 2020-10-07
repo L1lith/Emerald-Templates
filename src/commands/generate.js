@@ -17,7 +17,7 @@ const validPrexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
 async function generate(options) {
   console.log({options})
-  const config = process.env.EMERALD_CONFIG = getConfiguration()
+  const config = process.env.EMERALD_CONFIG = getConfiguration(true)
 
   // const rootTemplateFolder = config.templateFolder
   // if (!(await directoryExists(rootTemplateFolder))) throw new Error("The folder configured to contain the templates does not exist")

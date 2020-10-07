@@ -17,9 +17,8 @@ async function addTemplate(options) {
   const templateFolderPath = resolvePath(templateFolder, process.cwd())
   if (!(await directoryExists(templateFolderPath))) throw new Error(`The folder "${templateFolder}" does not exist`)
   let config = getConfiguration()
-  config.templateFolders = config.templateFolders
   if (config.templateFolders.includes(templateFolderPath)) throw new Error("That template has already been added")
-  config.templateFolders.push(templateFolderPath)
+  config.templateFolders = config.templateFolders.concat([templateFolderPath])
   console.log(chalk.green(`Adding the templates folder path: ${'"' + templateFolderPath + '"'}`))
   saveConfig(config)
   console.log(chalk.green("Done!"))

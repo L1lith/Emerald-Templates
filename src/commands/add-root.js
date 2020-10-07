@@ -16,7 +16,7 @@ async function addRoot(options) {
   let config = getConfiguration()
   config.rootFolders = config.rootFolders
   if (config.rootFolders.includes(rootFolder)) throw new Error("That folder has already been added")
-  config.rootFolders.push(rootFolder)
+  config.rootFolders = config.rootFolders.concat([rootFolder])
   saveConfig(config)
   console.log(chalk.green("Done!"))
 }

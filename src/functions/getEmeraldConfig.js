@@ -1,10 +1,6 @@
 const {join, basename} = require('path')
 const titleCase = require('./titleCase')
 
-const defaultOptions = {
-  
-}
-
 async function getEmeraldConfig(targetFolder) {
   let output = {defaultObject: true} // If this object is not overwritten we know it's the default options so we assign this property as a signature
   let package = null

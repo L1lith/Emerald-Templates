@@ -16,10 +16,10 @@ async function configure(options) {
   const rootFolder = (await askQuestion("Please enter the path to your root templates storage folder\n> ")).trim()
   if (rootFolder.length > 0) {
     const rootFolderPath = resolvePath(rootFolder, process.cwd())
-    if (!(await directoryExists(templateFolderPath))) throw new Error(`The folder "${rootFolder}" does not exist`)
-    config.rootFolders = config.rootFolders
-    if (!config.rootFolders.includes(templateFolderPath)) config.rootFolders.push(templateFolderPath)
-    console.log(`Added the following root template folder path: "${templateFolderPath}"`)
+    if (!(await directoryExists(rootFolderPath))) throw new Error(`The folder "${rootFolder}" does not exist`)
+    if (config.rootFolders.includes(rootFolderPath)) throw new Error("Cannot add that root folder, it already is added")
+    config.rootFolders = config.rootFolders.concat([rootFolderPath])
+    console.log(chalk.green(`Added the following root template folder path: ${chalk.bold('"' + rootFolderPath + '"')}`))
   }
   const templateEngineResponse = (await askQuestion(`Which templating engine would you like to use? (defaults to ${(chalk.bold(chalk.green("ejs")))})\nOptions: ${(templateEngines.map(value => chalk.green(value)).join(", ") + "\n> ")}`)).trim().toLowerCase()
   if (templateEngineResponse.length > 0 && !templateEngines.includes(templateEngineResponse)) throw new Error("Invalid Template Engine Response Name")
