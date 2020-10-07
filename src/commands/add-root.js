@@ -7,10 +7,7 @@ const askQuestion = require('../functions/askQuestion')
 const chalk = require('chalk')
 
 async function addRoot(options) {
-  let rootPath = options['--add-root'][0]
-  if (typeof rootPath != 'string') {
-    rootPath = (await askQuestion("Please enter the path to your root templates storage folder\n> ")).trim()
-  }
+  let rootPath = options['--add-root'][0] || (await askQuestion("Please enter the path to your root templates storage folder\n> ")).trim()
   const rootFolder = resolvePath(rootPath, process.cwd())
   if (!(await directoryExists(rootFolder))) throw new Error(`The folder "${rootPath}" does not exist`)
   let config = getConfiguration()
