@@ -42,13 +42,21 @@ const argsTemplate = {
 const args = arg(argsTemplate, {permissive: true})
 const removeLeadingDashes = /^[\-]*/
 
+
 const primaryOptionNames = ["configure", "generate", "list", "help", "open", "describe", 'get-directory', 'version', 'add-root', 'add-template', 'list-roots', 'remove-root', 'remove-template']
 let primaryOptions = Object.entries(args)
 primaryOptions = primaryOptions.map(([originalName, value]) => {
   let name = originalName
   if (name === "_") {
-    name = (value[0] || "").toString()
-    value = value.slice(1)
+    if (value.length > 0 && primaryOptionNames.includes(value[0])) {
+      name = value[0]
+      value = value.slice(1)
+    } else if (value.length < 1) {
+      name = "help"
+    } else if (value.length > 0) {
+      name = "generate"
+    }
+    //value = value.slice(1)
     //if (value.length < 1) value = []
   } else if (!name.startsWith('-')) {
     name = "--" + name
@@ -65,15 +73,7 @@ primaryOptions = primaryOptions.map(([originalName, value]) => {
   name = name.replace(removeLeadingDashes, '')
   if (!args.hasOwnProperty("--" + name)) args["--" + name] = []
   if (originalName === "_") {
-    if (!primaryOptionNames.includes(name)) {
-      if (value.length < 1) {
-        name = "help"
-      } else {
-        name = "generate"
-      }
-    }
-
-    args["--" + name] = (args["--" + name] || []).concat((args._ || []).slice(1))
+    args["--" + name] = (args["--" + name] || []).concat((value || []))
     delete args._
   }
   return name
