@@ -16,7 +16,6 @@ const chalk = require('chalk')
 const validPrexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
 async function generate(options) {
-  console.log({options})
   const config = process.env.EMERALD_CONFIG = getConfiguration(true)
 
   // const rootTemplateFolder = config.templateFolder

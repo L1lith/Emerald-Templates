@@ -46,13 +46,14 @@ const removeLeadingDashes = /^[\-]*/
 const primaryOptionNames = ["configure", "generate", "list", "help", "open", "describe", 'get-directory', 'version', 'add-root', 'add-template', 'list-roots', 'remove-root', 'remove-template']
 let primaryOptions = Object.entries(args)
 primaryOptions = primaryOptions.map(([originalName, value]) => {
+  if (!Array.isArray(value)) return ['', '']
   let name = originalName
   if (name === "_") {
     if (value.length > 0 && primaryOptionNames.includes(value[0])) {
       name = value[0]
       value = value.slice(1)
     } else if (value.length < 1) {
-      name = "help"
+      return ['', ''] // just doing the help command
     } else if (value.length > 0) {
       name = "generate"
     }
@@ -73,13 +74,14 @@ primaryOptions = primaryOptions.map(([originalName, value]) => {
   name = name.replace(removeLeadingDashes, '')
   if (!args.hasOwnProperty("--" + name)) args["--" + name] = []
   if (originalName === "_") {
-    args["--" + name] = (args["--" + name] || []).concat((value || []))
+    args["--" + name] = (Array.isArray(args["--" + name]) ? args["--" + name] : []).concat((value || []))
     delete args._
   }
   return name
 }).filter((name) => {
-  return primaryOptionNames.includes(name)
+  return name.length > 0 && primaryOptionNames.includes(name)
 })
+
 
 // Deprecated
 // if (primaryOptions.length < 1 && primaryOptionNames.includes(args._[0].replace(removeLeadingDashes, ''))) {
@@ -87,7 +89,6 @@ primaryOptions = primaryOptions.map(([originalName, value]) => {
 //   args._ = args["--" + command] = args._.slice(1)
 //   primaryOptions.push([command])
 // }
-
 if (primaryOptions.length > 1) throw new Error("Too Many Primary Options")
 //if (primaryOptions.length < 1) primaryOptions[0] = ["help"]
 
