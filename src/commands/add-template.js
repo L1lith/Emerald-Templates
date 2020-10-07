@@ -5,7 +5,6 @@ const resolvePath = require('../functions/resolvePath')
 const askQuestion = require('../functions/askQuestion')
 const chalk = require('chalk')
 const directoryExists = require('directory-exists')
-const configPath = join(__dirname, '..', '..', 'emerald-config.json')
 
 async function addTemplate(options) {
   let config = loadConfig()
@@ -20,7 +19,8 @@ async function addTemplate(options) {
   if (!(await directoryExists(templateFolderPath))) throw new Error(`The folder "${templateFolder}" does not exist`)
   console.log(chalk.green(`Setting the templates folder path as ${'"' + templateFolderPath + '"'}`))
   config.templateFolders = config.templateFolders || []
-  if (!config.templateFolders.includes(templateFolderPath)) config.templateFolders.push(templateFolderPath)
+  if (config.templateFolders.includes(templateFolderPath)) throw new Error("That template has already been added")
+  config.templateFolders.push(templateFolderPath)
   saveConfig(config)
   console.log(chalk.green("Done!"))
 }

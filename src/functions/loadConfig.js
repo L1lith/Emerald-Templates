@@ -1,6 +1,6 @@
 const {join} = require('path')
 
-const configPath = join(__dirname, '..', '..', 'emerald-config.json')
+const configPath = join(__dirname, '..', '..', 'emerald-global-config.json')
 
 function loadConfig() {
   let config = {}
