@@ -46,6 +46,8 @@ primaryOptions = primaryOptions.map(([originalName, value]) => {
     name = (value[0] || "").toString()
     value = value.slice(1)
     if (value.length < 1) value = [true]
+  } else if (!name.startsWith('-')) {
+    name = "--" + name
   }
   let matchingAlias = true
   while (matchingAlias) {
@@ -56,12 +58,13 @@ primaryOptions = primaryOptions.map(([originalName, value]) => {
       matchingAlias = null
     }
   }
+  name = name.replace(removeLeadingDashes, '')
+  if (!args.hasOwnProperty("--" + name)) args["--" + name] = []
   if (originalName === "_") {
-    if (!args.hasOwnProperty(name)) args[name] = []
-    args[name] = args[name].concat(args._.slice(1))
+    if (!primaryOptionNames.includes(name)) name = "generate"
+    args["--" + name] = args["--" + name].concat((args._ || []).slice(1))
     delete args._
   }
-  name = name.replace(removeLeadingDashes, '')
   return name
 }).filter((name) => {
   return primaryOptionNames.includes(name)
@@ -75,9 +78,9 @@ primaryOptions = primaryOptions.map(([originalName, value]) => {
 // }
 
 if (primaryOptions.length > 1) throw new Error("Too Many Primary Options")
-if (primaryOptions.length < 1 && (!args.hasOwnProperty('_') || args._.length < 1)) primaryOptions[0] = ["help"]
+//if (primaryOptions.length < 1) primaryOptions[0] = ["help"]
 
-const primaryOption = primaryOptions[0] || "--generate"
+const primaryOption = primaryOptions[0] || "generate"
 const commandFunction = require("./commands/" + primaryOption)
 const result = commandFunction(args)
 

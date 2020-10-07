@@ -16,17 +16,18 @@ const chalk = require('chalk')
 const validPrexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
 async function generate(options) {
+  console.log({options})
   const config = process.env.EMERALD_CONFIG = getConfiguration()
 
   // const rootTemplateFolder = config.templateFolder
   // if (!(await directoryExists(rootTemplateFolder))) throw new Error("The folder configured to contain the templates does not exist")
-  let templateFolder = (options['--template'] || options._[0] || "").trim()
+  let templateFolder = (options['--generate'][0] || "").trim()
   if (!templateFolder) throw new Error("Please specify which template folder you would like to use")
   const templateFolderPath = await findTemplateFolder(templateFolder)
   if (templateFolderPath === null || !(await directoryExists(templateFolderPath))) throw new Error(chalk.bold(`Could not find the template ${chalk.red('"' + templateFolder + '"')}`))
   process.env.TEMPLATE_FOLDER = templateFolderPath
 
-  let outputFolder = (options['--outputFolder'] || options._.slice(1).join(" ") || "").trim()
+  let outputFolder = (options['--generate'][1] || "").trim()
   if (!outputFolder) throw new Error("You must specify the output folder")
   const outputFolderPath = resolvePath(sanitize(outputFolder.replace(/\s+/g,'-')), process.cwd())
   if (!(await directoryExists(join(outputFolderPath, '..')))) throw new Error(`The output folder's parent directory does not exist`)
