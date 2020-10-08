@@ -11,8 +11,6 @@ In order to use Emerald Templates you must first supply a templates folder. This
 ```bash
 emt configure
 ```
-## Template Files
-Inside your template folders, any file ending with `.emerald` (this can be after their normal extension) will be run through the templating engine of your choice (chosen during the configuration step). See the corresponding template engine's documentation for more information on that. The .emerald file extension will automatically be stripped in the resulting projects when you generate them with the template.
 
 ## Generating Projects
 The following command can be used to generate projects from your templates
@@ -28,22 +26,18 @@ Any additional cli arguments supplied (use --) will be passed to your templates 
 emt <template folder name> <output folder (relative or absolute)> --age 12
 ```
 
-## Listing
-The list command can be used to list your available templates
+## More Command Help
+To list the available commands run the help command
 ```bash
-emt list
+emt -h
 ```
-Returns something like this depending on your template folders
-```
-Available Templates:
-- basic-express, browser-extension, electron-next, next-app, npm-web, p5
+To get more information about a specific command supply the command name to the help argument
+```bash
+emt -h=generate
 ```
 
-## Describe a Template
-The following command can be run in order to get more information about a template
-```bash
-emt describe <template folder name>
-```
+## Template Files
+Inside your template folders, any file ending with `.emerald` (this can be after their normal extension) will be run through the templating engine of your choice (chosen during the configuration step). See the corresponding template engine's documentation for more information on that. The .emerald file extension will automatically be stripped in the resulting projects when you generate them with the template.
 
 ## Scripting
 Any file ending with `.emerald-script` will automatically be executed. If it ends with .js.emerald-script it will be ran inside the current node context, otherwise it's contents will be split by lines, and executed one by one through the command line.
