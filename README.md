@@ -26,7 +26,7 @@ Any additional cli arguments supplied (use --) will be passed to your templates 
 emt <template folder name> <output folder (relative or absolute)> --age 12
 ```
 
-## More Command Help
+## Command Documentation
 To list the available commands run the help command
 ```bash
 emt -h
