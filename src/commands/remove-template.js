@@ -7,7 +7,7 @@ const askQuestion = require('../functions/askQuestion')
 const chalk = require('chalk')
 
 async function removeTemplate(options) {
-  let templateFolder = options['--remove-template'][0]
+  let templateFolder = options['remove-template'][0]
   if (typeof templateFolder != 'string' || templateFolder.length < 1) {
     templateFolder = (await askQuestion("Please enter the path to your template templates storage folder you'd like to remove\n> ")).trim()
     if (typeof templateFolder != 'string' || templateFolder.length < 1) throw new Error("Invalid Template Path supplied")

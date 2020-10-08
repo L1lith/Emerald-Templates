@@ -7,7 +7,7 @@ const askQuestion = require('../functions/askQuestion')
 const chalk = require('chalk')
 
 async function removeRoot(options) {
-  let rootPath = options['--remove-root'][0]
+  let rootPath = options['remove-root'][0]
   if (typeof rootPath != 'string' || rootPath.length < 1) {
     rootPath = (await askQuestion("Please enter the path to your root templates storage folder you'd like to remove\n> ")).trim()
   }
