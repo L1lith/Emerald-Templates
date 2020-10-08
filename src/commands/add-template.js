@@ -7,7 +7,7 @@ const chalk = require('chalk')
 const directoryExists = require('directory-exists')
 
 async function addTemplate(options) {
-  let templateFolder = options['--add-template'][0]
+  let templateFolder = options['add-template'][0]
   if (typeof templateFolder != 'string' || templateFolder.length < 0) {
     templateFolder = (await askQuestion("Please enter the path to your template folder (relative or absolute)\n> ")).trim()
     if (templateFolder.length < 1) {

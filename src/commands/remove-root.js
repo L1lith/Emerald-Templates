@@ -10,8 +10,8 @@ async function removeRoot(options) {
   let rootPath = options['--remove-root'][0]
   if (typeof rootPath != 'string' || rootPath.length < 1) {
     rootPath = (await askQuestion("Please enter the path to your root templates storage folder you'd like to remove\n> ")).trim()
-    if (typeof rootPath != 'string' || rootPath.length < 1) throw new Error("Invalid Root Path supplied")
   }
+  if (typeof rootPath != 'string' || rootPath.length < 1) throw new Error("Invalid Root Path supplied")
   const rootFolder = resolvePath(rootPath, process.cwd())
   if (!(await directoryExists(rootFolder))) throw new Error(`The folder "${rootPath}" does not exist`)
   let config = loadConfig()
