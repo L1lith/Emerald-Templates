@@ -33,7 +33,7 @@ emt help
 ```
 To get more information about a specific command supply the command name to the help argument
 ```bash
-emt --help=generate
+emt help <command>
 ```
 
 ## Template Files
