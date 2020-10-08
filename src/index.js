@@ -6,6 +6,7 @@ const argsAliases = {
   //'--configure': Boolean,
   'config': 'configure',
   'c': 'configure',
+  'info': 'describe',
   //'--generate': Boolean,
   'g': 'generate',
   //'--list': Boolean,
@@ -66,7 +67,8 @@ let primaryOptions = Object.keys(args).filter(name => {
 
 if (primaryOptions.length < 1) {
   if (args._.length > 0) {
-    const primaryOption = args._[0]
+    let primaryOption = args._[0]
+    while (argsAliases.hasOwnProperty(primaryOption)) primaryOption = argsAliases[primaryOption]
     if (primaryOptionNames.includes(primaryOption)) {
       primaryOptions.push(primaryOption)
       if (args.hasOwnProperty(primaryOption)) throw new Error("Unexpected State")
