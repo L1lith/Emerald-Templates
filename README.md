@@ -29,11 +29,11 @@ emt <template folder name> <output folder (relative or absolute)> --age 12
 ## Command Documentation
 To list the available commands run the help command
 ```bash
-emt -h
+emt help
 ```
 To get more information about a specific command supply the command name to the help argument
 ```bash
-emt -h=generate
+emt --help=generate
 ```
 
 ## Template Files

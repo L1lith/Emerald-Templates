@@ -32,7 +32,7 @@ function help(options) {
     console.log(options)
     throw new Error("Invalid Help Value, please either leave it blank or specify a command you'd like to know more about")
   }
-  console.log(`To get help about a specific command try this:\n  ${chalk.cyan("emt -h=<command>")}\n\nAvailable Commands: \n- ${commands.map(command => chalk.green(command)).join(', ')}\n\nFor more information, please refer to the Readme at\n- ${chalk.bold(chalk.green("https://github.com/L1lith/Emerald-Templates"))}`)
+  console.log(`To get help about a specific command try this:\n  ${chalk.cyan("emt --help=<command>")}\n\nAvailable Commands: \n- ${commands.map(command => chalk.green(command)).join(', ')}\n\nFor more information, please refer to the Readme at\n- ${chalk.bold(chalk.green("https://github.com/L1lith/Emerald-Templates"))}`)
 }
 
 module.exports = help
