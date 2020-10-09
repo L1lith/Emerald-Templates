@@ -18,6 +18,7 @@ const validPrexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
 async function generate(options) {
   const config = process.env.EMERALD_CONFIG = getConfiguration(true)
+  let {launchCommand} = config
 
   // const rootTemplateFolder = config.templateFolder
   // if (!(await directoryExists(rootTemplateFolder))) throw new Error("The folder configured to contain the templates does not exist")
@@ -27,7 +28,7 @@ async function generate(options) {
   if (templateFolderPath === null || !(await directoryExists(templateFolderPath))) throw new Error(chalk.bold(`Could not find the template ${chalk.red('"' + templateFolder + '"')}`))
   process.env.TEMPLATE_FOLDER = templateFolderPath
 
-  let outputFolder = (options['generate'][1] || "").trim() || await askQuestion("What would you like to name the project?\n> ")
+  let outputFolder = options['generate'].slice(1).join(' ').trim() || await askQuestion("What would you like to name the project?\n> ")
   if (!outputFolder) throw new Error("You must specify the output folder")
   const outputFolderPath = resolvePath(sanitize(outputFolder.replace(/\s+/g,'-')), process.cwd())
   if (!(await directoryExists(join(outputFolderPath, '..')))) throw new Error(`The output folder's parent directory does not exist`)
@@ -71,7 +72,15 @@ async function generate(options) {
     console.log("Initializing Git Repository")
     if (!(await pathExists(join(outputFolderPath, '.git')))) await exec("git init .", {cwd: outputFolderPath})
   }
-
+  if (typeof launchCommand == 'string') {
+    launchCommand = launchCommand.trim()
+    if (launchCommand.length > 0) {
+      console.log("Running Launch Command")
+      await exec(launchCommand, {cwd: outputFolderPath, shell: true})
+    } else {
+      console.warn("Invalid Launch Command")
+    }
+  }
   console.log(chalk.green("Project Generated Successfully!"))
 }
 

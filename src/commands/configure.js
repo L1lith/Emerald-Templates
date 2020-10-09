@@ -40,6 +40,11 @@ async function configure(options) {
   } catch(error) {
     // Do Nothing
   }
+  const launchCommandReponse = (await askQuestion(`What launch command would you like to run after generating a new project? (To open atom for example, try "atom .")\n> `)).trim()
+  if (launchCommandReponse.length > 0) {
+    config.launchCommand = launchCommandReponse
+    console.log(chalk.cyan(`Set the project launch command as ${chalk.green(chalk.bold('"' + config.launchCommand + '"'))}`))
+  }
   saveConfig(config)
   console.log(chalk.bold(chalk.green("Emerald Templates Configured.")))
 }
