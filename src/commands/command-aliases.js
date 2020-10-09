@@ -15,7 +15,6 @@ const aliasEntries = Object.entries(aliasMap).sort((set1, set2) => set1[0].local
 function commandAliases(options) {
   let inputCommand = options['command-aliases']
   if (Array.isArray(inputCommand)) inputCommand = inputCommand[0]
-  console.log(inputCommand)
   if (typeof inputCommand == 'string') {
     const commandRequest = resolveCommandAlias(inputCommand)
     if (!commands.includes(commandRequest)) throw new Error("Invalid command requested")

@@ -23,5 +23,6 @@ module.exports = {
   'list-alias': 'command-aliases',
   'get-aliases': 'command-aliases',
   'get-alias': 'command-aliases',
-  'command-alias': 'command-aliases'
+  'command-alias': 'command-aliases',
+  'ca': 'command-aliases'
 }
