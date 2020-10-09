@@ -7,7 +7,7 @@ function logList(stringList, title=null, outputToConsole=true) {
     console.log(chalk.green(displayString))
     return true
   }
-  return false
+  return displayString
 }
 
 module.exports = logList

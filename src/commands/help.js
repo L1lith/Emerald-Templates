@@ -1,6 +1,7 @@
 const chalk = require('chalk')
 const resolveCommandAlias = require('../functions/resolveCommandAlias')
 const commands = require('../boilerplate/primaryCommands')
+const displayList = require('../functions/displayList')
 
 const commandHelp = {
   generate: chalk.green("Function: ") + "Generates a new project from a template" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND <template name> <project name>"),
@@ -35,7 +36,7 @@ function help(options) {
   } else if (commandRequest !== true) {
     throw new Error("Invalid Help Value, please either leave it blank or specify a command you'd like to know more about")
   }
-  console.log(chalk.green(`To get help about a specific command try this:\n  ${chalk.cyan("emt help <command>")}\n\nAvailable Commands: \n- ${commands.map(command => chalk.cyan(command)).join(', ')}\n\nFor more information, please refer to the Readme at\n- ${chalk.bold("https://github.com/L1lith/Emerald-Templates")}`))
+  console.log(chalk.green(`To get help about a specific command try this:\n  ${chalk.cyan("emt help <command>")}\n\n${displayList(commands.map(command => chalk.cyan(command)), 'Available Commands', false)}\n\nFor more information, please refer to the Readme at\n- ${chalk.bold("https://github.com/L1lith/Emerald-Templates")}`))
 }
 
 module.exports = help
