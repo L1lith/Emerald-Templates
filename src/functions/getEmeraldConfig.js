@@ -6,6 +6,8 @@ const defaultOptions = {
   name: "Untitled Project"
 }
 
+const dashesRegex = /[\-]+/g
+
 async function getEmeraldConfig(targetFolder) {
   let output = {}
   setDefaultValue(output, 'defaultOptions', true) // If this object is not overwritten we know it's the default options so we assign this property as a signature
@@ -32,9 +34,9 @@ async function getEmeraldConfig(targetFolder) {
   }
   if (!output.hasOwnProperty('name')) { // Assure it has a name
     if (package && package.hasOwnProperty('name')) {
-      output.name = titleCase(package.name.split('-').join(' ').trim().replace(/w+/, ' '))
+      output.name = titleCase(package.name.split(dashesRegex).join(' ').trim())
     } else {
-      output.name = titleCase(basename(targetFolder).split('-').join(' ').trim().replace(/w+/, ' '))
+      output.name = titleCase(basename(targetFolder).split(dashesRegex).join(' ').trim())
     }
   }
   //output = {...defaultOptions, ...output} // Merge the default options with whatever we find
