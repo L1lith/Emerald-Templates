@@ -26,7 +26,7 @@ function help(options) {
     commandRequest = resolveCommandAlias(inputName)
     if (!commands.includes(commandRequest)) throw new Error("Invalid Command Name")
     if (commandHelp.hasOwnProperty(commandRequest)) {
-      console.log(chalk.green(`- Command Help: ${chalk.bold(inputName)}\n`) + commandHelp[commandRequest].replace(/\$COMMAND/g, inputName))
+      console.log(chalk.green(`- Command Help: ${chalk.bold(inputName)}`) + (inputName !== commandRequest ? chalk.green(' (aka ' + commandRequest + ')') : '') + "\n" + commandHelp[commandRequest].replace(/\$COMMAND/g, inputName))
     } else {
       console.warn(chalk.red("Sorry, there is currently no information on that command"))
     }
