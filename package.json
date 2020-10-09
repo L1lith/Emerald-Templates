@@ -43,6 +43,7 @@
     "mustache": "^3.0.1",
     "mvdir": "^1.0.17",
     "nunjucks": "^3.2.0",
+    "ondeath": "^1.0.0",
     "open-file-explorer": "^1.0.2",
     "path-type": "^4.0.0",
     "rimraf": "^3.0.2",

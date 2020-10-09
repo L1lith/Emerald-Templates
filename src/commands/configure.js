@@ -7,6 +7,7 @@ const resolvePath = require('../functions/resolvePath')
 const saveConfig = require('../functions/saveConfig')
 const askYesOrNo = require('../functions/askYesOrNo')
 const getConfiguration = require('../functions/getConfiguration')
+const ON_DEATH = require('ondeath')
 
 const configPath = join(__dirname, '..', '..', 'emerald-config.json')
 const templateEngines = ["ejs", "nunjucks", "handlebars", "mustache"]
@@ -16,9 +17,12 @@ async function configure(options) {
   let config = getConfiguration()
   const configKeys = Object.keys(config).sort()
   if (configKeys.length > 0) {
-    console.log(chalk.green("+- Current Config -+\n" + configKeys.map(key => chalk.green(`|=- ${key}: ${chalk.cyan(inspect(config[key]))}`)).join('\n') + "\n+----\n"))
+    console.log(chalk.green("+---- Current Config Changes ----+\n" + configKeys.map(key => chalk.green(`|=- ${key}: ${chalk.cyan(inspect(config[key]))}`)).join('\n') + "\n+----\n"))
   }
   console.log(chalk.cyan("To choose not to configure an option, simply enter nothing."))
+  ON_DEATH(() => {
+    saveConfig(config)
+  })
   const rootFolder = (await askQuestion("Please enter the path to your root templates storage folder\n> ")).trim()
   if (rootFolder.length > 0) {
     const rootFolderPath = resolvePath(rootFolder, process.cwd())

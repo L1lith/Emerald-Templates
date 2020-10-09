@@ -19,7 +19,7 @@ async function removeRoot(options) {
   let rootFolderIndex = 0
   while (rootFolderIndex >= 0) {
     rootFolderIndex = config.rootFolders.indexOf(rootFolder)
-    config.rootFolders.splice(rootFolderIndex, 1)
+    if (rootFolderIndex >= 0) config.rootFolders.splice(rootFolderIndex, 1)
   }
   if (config.rootFolders.length < 1) {
     delete config.rootFolders
