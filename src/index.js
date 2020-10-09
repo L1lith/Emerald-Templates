@@ -3,8 +3,6 @@ const resolveCommandAlias = require('./functions/resolveCommandAlias')
 const argsAliases = require('./boilerplate/argsAliases')
 
 const args = require('./functions/getArgs')()
-//const args = arg(argsTemplate, {permissive: true})
-
 
 const commandFunction = require("./commands/" + args.primaryOption)
 
