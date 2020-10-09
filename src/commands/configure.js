@@ -27,12 +27,12 @@ async function configure(options) {
     config.templateEngine = templateEngineResponse
     console.log(chalk.green(`Set templateEngine flag as ${chalk.bold('"' + config.templateEngine + '"')}`))
   }
-  const automaticallyInstallNodeModules = (await askQuestion(`Would you like to automatically install the node modules if there is a package.json with dependencies but no node_modules folder? (${chalk.bold(chalk.green("yes"))}/${chalk.green("no")})\n> `)).trim().toLowerCase()
-  console.log(automaticallyInstallNodeModules)
-  if (automaticallyInstallNodeModules.length > 0 && !yesOrNo.includes(automaticallyInstallNodeModules)) throw new Error("You must respond with yes or no.")
-  if (automaticallyInstallNodeModules.length > 0) {
-    config.automaticallyInstallNodeModules = automaticallyInstallNodeModules === "yes"
-    console.log(chalk.green(`Set automaticallyInstallNodeModules flag as ${chalk.bold(config.automaticallyInstallNodeModules)}`))
+  const automaticallyInstallDependencies = (await askQuestion(`Would you like to automatically install the dependencies (currently supports package.json)? (${chalk.bold(chalk.green("yes"))}/${chalk.green("no")})\n> `)).trim().toLowerCase()
+  console.log(automaticallyInstallDependencies)
+  if (automaticallyInstallDependencies.length > 0 && !yesOrNo.includes(automaticallyInstallDependencies)) throw new Error("You must respond with yes or no.")
+  if (automaticallyInstallDependencies.length > 0) {
+    config.automaticallyInstallDependencies = automaticallyInstallDependencies === "yes"
+    console.log(chalk.green(`Set automaticallyInstallDependencies flag as ${chalk.bold(config.automaticallyInstallDependencies)}`))
   }
   const automaticallyInitializeGitRepo = (await askQuestion(`Would you like to automatically initialize an empty git repo in newly generated projects? (${chalk.bold(chalk.green("yes"))}/${chalk.green("no")})\n> `)).trim().toLowerCase()
   if (automaticallyInitializeGitRepo.length > 0 && !yesOrNo.includes(automaticallyInitializeGitRepo)) throw new Error("You must respond with yes or no.")

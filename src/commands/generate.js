@@ -2,7 +2,7 @@ const {join, basename} = require('path')
 const getConfiguration = require('../functions/getConfiguration')
 const directoryExists = require('directory-exists')
 const resolvePath = require('../functions/resolvePath')
-const {copy, readdir, rmdir, readFile, unlink} = require('fs-extra')
+const {copy, readdir, rmdir, readFile, unlink, pathExists} = require('fs-extra')
 const processOutputFolder = require('../functions/processOutputFolder')
 const copyTemplate = require('../functions/copyTemplate')
 const {promisify} = require('util')
@@ -55,9 +55,13 @@ async function generate(options) {
   try {
     packageJSON = require(join(outputFolderPath, "package.json"))
   } catch(error) {console.log("Could not find or access the package.json")}
-  if (config.automaticallyInstallNodeModules !== false && packageJSON) {
+  if (config.automaticallyInstallDependencies !== false && packageJSON) {
     console.log("Installing Dependencies")
     await exec("npm install", {cwd: outputFolderPath})
+  }
+  if (config.automaticallyInitializeGitRepo === true) {
+    console.log("Initializing Git Repository")
+    if (!(await pathExists(join(outputFolderPath, '.git')))) await exec("git init .", {cwd: outputFolderPath})
   }
 
   console.log(chalk.green("Project Generated Successfully!"))
