@@ -1,6 +1,5 @@
 #!/usr/bin/env node
-const yargs = require('yargs')
-const args = {...(yargs.help(false).version(false).parse())}
+const args = require('./functions/getArgs')()
 
 const argsAliases = {
   //'--configure': Boolean,

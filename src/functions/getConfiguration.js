@@ -3,7 +3,7 @@ const setDefaultValue = require('./setDefaultValue')
 let result = null
 
 const defaultOptions = {
-  automaticallyInstallNodeModules: true,
+  automaticallyInstallDependencies: true,
   automaticallyInitializeGitRepo: true,
   rootFolders: [],
   templateFolders: []
@@ -26,6 +26,7 @@ function getConfiguration(ensureConfigured=false) {
       setDefaultValue(result, key, value)
     }
   })
+  if (ensureConfigured === true && result.templateFolders.length < 1 && result.rootFolders.length < 1) throw new Error("Must configure at least 1 template or root folder")
   if (!Array.isArray(result.templateFolders) || result.templateFolders.some(value => typeof value != 'string' || value.length < 1)) {
     throw new Error("Template folders is not an array of non-empty path strings")
   }

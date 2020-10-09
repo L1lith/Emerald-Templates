@@ -38,6 +38,7 @@
     "fs-extra": "^8.0.1",
     "handlebars": "^4.1.2",
     "ignore-walk": "^3.0.3",
+    "minimist": "^1.2.5",
     "mkdirp": "^1.0.4",
     "mustache": "^3.0.1",
     "mvdir": "^1.0.17",
@@ -47,7 +48,6 @@
     "rimraf": "^3.0.2",
     "sandhands": "^1.6.1",
     "sanitize-filename": "^1.6.3",
-    "subdir": "0.0.3",
-    "yargs": "^13.2.4"
+    "subdir": "0.0.3"
   }
 }
