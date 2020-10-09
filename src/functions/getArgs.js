@@ -1,10 +1,10 @@
 const minimist = require('minimist')
 const argsAliases = require('../boilerplate/argsAliases')
+const primaryOptionNames = require('../boilerplate/primaryCommands')
 const resolveCommandAlias = require('./resolveCommandAlias')
 
 let storedArgs = null
 const removeLeadingDashes = /^[\-]*/
-const primaryOptionNames = ["configure", "generate", "list", "help", "open", "describe", 'get-directory', 'version', 'add-root', 'add-template', 'list-roots', 'remove-root', 'remove-template']
 
 function getArgs(fresh=false) {
   if (fresh !== true && storedArgs !== null) return storedArgs

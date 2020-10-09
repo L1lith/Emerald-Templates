@@ -18,5 +18,10 @@ module.exports = {
   'ar': 'add-root',
   'at': 'add-template',
   'rr': 'remove-root',
-  'rt': 'remove-template'
+  'rt': 'remove-template',
+  'list-aliases': 'command-aliases',
+  'list-alias': 'command-aliases',
+  'get-aliases': 'command-aliases',
+  'get-alias': 'command-aliases',
+  'command-alias': 'command-aliases'
 }

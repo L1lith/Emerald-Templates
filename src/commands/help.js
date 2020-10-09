@@ -1,6 +1,6 @@
 const chalk = require('chalk')
 const resolveCommandAlias = require('../functions/resolveCommandAlias')
-const commands = ["generate", "configure", "list", 'add-root', 'add-template',"describe", "open", "get-directory", "version", "remove-root", "remove-template", "list-roots", "help"].sort()
+const commands = require('../boilerplate/primaryCommands')
 
 const commandHelp = {
   generate: chalk.green("Function: ") + "Generates a new project from a template" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND <template name> <project name>"),
@@ -15,7 +15,8 @@ const commandHelp = {
   "list-roots": chalk.green("Function: ") + "Lists all the root template folders, no args necessary" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND"),
   version: chalk.green("Function: ") + "Displays the current version of Emerald Templates, no args necessary" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND"),
   open: chalk.green("Function: ") + "Opens a given template with your file browser" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND <template name>"),
-  help: chalk.green("Function: ") + "Provides help about how to use emerald templates. Either provide no args for general information, or specify a command to learn more about it" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND {command}")
+  help: chalk.green("Function: ") + "Provides help about how to use emerald templates. Either provide no args for general information, or specify a command to learn more about it" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND {command}"),
+  "command-aliases": chalk.green("Function: ") + "Lists the aliases for the commands. Either provide no args for all the aliases, or specify a command to get the aliases for a specific one" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND {command}")
 }
 
 function help(options) {
