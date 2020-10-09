@@ -2,6 +2,7 @@ const chalk = require('chalk')
 const argsAliases = require('../boilerplate/argsAliases')
 const resolveCommandAlias = require('../functions/resolveCommandAlias')
 const commands = require('../boilerplate/primaryCommands')
+const displayList = require('../functions/displayList')
 
 const aliasMap = {}
 Object.keys(argsAliases).forEach(alias => {
@@ -19,15 +20,11 @@ function commandAliases(options) {
     const commandRequest = resolveCommandAlias(inputCommand)
     if (!commands.includes(commandRequest)) throw new Error("Invalid command requested")
     const aliases = aliasMap.hasOwnProperty(commandRequest) ? aliasMap[commandRequest] : []
-    console.log(
-      `${chalk.green(`+---- Command Aliases for ${chalk.bold(commandRequest)} ----+`)}
-${aliases.length < 1 ? '(no aliases)' : chalk.green("Aliases: ") + chalk.cyan(aliases.sort().join(', '))}`)
+    displayList(aliases, "Command Aliases for " + chalk.bold(commandRequest))
     return
   }
 
-  console.log(
-    `${chalk.bold(chalk.green("+---- Command Aliases ----+"))}
-${aliasEntries.length < 1 ? '(no aliases)' : aliasEntries.map(([command, aliasList], index) => chalk.green("|=- " + command + " - ") + chalk.cyan(aliasList.sort().join(', '))).join('\n')}\n${chalk.green("+----")}`)
+  displayList(aliasEntries.map(([command, aliasList]) => chalk.green(command + " - ") + chalk.cyan(aliasList.sort().join(', '))), "Command Aliases")
 }
 
 module.exports = commandAliases

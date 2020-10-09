@@ -1,18 +1,19 @@
 const {join, basename} = require('path')
-const getConfiguration = require('../functions/getConfiguration')
-const directoryExists = require('directory-exists')
-const resolvePath = require('../functions/resolvePath')
-const {copy, readdir, rmdir, readFile, unlink, pathExists} = require('fs-extra')
-const processOutputFolder = require('../functions/processOutputFolder')
-const copyTemplate = require('../functions/copyTemplate')
+const sanitize = require("sanitize-filename")
+const chalk = require('chalk')
 const {promisify} = require('util')
 const rimraf = require('delete').promise
 const exec = promisify(require('child_process').exec)
+const {copy, readdir, rmdir, readFile, unlink, pathExists} = require('fs-extra')
+const getConfiguration = require('../functions/getConfiguration')
+const directoryExists = require('directory-exists')
+const resolvePath = require('../functions/resolvePath')
+const processOutputFolder = require('../functions/processOutputFolder')
+const copyTemplate = require('../functions/copyTemplate')
 const findTemplateFolder = require('../functions/findTemplateFolder')
 const askQuestion = require('../functions/askQuestion')
 const askYesOrNo = require('../functions/askYesOrNo')
-const sanitize = require("sanitize-filename")
-const chalk = require('chalk')
+const displayList = require('../functions/displayList')
 
 const validPrexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
