@@ -20,14 +20,14 @@ function commandAliases(options) {
     if (!commands.includes(commandRequest)) throw new Error("Invalid command requested")
     const aliases = aliasMap.hasOwnProperty(commandRequest) ? aliasMap[commandRequest] : []
     console.log(
-      `${chalk.green(`-+- Command Aliases for ${chalk.bold(commandRequest)} -+-`)}
-  ${aliases.length < 1 ? '(no aliases)' : chalk.green("Aliases: ") + chalk.cyan(aliases.sort().join(', '))}`)
+      `${chalk.green(`+-- Command Aliases for ${chalk.bold(commandRequest)} --+`)}
+${aliases.length < 1 ? '(no aliases)' : chalk.green("Aliases: ") + chalk.cyan(aliases.sort().join(', '))}`)
     return
   }
 
   console.log(
-    `${chalk.bold(chalk.green("-+- Command Aliases -+-"))}
-${aliasEntries.length < 1 ? '(no aliases)' : aliasEntries.map(([command, aliasList], index) => chalk.green((index + 1) + '. ' + command + " - ") + chalk.cyan(aliasList.sort().join(', '))).join('\n')}`)
+    `${chalk.bold(chalk.green("+-- Command Aliases --+"))}
+${aliasEntries.length < 1 ? '(no aliases)' : aliasEntries.map(([command, aliasList], index) => chalk.green("|=- " + command + " - ") + chalk.cyan(aliasList.sort().join(', '))).join('\n')}\n${chalk.green("+----")}`)
 }
 
 module.exports = commandAliases

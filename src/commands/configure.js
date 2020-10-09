@@ -1,11 +1,12 @@
+const {join} = require('path')
+const directoryExists = require('directory-exists')
+const chalk = require('chalk')
+const {inspect} = require('util')
 const askQuestion = require('../functions/askQuestion')
 const resolvePath = require('../functions/resolvePath')
 const saveConfig = require('../functions/saveConfig')
 const askYesOrNo = require('../functions/askYesOrNo')
 const getConfiguration = require('../functions/getConfiguration')
-const {join} = require('path')
-const directoryExists = require('directory-exists')
-const chalk = require('chalk')
 
 const configPath = join(__dirname, '..', '..', 'emerald-config.json')
 const templateEngines = ["ejs", "nunjucks", "handlebars", "mustache"]
@@ -13,6 +14,10 @@ const yesOrNo = ["yes", "no"]
 
 async function configure(options) {
   let config = getConfiguration()
+  const configKeys = Object.keys(config).sort()
+  if (configKeys.length > 0) {
+    console.log(chalk.green("+- Current Config -+\n" + configKeys.map(key => chalk.green(`|=- ${key}: ${chalk.cyan(inspect(config[key]))}`)).join('\n') + "\n+----\n"))
+  }
   console.log(chalk.cyan("To choose not to configure an option, simply enter nothing."))
   const rootFolder = (await askQuestion("Please enter the path to your root templates storage folder\n> ")).trim()
   if (rootFolder.length > 0) {
