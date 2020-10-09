@@ -1,6 +1,7 @@
 const askQuestion = require('../functions/askQuestion')
 const resolvePath = require('../functions/resolvePath')
 const saveConfig = require('../functions/saveConfig')
+const askYesOrNo = require('../functions/askYesOrNo')
 const getConfiguration = require('../functions/getConfiguration')
 const {join} = require('path')
 const directoryExists = require('directory-exists')
@@ -27,18 +28,17 @@ async function configure(options) {
     config.templateEngine = templateEngineResponse
     console.log(chalk.green(`Set templateEngine flag as ${chalk.bold('"' + config.templateEngine + '"')}`))
   }
-  const automaticallyInstallDependencies = (await askQuestion(`Would you like to automatically install the dependencies (currently supports package.json)? (${chalk.bold(chalk.green("yes"))}/${chalk.green("no")})\n> `)).trim().toLowerCase()
-  console.log(automaticallyInstallDependencies)
-  if (automaticallyInstallDependencies.length > 0 && !yesOrNo.includes(automaticallyInstallDependencies)) throw new Error("You must respond with yes or no.")
-  if (automaticallyInstallDependencies.length > 0) {
-    config.automaticallyInstallDependencies = automaticallyInstallDependencies === "yes"
+  try {
+    config.automaticallyInstallDependencies = await askYesOrNo(`Would you like to automatically install the dependencies (currently supports package.json)? (${chalk.bold(chalk.green("yes"))}/${chalk.green("no")})\n> `)
     console.log(chalk.green(`Set automaticallyInstallDependencies flag as ${chalk.bold(config.automaticallyInstallDependencies)}`))
+  } catch(error) {
+    // Do Nothing
   }
-  const automaticallyInitializeGitRepo = (await askQuestion(`Would you like to automatically initialize an empty git repo in newly generated projects? (${chalk.bold(chalk.green("yes"))}/${chalk.green("no")})\n> `)).trim().toLowerCase()
-  if (automaticallyInitializeGitRepo.length > 0 && !yesOrNo.includes(automaticallyInitializeGitRepo)) throw new Error("You must respond with yes or no.")
-  if (automaticallyInitializeGitRepo.length > 0) {
-    config.automaticallyInitializeGitRepo = automaticallyInitializeGitRepo === "yes"
+  try {
+    config.automaticallyInitializeGitRepo = await askYesOrNo(`Would you like to automatically initialize an empty git repo in newly generated projects? (${chalk.bold(chalk.green("yes"))}/${chalk.green("no")})\n> `)
     console.log(chalk.green(`Set automaticallyInitializeGitRepo flag as ${chalk.bold(config.automaticallyInitializeGitRepo)}`))
+  } catch(error) {
+    // Do Nothing
   }
   saveConfig(config)
   console.log(chalk.bold(chalk.green("Emerald Templates Configured.")))

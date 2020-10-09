@@ -10,6 +10,7 @@ const rimraf = require('delete').promise
 const exec = promisify(require('child_process').exec)
 const findTemplateFolder = require('../functions/findTemplateFolder')
 const askQuestion = require('../functions/askQuestion')
+const askYesOrNo = require('../functions/askYesOrNo')
 const sanitize = require("sanitize-filename")
 const chalk = require('chalk')
 
@@ -40,6 +41,13 @@ async function generate(options) {
     //throw new Error(`The output folder "${outputFolderPath}" already exists and is not empty.`)
     while (!validPrexistingOptions.includes(overwriteMode)) overwriteMode = (await askQuestion("That folder already exists, how would you like to proceed?\nOptions: \n- "+ validPrexistingOptions.join(', ')  + "\n> ")).toLowerCase().trim()
     if (overwriteMode === "erase") {
+      if (options.force !== true) {
+        const answer = await askYesOrNo("Are you sure you'd like to erase the entire project? (yes/no)\n> ")
+        if (answer === false) {
+          console.log("Exiting...")
+          process.exit(0)
+        }
+      }
       await rimraf(outputFolderPath)
     } else if (overwriteMode === "available") {
       // Do Nothing
