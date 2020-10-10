@@ -1,1 +1,1 @@
-module.exports = ["generate", "configure", "list", 'add-root', 'add-template', "describe", "open", "get-directory", "version", "remove-root", "remove-template", "list-roots", "help", "command-aliases"].sort()
+module.exports = ["generate", "configure", "list", 'add-root', 'add-template', "describe", "open", "get-directory", "version", "remove-root", "remove-template", "list-roots", "help", "command-aliases", "reset-config"].sort()

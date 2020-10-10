@@ -11,13 +11,14 @@ const commandHelp = {
   "remove-root": chalk.green("Function: ") + "Removes an existing root folder given a relative or absolute path" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND <root path>"),
   "add-template": chalk.green("Function: ") + "Adds a new template folder given a relative or absolute path" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND <template path>"),
   "remove-template": chalk.green("Function: ") + "Removes an existing template folder given a relative or absolute path" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND <template path>"),
-  configure: chalk.green("Function: ") + "Configures emerald templates, no args necessary" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND"),
-  list: chalk.green("Function: ") + "Lists all the available templates, no args necessary" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND"),
+  configure: chalk.green("Function: ") + "Configures emerald templates, no args" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND"),
+  list: chalk.green("Function: ") + "Lists all the available templates, no args" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND"),
   "list-roots": chalk.green("Function: ") + "Lists all the root template folders, no args necessary" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND"),
   version: chalk.green("Function: ") + "Displays the current version of Emerald Templates, no args necessary" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND"),
   open: chalk.green("Function: ") + "Opens a given template with your file browser" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND <template name>"),
   help: chalk.green("Function: ") + "Provides help about how to use emerald templates. Either provide no args for general information, or specify a command to learn more about it" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND {command}"),
-  "command-aliases": chalk.green("Function: ") + "Lists the aliases for the commands. Either provide no args for all the aliases, or specify a command to get the aliases for a specific one" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND {command}")
+  "command-aliases": chalk.green("Function: ") + "Lists the aliases for the commands. Either provide no args for all the aliases, or specify a command to get the aliases for a specific one" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND {command}"),
+  "reset-config": chalk.green("Function: ") + "Resets your config for Emerald Templates, no args" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND {command}")
 }
 
 function help(options) {

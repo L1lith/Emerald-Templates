@@ -24,5 +24,6 @@ module.exports = {
   'get-aliases': 'command-aliases',
   'get-alias': 'command-aliases',
   'command-alias': 'command-aliases',
-  'ca': 'command-aliases'
+  'ca': 'command-aliases',
+  'remove-config': 'reset-config'
 }
