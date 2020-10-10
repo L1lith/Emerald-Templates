@@ -11,7 +11,7 @@ async function addRoot(options) {
   const rootFolder = resolvePath(rootPath, process.cwd())
   if (!(await directoryExists(rootFolder))) throw new Error(`The folder "${rootPath}" does not exist`)
   let config = getConfiguration()
-  config.rootFolders = config.rootFolders
+  //config.rootFolders = config.rootFolders
   if (config.rootFolders.includes(rootFolder)) throw new Error("That folder has already been added")
   config.rootFolders = config.rootFolders.concat([rootFolder])
   saveConfig(config)

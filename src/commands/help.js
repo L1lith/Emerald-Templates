@@ -12,7 +12,7 @@ const commandHelp = {
   "add-template": chalk.green("Function: ") + "Adds a new template folder given a relative or absolute path" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND <template path>"),
   "remove-template": chalk.green("Function: ") + "Removes an existing template folder given a relative or absolute path" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND <template path>"),
   configure: chalk.green("Function: ") + "Configures emerald templates, no args" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND"),
-  list: chalk.green("Function: ") + "Lists all the available templates, no args" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND"),
+  "list-templates": chalk.green("Function: ") + "Lists all the available templates, no args" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND"),
   "list-roots": chalk.green("Function: ") + "Lists all the root template folders, no args necessary" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND"),
   version: chalk.green("Function: ") + "Displays the current version of Emerald Templates, no args necessary" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND"),
   open: chalk.green("Function: ") + "Opens a given template with your file browser" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND <template name>"),
@@ -37,7 +37,7 @@ function help(options) {
   } else if (commandRequest !== true) {
     throw new Error("Invalid Help Value, please either leave it blank or specify a command you'd like to know more about")
   }
-  console.log(chalk.green(`~~~ ${chalk.bold("General Help")} ~~~\nTo get help about a specific command try this:\n  ${chalk.cyan("emt help <command>")}\n\n${displayList(commands.map(command => chalk.cyan(command)), chalk.bold('Available Commands'), false)}\n\nFor more information, please refer to the Readme at\n- ${chalk.bold("https://github.com/L1lith/Emerald-Templates")}`))
+  console.log(chalk.green(`~~~ ${chalk.bold("General Help")} ~~~\nTo get help about a specific command try this:\n  ${chalk.cyan("emt help <command>")}\n\n${displayList(commands.map(command => chalk.cyan(command)), chalk.bold('Available Commands'), {outputToConsole: false})}\n\nFor more information, please refer to the Readme at\n- ${chalk.bold("https://github.com/L1lith/Emerald-Templates")}`))
 }
 
 module.exports = help

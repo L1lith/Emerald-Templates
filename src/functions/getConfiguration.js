@@ -6,7 +6,8 @@ const defaultOptions = {
   automaticallyInstallDependencies: true,
   automaticallyInitializeGitRepo: true,
   rootFolders: [],
-  templateFolders: []
+  templateFolders: [],
+  projectFolders: []
 }
 
 function getConfiguration(ensureConfigured=false) {

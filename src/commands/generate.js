@@ -8,6 +8,7 @@ const {copy, readdir, rmdir, readFile, unlink, pathExists} = require('fs-extra')
 const getConfiguration = require('../functions/getConfiguration')
 const directoryExists = require('directory-exists')
 const resolvePath = require('../functions/resolvePath')
+const saveConfig = require('../functions/saveConfig')
 const processOutputFolder = require('../functions/processOutputFolder')
 const copyTemplate = require('../functions/copyTemplate')
 const findTemplateFolder = require('../functions/findTemplateFolder')
@@ -81,6 +82,11 @@ async function generate(options) {
     } else {
       console.warn("Invalid Launch Command")
     }
+  }
+  const {projectFolders} = config
+  if (!projectFolders.includes(outputFolderPath)) {
+    config.projectFolders = projectFolders.concat([outputFolderPath])
+    saveConfig(config)
   }
   console.log(chalk.green("Project Generated Successfully!"))
 }
