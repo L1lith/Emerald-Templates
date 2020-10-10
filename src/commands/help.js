@@ -37,7 +37,7 @@ function help(options) {
   } else if (commandRequest !== true) {
     throw new Error("Invalid Help Value, please either leave it blank or specify a command you'd like to know more about")
   }
-  console.log(chalk.green(`~~~ General Help ~~~\nTo get help about a specific command try this:\n  ${chalk.cyan("emt help <command>")}\n\n${displayList(commands.map(command => chalk.cyan(command)), 'Available Commands', false)}\n\nFor more information, please refer to the Readme at\n- ${chalk.bold("https://github.com/L1lith/Emerald-Templates")}`))
+  console.log(chalk.green(`~~~ ${chalk.bold("General Help")} ~~~\nTo get help about a specific command try this:\n  ${chalk.cyan("emt help <command>")}\n\n${displayList(commands.map(command => chalk.cyan(command)), chalk.bold('Available Commands'), false)}\n\nFor more information, please refer to the Readme at\n- ${chalk.bold("https://github.com/L1lith/Emerald-Templates")}`))
 }
 
 module.exports = help
