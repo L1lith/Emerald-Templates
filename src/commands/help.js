@@ -15,10 +15,12 @@ const commandHelp = {
   "list-templates": chalk.green("Function: ") + "Lists all the available templates, no args" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND"),
   "list-roots": chalk.green("Function: ") + "Lists all the root template folders, no args necessary" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND"),
   version: chalk.green("Function: ") + "Displays the current version of Emerald Templates, no args necessary" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND"),
-  open: chalk.green("Function: ") + "Opens a given template with your file browser" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND <template name>"),
+  "open-template": chalk.green("Function: ") + "Opens a given template with your file browser" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND <template name>"),
+  "open-project": chalk.green("Function: ") + "Opens a project with your file browser that has been generated with emerald templates or saved by using add-project" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND <template name>"),
   help: chalk.green("Function: ") + "Provides help about how to use emerald templates. Either provide no args for general information, or specify a command to learn more about it" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND {command}"),
   "command-aliases": chalk.green("Function: ") + "Lists the aliases for the commands. Either provide no args for all the aliases, or specify a command to get the aliases for a specific one" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND {command}"),
-  "reset-config": chalk.green("Function: ") + "Resets your config for Emerald Templates, no args" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND {command}")
+  "reset-config": chalk.green("Function: ") + "Deletes your config for Emerald Templates, no args" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND {command}"),
+  "list-projects": chalk.green("Function: ") + "Lists all the project folders, no args necessary" + chalk.green("\nSyntax: ") + chalk.cyan("$COMMAND")
 }
 
 function help(options) {
