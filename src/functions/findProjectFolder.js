@@ -1,6 +1,7 @@
 const {basename} = require('path')
 const chalk = require('chalk')
 const getConfiguration = require('./getConfiguration')
+const getEmeraldConfig = require('../functions/getEmeraldConfig')
 
 const whitespaceRegex = /\s+/g
 const whitespaceOrDashRegex = /[\s\-]+/g

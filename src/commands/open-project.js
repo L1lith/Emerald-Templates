@@ -14,7 +14,7 @@ async function openProject(options) {
   // TODO: Add the ability to specify "config" instead of a project to open the emerald-config.json file with the default application for editing
   const projectFolder = await findProjectFolder(targetProject)
   if (!projectFolder) throw new Error(chalk.bold(`Could not find the project ${chalk.red('"' + targetProject + '"')}`))
-  let {launchCommand} = getConfiguration()
+  const {launchCommand} = getConfiguration()
   if (typeof launchCommand == 'string' && launchCommand.length > 0) {
     await exec(launchCommand, {cwd: projectFolder})
   } else {

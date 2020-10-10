@@ -4,6 +4,7 @@ module.exports = {
   'info': 'describe',
   'g': 'generate',
   'list': 'list-templates',
+  'lp': 'list-projects',
   'lr': 'list-roots',
   'h': 'help',
   't': 'template',
