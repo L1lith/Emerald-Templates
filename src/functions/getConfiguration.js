@@ -5,6 +5,7 @@ let result = null
 const defaultOptions = {
   automaticallyInstallDependencies: true,
   automaticallyInitializeGitRepo: true,
+  automaticallySaveProjects: true,
   rootFolders: [],
   templateFolders: [],
   projectFolders: []
@@ -22,6 +23,7 @@ function getConfiguration(ensureConfigured=false) {
       }
     }
   }
+  if (typeof result.launchCommand == 'string') result.launchCommand = result.launchCommand.trim()
   Object.entries(defaultOptions).forEach(([key, value]) => {
     if (!result.hasOwnProperty(key)) {
       setDefaultValue(result, key, value)

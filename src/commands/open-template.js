@@ -4,7 +4,7 @@ const openExplorer = require('../functions/openExplorerAsync')
 const askQuestion = require('../functions/askQuestion')
 
 async function openTemplate(options) {
-  let targetTemplate = typeof options['open-template'] == 'string' ? options['open'] : options._[0]
+  let targetTemplate = typeof options['open-template'] == 'string' ? options['open-template'] : options._[0]
   if (typeof targetTemplate != 'string' || targetTemplate.length < 1) targetTemplate = await askQuestion("Which template would you like to open?\n> ")
   if (typeof targetTemplate != 'string' || targetTemplate.length < 1) throw new Error("Must specify a valid template name")
   // TODO: Add the ability to specify "config" instead of a template to open the emerald-config.json file with the default application for editing

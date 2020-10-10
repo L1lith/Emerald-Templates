@@ -7,7 +7,7 @@ const resolvePath = require('../functions/resolvePath')
 const saveConfig = require('../functions/saveConfig')
 const askYesOrNo = require('../functions/askYesOrNo')
 const getConfiguration = require('../functions/getConfiguration')
-const ON_DEATH = require('ondeath')
+const onDeath = require('ondeath')
 
 const configPath = join(__dirname, '..', '..', 'emerald-config.json')
 const templateEngines = ["ejs", "nunjucks", "handlebars", "mustache"]
@@ -20,7 +20,7 @@ async function configure(options) {
     console.log(chalk.green("+---- Current Config Changes ----+\n" + configKeys.map(key => chalk.green(`|=- ${key}: ${chalk.cyan(inspect(config[key]))}`)).join('\n') + "\n+----\n"))
   }
   console.log(chalk.cyan("To choose not to configure an option, simply enter nothing."))
-  ON_DEATH(() => {
+  onDeath(() => {
     saveConfig(config)
   })
   const rootFolder = (await askQuestion("Please enter the path to your root templates storage folder\n> ")).trim()
@@ -46,6 +46,12 @@ async function configure(options) {
   try {
     config.automaticallyInitializeGitRepo = await askYesOrNo(`Would you like to automatically initialize an empty git repo in newly generated projects? (${chalk.bold(chalk.green("yes"))}/${chalk.green("no")})\n> `)
     console.log(chalk.green(`Set automaticallyInitializeGitRepo flag as ${chalk.bold(config.automaticallyInitializeGitRepo)}`))
+  } catch(error) {
+    // Do Nothing
+  }
+  try {
+    config.automaticallySaveProjects = await askYesOrNo(`Would you like to automatically save newly generated projects in Emerald Templates? (${chalk.bold(chalk.green("yes"))}/${chalk.green("no")})\n> `)
+    console.log(chalk.green(`Set automaticallySaveProjects flag as ${chalk.bold(config.automaticallySaveProjects)}`))
   } catch(error) {
     // Do Nothing
   }
