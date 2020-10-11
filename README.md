@@ -1,6 +1,7 @@
 # Emerald Templates
-## Getting Started
-### Installing
+Intelligent Template Generation & Project Management
+
+### Getting Started
 To install emerald templates run the following command in your console
 ```bash
 npm install -g emerald-templates

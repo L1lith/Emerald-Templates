@@ -1,7 +1,7 @@
 {
   "name": "emerald-templates",
-  "version": "0.3.0",
-  "description": "Intelligent Template Generation",
+  "version": "0.4.0",
+  "description": "Intelligent Template Generation & Project Management",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
