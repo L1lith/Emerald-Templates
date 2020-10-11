@@ -19,7 +19,7 @@ const displayList = require('../functions/displayList')
 const validPrexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
 async function generate(options) {
-  const config = process.env.EMERALD_CONFIG = getConfiguration(true)
+  const config = process.env.EMERALD_CONFIG = getConfiguration()
   let {launchCommand} = config
 
   // const rootTemplateFolder = config.templateFolder
@@ -30,7 +30,7 @@ async function generate(options) {
   if (templateFolderPath === null || !(await directoryExists(templateFolderPath))) throw new Error(chalk.bold(`Could not find the template ${chalk.red('"' + templateFolder + '"')}`))
   process.env.TEMPLATE_FOLDER = templateFolderPath
 
-  let outputFolder = options['generate'].slice(1).join(' ').trim() || await askQuestion("What would you like to name the project?\n> ")
+  let outputFolder = (Array.isArray(options['generate']) ? options['generate'] : [options['generate']]).slice(1).join(' ').trim() || await askQuestion("What would you like to name the project?\n> ")
   if (!outputFolder) throw new Error("You must specify the output folder")
   const outputFolderPath = resolvePath(sanitize(outputFolder.replace(/\s+/g,'-')), process.cwd())
   if (!(await directoryExists(join(outputFolderPath, '..')))) throw new Error(`The output folder's parent directory does not exist`)

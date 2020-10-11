@@ -5,9 +5,19 @@ To install emerald templates run the following command in your console
 ```bash
 npm install -g emerald-templates
 ```
+### Template Management
+There are two ways to manage your template folders, either put them all inside a "root" template folder, or add all your templates one by one.
+You can add a new template root with this command
+```bash
+emt add-root <path>
+```
+Templates can be saved individually by running the following command
+```bash
+emt add-template <path>
+```
 
 ### Configuring
-In order to use Emerald Templates you must first supply a templates folder. This is a folder containing a bunch of subfolders (templates). Simply Run the following command, and it will help you configure emerald templates
+Emerald templates has a lot of shiny bells and whistles. In order to make sure emerald templates is behaving the way you'd like it to, consider configuring the project.
 ```bash
 emt configure
 ```
@@ -68,8 +78,12 @@ Additionally by providing the following special values you can reference importa
 Because Emerald-Templates treats `.gitignore` files as regular files, the `.emignore` file can be used exactly in the same way in order to tell Emerald Templates what to copy and what not to copy
 
 
-## Automatically Install node_modules
-You can configure it (with the configure command) to automatically install the node modules (only if there's a valid package.json) so you always have freshly updated dependencies and don't have to waste storage space in your templates (a.k.a. you can delete the node_modules folder in your template and it will be replaced upon project generation).
+## Other Features
+1. Automatically install node modules :D
+2. Automatically initialize the git repo
+3. Run a launch command (for example to open your IDE in a newly spawned project)
+
+Note: You can configure these features with the config command
 
 ## Known Issues
 The mustache and handlebar templating libraries expect your code used to generate templates to be separate from the templates themselves, so at the moment they cannot support javascript code, only injecting your cli arguments into the template. For this reason it's currently recommend to use ejs or nunjucks if you want to use code in your templates.
