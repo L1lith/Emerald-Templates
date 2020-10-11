@@ -24,13 +24,13 @@ async function generate(options) {
 
   // const rootTemplateFolder = config.templateFolder
   // if (!(await directoryExists(rootTemplateFolder))) throw new Error("The folder configured to contain the templates does not exist")
-  let templateFolder = (options['generate'][0] || "").trim() || await askQuestion("Which template would you like to use?\n> ")
+  let templateFolder = (options['generate'][0] || "").trim() || await askQuestion(chalk.green("Which template would you like to use?") + "\n> ")
   if (!templateFolder) throw new Error("Please specify which template folder you would like to use")
   const templateFolderPath = await findTemplateFolder(templateFolder)
   if (templateFolderPath === null || !(await directoryExists(templateFolderPath))) throw new Error(chalk.bold(`Could not find the template ${chalk.red('"' + templateFolder + '"')}`))
   process.env.TEMPLATE_FOLDER = templateFolderPath
 
-  let outputFolder = (Array.isArray(options['generate']) ? options['generate'] : [options['generate']]).slice(1).join(' ').trim() || await askQuestion("What would you like to name the project?\n> ")
+  let outputFolder = (Array.isArray(options['generate']) ? options['generate'] : [options['generate']]).slice(1).join(' ').trim() || await askQuestion(chalk.green("What would you like to name the project?") + "\n> ")
   if (!outputFolder) throw new Error("You must specify the output folder")
   const outputFolderPath = resolvePath(sanitize(outputFolder.replace(/\s+/g,'-')), process.cwd())
   if (!(await directoryExists(join(outputFolderPath, '..')))) throw new Error(`The output folder's parent directory does not exist`)
