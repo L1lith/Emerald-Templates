@@ -19,11 +19,11 @@ async function configure(options) {
   if (configKeys.length > 0) {
     console.log(chalk.green("+---- Current Config Changes ----+\n" + configKeys.map(key => chalk.green(`|=- ${key}: ${chalk.cyan(inspect(config[key]))}`)).join('\n') + "\n+----\n"))
   }
-  console.log(chalk.cyan('To choose not to configure an option, simply enter nothing. To reset an option, enter "delete"'))
+  console.log(chalk.cyan(chalk.bold("NOTE: ") + 'To choose not to configure an option, simply enter nothing. To reset an option, enter "delete"\n'))
   onDeath(() => {
     saveConfig(config)
   })
-  const rootFolder = (await askQuestion("Please enter the path to your root templates storage folder\n> ")).trim()
+  const rootFolder = (await askQuestion(chalk.green("Please enter the path to your root templates storage folder") + "\n> ")).trim()
   if (rootFolder.length > 0) {
     if (rootFolder !== "delete") {
       const rootFolderPath = resolvePath(rootFolder, process.cwd())
@@ -32,53 +32,53 @@ async function configure(options) {
       config.rootFolders = config.rootFolders.concat([rootFolderPath])
       console.log(chalk.green(`Added the following root template folder path: ${chalk.bold('"' + rootFolderPath + '"')}`))
     } else {
-      console.log("Resetting the root folder paths")
+      console.log(chalk.green("Resetting the root folder paths"))
       delete config.rootFolders
     }
   }
-  const templateEngineResponse = (await askQuestion(`Which templating engine would you like to use? (defaults to ${(chalk.bold(chalk.green("ejs")))})\nOptions: ${(templateEngines.map(value => chalk.green(value)).join(", ") + "\n> ")}`)).trim().toLowerCase()
-  if (templateEngineResponse.length > 0 && !templateEngines.includes(templateEngineResponse)) throw new Error("Invalid Template Engine Response Name")
+  const templateEngineResponse = await askQuestion(chalk.green(`Which templating engine would you like to use? (defaults to ${(chalk.bold(chalk.green("ejs")))})\nOptions: ${(templateEngines.map(value => chalk.cyan(value)).join(", "))}`) + "\n> ", {validAnswers: templateEngines.concat(["", "delete"])})
+  console.log(templateEngineResponse)
   if (templateEngineResponse) {
-    if (templateEngineReponse !== "delete") {
+    if (templateEngineResponse !== "delete") {
       config.templateEngine = templateEngineResponse
       console.log(chalk.green(`Set templateEngine flag as ${chalk.bold('"' + config.templateEngine + '"')}`))
     } else {
-      console.log("Resetting the template engine option")
+      console.log(chalk.green("Resetting the template engine option"))
       delete config.templateEngine
     }
   }
   try {
-    const dependencyResponse = await askQuestion(`Would you like to automatically install the dependencies (currently supports package.json)? (${chalk.bold(chalk.green("yes"))}/${chalk.green("no")})\n> `, {validAnswers: ["yes", "no", "delete"]})
+    const dependencyResponse = await askQuestion(chalk.green(`Would you like to automatically install the dependencies (currently supports package.json)? (${chalk.bold(chalk.green("yes"))}/${chalk.green("no")})`) + "\n> ", {validAnswers: ["yes", "no", "delete"]})
     if (reponse !== "delete") {
       config.automaticallyInstallDependencies = dependencyResponse === "yes"
       console.log(chalk.green(`Set automaticallyInstallDependencies flag as ${chalk.bold(config.automaticallyInstallDependencies)}`))
     } else {
       delete config.automaticallyInstallDependencies
-      console.log("Resetting the automatic dependency installation option")
+      console.log(chalk.green("Resetting the automatic dependency installation option"))
     }
   } catch(error) {
     // Do Nothing
   }
   try {
-    const gitResponse = await askQuestion(`Would you like to automatically initialize an empty git repo in newly generated projects? (${chalk.bold(chalk.green("yes"))}/${chalk.green("no")})\n> `, {validAnswers: ["yes", "no", "delete"]})
+    const gitResponse = await askQuestion(chalk.green(`Would you like to automatically initialize an empty git repo in newly generated projects? (${chalk.bold(chalk.green("yes"))}/${chalk.green("no")})`) + "\n> ", {validAnswers: ["yes", "no", "delete"]})
     if (reponse !== "delete") {
       config.automaticallyInitializeGitRepo = gitResponse === "yes"
       console.log(chalk.green(`Set automaticallyInitializeGitRepo flag as ${chalk.bold(config.automaticallyInitializeGitRepo)}`))
     } else {
       delete config.automaticallyInitializeGitRepo
-      console.log("Resetting the automatic git initiation option")
+      console.log(chalk.green("Resetting the automatic git initiation option"))
     }
 
   } catch(error) {
     // Do Nothing
   }
   try {
-    config.automaticallySaveProjects = await askYesOrNo(`Would you like to automatically save newly generated projects in Emerald Templates? (${chalk.bold(chalk.green("yes"))}/${chalk.green("no")})\n> `)
+    config.automaticallySaveProjects = await askYesOrNo(chalk.green(`Would you like to automatically save newly generated projects in Emerald Templates? (${chalk.bold(chalk.green("yes"))}/${chalk.green("no")})`) + "\n> ")
     console.log(chalk.green(`Set automaticallySaveProjects flag as ${chalk.bold(config.automaticallySaveProjects)}`))
   } catch(error) {
     // Do Nothing
   }
-  const launchCommandReponse = (await askQuestion(`What launch command would you like to run after generating a new project? (To open atom for example, try "atom .")\n> `)).trim()
+  const launchCommandReponse = await askQuestion(chalk.green(`What launch command would you like to run after generating a new project? (To open atom for example, try "atom .")`) + "\n> ")
   if (launchCommandReponse.length > 0) {
     config.launchCommand = launchCommandReponse
     console.log(chalk.cyan(`Set the project launch command as ${chalk.green(chalk.bold('"' + config.launchCommand + '"'))}`))

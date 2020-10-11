@@ -2,7 +2,7 @@ const readline = require('readline')
 
 function askQuestion(question, options={}) {
   const {validAnswers=null, trimAnswer=true} = options
-  if (validAnswers !== null && (!Array.isArray(validAnswers) || validAnswers.length < 1 || validAnswers.some(value => typeof value != 'string' || value.length < 1))) throw new Error("Valid answers must be an array of at least 1 non-empty string")
+  if (validAnswers !== null && (!Array.isArray(validAnswers) || validAnswers.length < 1 || validAnswers.some(value => typeof value != 'string'))) throw new Error("Valid answers must be an array of at least 1 string")
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
