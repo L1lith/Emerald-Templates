@@ -17,9 +17,9 @@ async function configure(options) {
   let config = getConfiguration()
   const configKeys = Object.keys(config).sort()
   if (configKeys.length > 0) {
-    console.log(chalk.green("+---- Current Config Changes ----+\n" + configKeys.map(key => chalk.green(`|=- ${key}: ${chalk.cyan(inspect(config[key]))}`)).join('\n') + "\n+----\n"))
+    console.log(chalk.green("+---- Current Config Changes ----+\n" + configKeys.map(key => chalk.green(`|=- ${key}: ${chalk.cyan(inspect(config[key]))}`)).join('\n') + "\n+----"))
   }
-  console.log(chalk.cyan(chalk.bold("NOTE: ") + 'To choose not to configure an option, simply enter nothing. To reset an option, enter "delete"\n'))
+  console.log(chalk.cyan(chalk.bold("- NOTE - ") + '\nTo choose not to configure an option, simply enter nothing. To reset an option, enter "delete"\n'))
   onDeath(() => {
     saveConfig(config)
   })
