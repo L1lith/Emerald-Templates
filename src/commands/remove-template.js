@@ -1,4 +1,4 @@
-const {join} = require('path')
+const { join } = require('path')
 const loadConfig = require('../functions/loadConfig')
 const saveConfig = require('../functions/saveConfig')
 const resolvePath = require('../functions/resolvePath')
@@ -9,13 +9,20 @@ const chalk = require('chalk')
 async function removeTemplate(options) {
   let templateFolder = options['remove-template'][0]
   if (typeof templateFolder != 'string' || templateFolder.length < 1) {
-    templateFolder = (await askQuestion("Please enter the path to your template templates storage folder you'd like to remove\n> ")).trim()
-    if (typeof templateFolder != 'string' || templateFolder.length < 1) throw new Error("Invalid Template Path supplied")
+    templateFolder = (
+      await askQuestion(
+        "Please enter the path to your template templates storage folder you'd like to remove\n> "
+      )
+    ).trim()
+    if (typeof templateFolder != 'string' || templateFolder.length < 1)
+      throw new Error('Invalid Template Path supplied')
   }
   const templatePath = resolvePath(templateFolder, process.cwd())
-  if (!(await directoryExists(templatePath))) throw new Error(`The folder "${templatePath}" does not exist`)
+  if (!(await directoryExists(templatePath)))
+    throw new Error(`The folder "${templatePath}" does not exist`)
   let config = loadConfig()
-  if (!Array.isArray(config.templatePaths) || !config.templatePaths.includes(templatePath)) throw new Error("That folder has not been added")
+  if (!Array.isArray(config.templatePaths) || !config.templatePaths.includes(templatePath))
+    throw new Error('That folder has not been added')
   let templatePathIndex = 0
   while (templatePathIndex >= 0) {
     templatePathIndex = templatePaths.indexOf(templatePath)
@@ -23,7 +30,7 @@ async function removeTemplate(options) {
   }
   if (config.templatePaths.length < 1) delete config.templatePaths
   saveConfig(config)
-  console.log(chalk.green("Done!"))
+  console.log(chalk.green('Done!'))
 }
 
 module.exports = removeTemplate

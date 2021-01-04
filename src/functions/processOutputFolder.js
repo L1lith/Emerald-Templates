@@ -12,9 +12,19 @@ async function processOutputFolder(outputFolder, templateFolder) {
   // TODO: add more circular processing protection? No idea how to do this
   while (firstRun === true || filesProcessed > 0) {
     filesProcessed = 0
-    filesProcessed += await processEmeraldLinks(outputFolder, templateFolder, projectConfig, firstRun)
+    filesProcessed += await processEmeraldLinks(
+      outputFolder,
+      templateFolder,
+      projectConfig,
+      firstRun
+    )
     filesProcessed += await populateEmeralds(outputFolder, templateFolder, projectConfig, firstRun)
-    filesProcessed += await processEmeraldScripts(outputFolder, templateFolder, projectConfig, firstRun)
+    filesProcessed += await processEmeraldScripts(
+      outputFolder,
+      templateFolder,
+      projectConfig,
+      firstRun
+    )
     firstRun = false
   }
 }

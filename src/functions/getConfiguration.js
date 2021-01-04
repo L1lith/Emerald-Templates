@@ -11,13 +11,17 @@ const defaultOptions = {
   projectFolders: []
 }
 
-function getConfiguration(ensureConfigured=false) {
+function getConfiguration(ensureConfigured = false) {
   if (!result) {
     try {
       result = require('../../emerald-global-config.json')
     } catch (error) {
       if (ensureConfigured === true) {
-        throw new Error(`Emerald Templates has not been configured, please run "${process.argv[0] === "emerald-templates" ? "emerald-templates" : "emt"} configure"`)
+        throw new Error(
+          `Emerald Templates has not been configured, please run "${
+            process.argv[0] === 'emerald-templates' ? 'emerald-templates' : 'emt'
+          } configure"`
+        )
       } else {
         result = {}
       }
@@ -29,12 +33,23 @@ function getConfiguration(ensureConfigured=false) {
       setDefaultValue(result, key, value)
     }
   })
-  if (ensureConfigured === true && result.templateFolders.length < 1 && result.rootFolders.length < 1) throw new Error("Must configure at least 1 template or root folder")
-  if (!Array.isArray(result.templateFolders) || result.templateFolders.some(value => typeof value != 'string' || value.length < 1)) {
-    throw new Error("Template folders is not an array of non-empty path strings")
+  if (
+    ensureConfigured === true &&
+    result.templateFolders.length < 1 &&
+    result.rootFolders.length < 1
+  )
+    throw new Error('Must configure at least 1 template or root folder')
+  if (
+    !Array.isArray(result.templateFolders) ||
+    result.templateFolders.some(value => typeof value != 'string' || value.length < 1)
+  ) {
+    throw new Error('Template folders is not an array of non-empty path strings')
   }
-  if (!Array.isArray(result.rootFolders) || result.rootFolders.some(value => typeof value != 'string' || value.length < 1)) {
-    throw new Error("Root folders is not an array of non-empty path strings")
+  if (
+    !Array.isArray(result.rootFolders) ||
+    result.rootFolders.some(value => typeof value != 'string' || value.length < 1)
+  ) {
+    throw new Error('Root folders is not an array of non-empty path strings')
   }
   return result
 }

@@ -18,14 +18,20 @@ function commandAliases(options) {
   if (Array.isArray(inputCommand)) inputCommand = inputCommand[0]
   if (typeof inputCommand == 'string') {
     const commandRequest = resolveCommandAlias(inputCommand)
-    if (!commands.includes(commandRequest)) throw new Error("Invalid command requested")
+    if (!commands.includes(commandRequest)) throw new Error('Invalid command requested')
     let aliases = aliasMap.hasOwnProperty(commandRequest) ? aliasMap[commandRequest] : []
     aliases = aliases.map(value => chalk.cyan(value))
-    displayList(aliases, "Command Aliases for " + chalk.bold(commandRequest))
+    displayList(aliases, 'Command Aliases for ' + chalk.bold(commandRequest))
     return
   }
 
-  displayList(aliasEntries.map(([command, aliasList]) => chalk.green(command + " - ") + chalk.cyan(aliasList.sort().join(chalk.green(', ')))), "Command Aliases")
+  displayList(
+    aliasEntries.map(
+      ([command, aliasList]) =>
+        chalk.green(command + ' - ') + chalk.cyan(aliasList.sort().join(chalk.green(', ')))
+    ),
+    'Command Aliases'
+  )
 }
 
 module.exports = commandAliases

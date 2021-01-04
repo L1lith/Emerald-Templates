@@ -6,7 +6,7 @@ const resolveCommandAlias = require('./resolveCommandAlias')
 let storedArgs = null
 const removeLeadingDashes = /^[\-]*/
 
-function getArgs(fresh=false) {
+function getArgs(fresh = false) {
   if (fresh !== true && storedArgs !== null) return storedArgs
 
   const args = minimist(process.argv.slice(2))
@@ -16,7 +16,7 @@ function getArgs(fresh=false) {
       const oldValue = args[alias]
       delete args[alias]
       const newName = argsAliases[alias]
-      if (args.hasOwnProperty(newName)) throw new Error("Cannot supply the same option twice")
+      if (args.hasOwnProperty(newName)) throw new Error('Cannot supply the same option twice')
       args[newName] = oldValue
     }
   })
@@ -34,7 +34,7 @@ function getArgs(fresh=false) {
       let primaryOption = resolveCommandAlias(args._[0])
       if (primaryOptionNames.includes(primaryOption)) {
         primaryOptions.push(primaryOption)
-        if (args.hasOwnProperty(primaryOption)) throw new Error("Unexpected State")
+        if (args.hasOwnProperty(primaryOption)) throw new Error('Unexpected State')
         if (args._.length > 1) {
           args[primaryOption] = args._.slice(1)
         } else {
@@ -43,7 +43,7 @@ function getArgs(fresh=false) {
         args._ = []
       } else {
         primaryOptions.push('generate')
-        if (args.hasOwnProperty('generate')) throw new Error("Unexpected State")
+        if (args.hasOwnProperty('generate')) throw new Error('Unexpected State')
         args.generate = args._
         delete args._
       }
@@ -52,10 +52,11 @@ function getArgs(fresh=false) {
       args.help = true
     }
   }
-  if (typeof primaryOptions[0] != 'string' || primaryOptions[0].length < 1) throw new Error ("Must supply a valid primary option")
-  if (primaryOptions.length > 1) throw new Error("Too Many Primary Options")
+  if (typeof primaryOptions[0] != 'string' || primaryOptions[0].length < 1)
+    throw new Error('Must supply a valid primary option')
+  if (primaryOptions.length > 1) throw new Error('Too Many Primary Options')
   args.primaryOption = primaryOptions[0]
-  return storedArgs = args
+  return (storedArgs = args)
 }
 
 module.exports = getArgs

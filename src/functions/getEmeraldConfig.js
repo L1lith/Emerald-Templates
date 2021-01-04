@@ -1,9 +1,9 @@
-const {join, basename} = require('path')
+const { join, basename } = require('path')
 const titleCase = require('./titleCase')
 const setDefaultValue = require('./setDefaultValue')
 
 const defaultOptions = {
-  name: "Untitled Project"
+  name: 'Untitled Project'
 }
 
 const dashesRegex = /[\-]+/g
@@ -14,25 +14,29 @@ async function getEmeraldConfig(targetFolder) {
   let package = null
   try {
     package = require(join(targetFolder, 'package.json'))
-  } catch(error) {
+  } catch (error) {
     // Do nothing
   }
   try {
     const result = require(join(targetFolder, 'emerald-config.js'))
-    if (typeof output != 'object' || output === null) throw new Error("Emerald Config must export an object")
+    if (typeof output != 'object' || output === null)
+      throw new Error('Emerald Config must export an object')
     output = result
-  } catch(err1) {
-    if (!(err1 instanceof Error) || !err1.message.toLowerCase().includes('cannot find module')) throw err1
+  } catch (err1) {
+    if (!(err1 instanceof Error) || !err1.message.toLowerCase().includes('cannot find module'))
+      throw err1
     try {
       const result = require(join(targetFolder, 'emerald-config.json'))
-      if (typeof output != 'object' || output === null) throw new Error("Emerald Config must export an object")
+      if (typeof output != 'object' || output === null)
+        throw new Error('Emerald Config must export an object')
       output = result
-    } catch(err2) {
+    } catch (err2) {
       if (!(err2 instanceof Error) || !err2.message.includes('Cannot find module')) throw err2
       // Do Nothing
     }
   }
-  if (!output.hasOwnProperty('name')) { // Assure it has a name
+  if (!output.hasOwnProperty('name')) {
+    // Assure it has a name
     if (package && package.hasOwnProperty('name')) {
       output.name = titleCase(package.name.split(dashesRegex).join(' ').trim())
     } else {

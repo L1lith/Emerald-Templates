@@ -1,4 +1,4 @@
-const {readdir} = require('fs')
+const { readdir } = require('fs')
 
 function getChildDirectories(source) {
   return new Promise((resolve, reject) => {

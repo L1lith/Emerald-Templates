@@ -1,1 +1,21 @@
-module.exports = ["generate", "add-project", "remove-project", "list-projects", "configure", "list-templates", 'add-root', 'add-template', "describe", "open-project", "open-template", "get-directory", "version", "remove-root", "remove-template", "list-roots", "help", "command-aliases", "reset-config"].sort()
+module.exports = [
+  'generate',
+  'add-project',
+  'remove-project',
+  'list-projects',
+  'configure',
+  'list-templates',
+  'add-root',
+  'add-template',
+  'describe',
+  'open-project',
+  'open-template',
+  'get-directory',
+  'version',
+  'remove-root',
+  'remove-template',
+  'list-roots',
+  'help',
+  'command-aliases',
+  'reset-config'
+].sort()
