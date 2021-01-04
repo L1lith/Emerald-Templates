@@ -1,15 +1,15 @@
-const isAbsolute = require('./isAbsolute')
-const {join, normalize} = require('path')
+const { join, isAbsolute } = require("path");
+const normalize = require("normalize-path");
 
 function resolvePath(path, workingDirectory) {
-  let output
+  let output;
+  path = normalize(path);
   if (isAbsolute(path)) {
-    output = path
+    output = path;
   } else {
-    output = join(workingDirectory, path)
+    output = join(normalize(workingDirectory), path);
   }
-  output = normalize(output)
-  return output
+  return output;
 }
 
-module.exports = resolvePath
+module.exports = resolvePath;

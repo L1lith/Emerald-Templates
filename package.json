@@ -46,6 +46,7 @@
     "ondeath": "^1.0.0",
     "open-file-explorer": "^1.0.2",
     "path-type": "^4.0.0",
+    "resolve-from": "^5.0.0",
     "rimraf": "^3.0.2",
     "sandhands": "^1.6.1",
     "sanitize-filename": "^1.6.3",
