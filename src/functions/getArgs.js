@@ -42,9 +42,9 @@ function getArgs(fresh = false) {
         }
         args._ = []
       } else {
-        primaryOptions.push('generate')
-        if (args.hasOwnProperty('generate')) throw new Error('Unexpected State')
-        args.generate = args._
+        primaryOptions.push('create-project')
+        if (args.hasOwnProperty('create-project')) throw new Error('Unexpected State')
+        args['create-project'] = args._
         delete args._
       }
     } else {

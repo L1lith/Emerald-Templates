@@ -145,6 +145,7 @@ async function configure(options) {
   } catch (error) {
     // Do Nothing
   }
+
   const launchCommandResponse = await askQuestion(
     chalk.green(
       `What launch command would you like to run after generating a new project? (To open atom for example, try "atom .")`

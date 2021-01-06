@@ -1,8 +1,8 @@
-const findFilesByExtension = require('../functions/findFilesByExtension')
 const processEmeraldLinks = require('./processEmeraldLinks')
 const populateEmeralds = require('./populateEmeralds')
 const processEmeraldScripts = require('./processEmeraldScripts')
 const getEmeraldConfig = require('./getEmeraldConfig')
+const { output } = require('../boilerplate/argsAliases')
 
 async function processOutputFolder(outputFolder, templateFolder) {
   const projectConfig = await getEmeraldConfig(templateFolder)

@@ -1,6 +1,6 @@
 const { join } = require('path')
 const getConfiguration = require('../functions/getConfiguration')
-const saveConfig = require('../functions/saveConfig')
+const saveGlobalConfig = require('../functions/saveGlobalConfig')
 const resolvePath = require('../functions/resolvePath')
 const askQuestion = require('../functions/askQuestion')
 const chalk = require('chalk')
@@ -19,12 +19,12 @@ async function addTemplate(options) {
   const templateFolderPath = resolvePath(templateFolder, process.cwd())
   if (!(await directoryExists(templateFolderPath)))
     throw new Error(`The folder "${templateFolder}" does not exist`)
-  let config = getConfiguration()
+  let config = getConfiguration(templateFolderPath, { crea })
   if (config.templateFolders.includes(templateFolderPath))
     throw new Error('That template has already been added')
   config.templateFolders = config.templateFolders.concat([templateFolderPath])
   console.log(chalk.green(`Adding the templates folder path: ${'"' + templateFolderPath + '"'}`))
-  saveConfig(config)
+  saveGlobalConfig(config)
   console.log(chalk.green('Done!'))
 }
 

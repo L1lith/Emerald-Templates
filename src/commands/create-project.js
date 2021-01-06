@@ -8,13 +8,14 @@ const { copy, readdir, rmdir, readFile, unlink, pathExists } = require('fs-extra
 const getConfiguration = require('../functions/getConfiguration')
 const directoryExists = require('directory-exists')
 const resolvePath = require('../functions/resolvePath')
-const saveConfig = require('../functions/saveConfig')
+const saveGlobalConfig = require('../functions/saveGlobalConfig')
 const processOutputFolder = require('../functions/processOutputFolder')
 const copyTemplate = require('../functions/copyTemplate')
 const findTemplateFolder = require('../functions/findTemplateFolder')
 const askQuestion = require('../functions/askQuestion')
 const askYesOrNo = require('../functions/askYesOrNo')
-const displayList = require('../functions/displayList')
+//const displayList = require('../functions/displayList')
+const getEmeraldConfig = require('../functions/getEmeraldConfig')
 
 const validPrexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
@@ -24,9 +25,11 @@ async function generate(options) {
 
   // const rootTemplateFolder = config.templateFolder
   // if (!(await directoryExists(rootTemplateFolder))) throw new Error("The folder configured to contain the templates does not exist")
+  console.log(options)
   let templateFolder =
-    (options['generate'][0] || '').trim() ||
-    (await askQuestion(chalk.green('Which template would you like to use?') + '\n> '))
+    (
+      (options.hasOwnProperty('create-project') ? options['create-project'][0] : undefined) || ''
+    ).trim() || (await askQuestion(chalk.green('Which template would you like to use?') + '\n> '))
   if (!templateFolder) throw new Error('Please specify which template folder you would like to use')
   const templateFolderPath = await findTemplateFolder(templateFolder)
   if (templateFolderPath === null || !(await directoryExists(templateFolderPath)))
@@ -36,7 +39,10 @@ async function generate(options) {
   process.env.TEMPLATE_FOLDER = templateFolderPath
 
   let outputFolder =
-    (Array.isArray(options['generate']) ? options['generate'] : [options['generate']])
+    (Array.isArray(options['create-project'])
+      ? options['create-project']
+      : [options['create-project']]
+    )
       .slice(1)
       .join(' ')
       .trim() ||
@@ -84,6 +90,16 @@ async function generate(options) {
   await copyTemplate(templateFolderPath, outputFolderPath, {
     overwrite: overwriteMode === 'overwrite'
   })
+  console.log('Generating the default emerald config')
+  const projectConfig = await getEmeraldConfig(outputFolderPath, {
+    generateDefaultConfig: true,
+    defaultConfigOptions: {
+      sources: [templateFolderPath]
+    }
+  }) // Generate the default .emerald-config.json
+  console.log(
+    chalk.green('The project has been named ') + chalk.cyan('"' + projectConfig.name + '"')
+  )
   console.log('Handling any scripts, links, etc')
   await processOutputFolder(outputFolderPath, templateFolderPath)
   let packageJSON = null
@@ -113,7 +129,7 @@ async function generate(options) {
   const { projectFolders } = config
   if (!projectFolders.includes(outputFolderPath)) {
     config.projectFolders = projectFolders.concat([outputFolderPath])
-    saveConfig(config)
+    saveGlobalConfig(config)
   }
   console.log(chalk.green('Project Generated Successfully!'))
 }

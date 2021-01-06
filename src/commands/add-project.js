@@ -1,7 +1,7 @@
 const { join } = require('path')
 const getConfiguration = require('../functions/getConfiguration')
 const getEmeraldConfig = require('../functions/getEmeraldConfig')
-const saveConfig = require('../functions/saveConfig')
+const saveGlobalConfig = require('../functions/saveGlobalConfig')
 const resolvePath = require('../functions/resolvePath')
 const directoryExists = require('directory-exists')
 const askQuestion = require('../functions/askQuestion')
@@ -23,7 +23,7 @@ async function addProject(options) {
   if (projectFolders.includes(projectFolder))
     throw new Error('That project folder has already been added')
   config.projectFolders = config.projectFolders.concat([projectFolder])
-  saveConfig(config)
+  saveGlobalConfig(config)
   console.log(chalk.green('Done!'))
 }
 

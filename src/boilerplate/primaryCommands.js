@@ -1,9 +1,10 @@
 module.exports = [
-  'generate',
+  'generate-gem',
   'add-project',
   'remove-project',
   'list-projects',
   'configure',
+  'create-project',
   'list-templates',
   'add-root',
   'add-template',

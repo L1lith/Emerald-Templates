@@ -14,7 +14,7 @@ function ensureArguments(argumentObject, sanitizeArguments) {
       }
       sanitize(input, format)
     } catch (error) {
-      error.message = `The following error occured while validating the "${key}" argument for a .emerald-script: ${error.message}`
+      error.message = `The following error occurred while validating the "${key}" argument for a .emerald-script: ${error.message}`
       throw error
     }
   })

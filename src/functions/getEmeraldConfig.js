@@ -1,19 +1,21 @@
 const { join, basename } = require('path')
 const titleCase = require('./titleCase')
 const setDefaultValue = require('./setDefaultValue')
+const { writeJson } = require('fs-extra')
 
-const defaultOptions = {
-  name: 'Untitled Project'
-}
+const defaultOptions = {}
 
 const dashesRegex = /[\-]+/g
 
-async function getEmeraldConfig(targetFolder) {
-  let output = {}
+async function getEmeraldConfig(targetFolder, options = {}) {
+  const { generateDefaultConfig = false, defaultConfigOptions = {} } = options
+  if (typeof generateDefaultConfig != 'boolean')
+    throw new Error('second argument must be a boolean')
+  let output = defaultConfigOptions
   setDefaultValue(output, 'defaultOptions', true) // If this object is not overwritten we know it's the default options so we assign this property as a signature
   let package = null
   try {
-    package = require(join(targetFolder, 'package.json'))
+    package = output.package = require(join(targetFolder, 'package.json'))
   } catch (error) {
     // Do nothing
   }
@@ -31,10 +33,15 @@ async function getEmeraldConfig(targetFolder) {
         throw new Error('Emerald Config must export an object')
       output = result
     } catch (err2) {
-      if (!(err2 instanceof Error) || !err2.message.includes('Cannot find module')) throw err2
+      if (
+        !(err2 instanceof Error) ||
+        (!err2.message.includes('Cannot find module') && generateDefaultConfig === false)
+      )
+        throw err2
       // Do Nothing
     }
   }
+
   if (!output.hasOwnProperty('name')) {
     // Assure it has a name
     if (package && package.hasOwnProperty('name')) {
@@ -44,11 +51,20 @@ async function getEmeraldConfig(targetFolder) {
     }
   }
   //output = {...defaultOptions, ...output} // Merge the default options with whatever we find
-  Object.entries(defaultOptions).forEach(([key, value]) => {
-    if (!output.hasOwnProperty(key)) {
+  if (output.defaultOptions === true) {
+    Object.entries(defaultOptions).forEach(([key, value]) => {
       setDefaultValue(output, key, value)
+    })
+    if (generateDefaultConfig === true) {
+      writeJson(join(targetFolder, '.emerald-config.json'), output)
     }
-  })
+  } else {
+    Object.entries(defaultOptions).forEach(([key, value]) => {
+      if (!output.hasOwnProperty(key)) {
+        setDefaultValue(output, key, value)
+      }
+    })
+  }
   return output
 }
 

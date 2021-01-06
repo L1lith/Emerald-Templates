@@ -1,7 +1,7 @@
 const readline = require('readline')
 
 function askQuestion(question, options = {}) {
-  const { validAnswers = null, trimAnswer = true } = options
+  const { validAnswers = null, trimAnswer = true, lowercase = false } = options
   if (
     validAnswers !== null &&
     (!Array.isArray(validAnswers) ||
@@ -19,6 +19,7 @@ function askQuestion(question, options = {}) {
     rl.question(question, answer => {
       // TODO: Log the answer in a database
       if (trimAnswer === true) answer = answer.trim()
+      if (lowercase === true) answer = answer.toLowerCase()
       if (validAnswers !== null && !validAnswers.includes(answer))
         return reject(
           new Error('Invalid Answer, expected one of the following: ' + validAnswers.join(', '))

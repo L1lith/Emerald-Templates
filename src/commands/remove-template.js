@@ -1,6 +1,6 @@
 const { join } = require('path')
 const loadConfig = require('../functions/loadConfig')
-const saveConfig = require('../functions/saveConfig')
+const saveGlobalConfig = require('../functions/saveGlobalConfig')
 const resolvePath = require('../functions/resolvePath')
 const directoryExists = require('directory-exists')
 const askQuestion = require('../functions/askQuestion')
@@ -29,7 +29,7 @@ async function removeTemplate(options) {
     templatePaths.splice(templatePathIndex, 1)
   }
   if (config.templatePaths.length < 1) delete config.templatePaths
-  saveConfig(config)
+  saveGlobalConfig(config)
   console.log(chalk.green('Done!'))
 }
 

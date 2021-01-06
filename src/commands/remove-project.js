@@ -1,6 +1,6 @@
 const { join } = require('path')
 const loadConfig = require('../functions/loadConfig')
-const saveConfig = require('../functions/saveConfig')
+const saveGlobalConfig = require('../functions/saveGlobalConfig')
 const resolvePath = require('../functions/resolvePath')
 const directoryExists = require('directory-exists')
 const askQuestion = require('../functions/askQuestion')
@@ -31,7 +31,7 @@ async function removeRoot(options) {
   } else {
     config.projectFolders = config.projectFolders
   }
-  saveConfig(config)
+  saveGlobalConfig(config)
   console.log(chalk.green('Done!'))
 }
 
