@@ -47,7 +47,14 @@ To get more information about a specific command supply the command name to the 
 emt help <command>
 ```
 
-## Template Files
+## Gems
+Gems are like mini-templates inside of your template directory. They are for generating new things inside your projects after they have been created. To create a gem, inside of your template directory make a new folder called gems, and inside that make a new folder named whatever you want your gem to be called. After you have initialized your project with your template run the following command with the name of your folder inside of the "gems" folder from a terminal inside your new project directory. 
+```bash
+emt gem <gem-name>
+```
+Anything inside of your gem folder will now be copied into the root of your new project, and like during generation, any appropriate scripts will be handled by Emerald-Templates.
+
+## Template Engine Files
 Inside your template folders, any file ending with `.emerald` (this can be after their normal extension) will be run through the templating engine of your choice (chosen during the configuration step). See the corresponding template engine's documentation for more information on that. The .emerald file extension will automatically be stripped in the resulting projects when you generate them with the template.
 
 ## Scripting

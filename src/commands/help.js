@@ -83,12 +83,27 @@ const commandHelp = {
     chalk.green('Function: ') +
     'Deletes your config for Emerald Templates, no args' +
     chalk.green('\nSyntax: ') +
-    chalk.cyan('$COMMAND {command}'),
+    chalk.cyan('$COMMAND'),
   'list-projects':
     chalk.green('Function: ') +
     'Lists all the project folders, no args necessary' +
     chalk.green('\nSyntax: ') +
-    chalk.cyan('$COMMAND')
+    chalk.cyan('$COMMAND'),
+  'add-source':
+    chalk.green('Function: ') +
+    "Adds a template to the project's sources so that you can use it's gems" +
+    chalk.green('\nSyntax: ') +
+    chalk.cyan('$COMMAND <source path>'),
+  'remove-source':
+    chalk.green('Function: ') +
+    "Removes a template from the project's sources so that you can unlink it's gems" +
+    chalk.green('\nSyntax: ') +
+    chalk.cyan('$COMMAND <source path>'),
+  'generate-gem':
+    chalk.green('Function: ') +
+    'Generates a specified gem from any configured source. See add-source to add new templates to provide gems' +
+    chalk.green('\nSyntax: ') +
+    chalk.cyan('$COMMAND <gem name>')
 }
 
 function help(options) {

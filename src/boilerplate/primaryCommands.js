@@ -6,6 +6,8 @@ module.exports = [
   'configure',
   'create-project',
   'list-templates',
+  'add-source',
+  'remove-source',
   'add-root',
   'add-template',
   'describe',
