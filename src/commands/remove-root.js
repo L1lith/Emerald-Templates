@@ -1,5 +1,5 @@
 const { join } = require('path')
-const loadConfig = require('../functions/loadConfig')
+const loadGlobalConfig = require('../functions/loadGlobalConfig')
 const saveGlobalConfig = require('../functions/saveGlobalConfig')
 const resolvePath = require('../functions/resolvePath')
 const directoryExists = require('directory-exists')
@@ -20,7 +20,7 @@ async function removeRoot(options) {
   const rootFolder = resolvePath(rootPath, process.cwd())
   if (!(await directoryExists(rootFolder)))
     throw new Error(`The folder "${rootPath}" does not exist`)
-  let config = loadConfig()
+  let config = loadGlobalConfig()
   if (!Array.isArray(config.rootFolders) || !config.rootFolders.includes(rootFolder))
     throw new Error('That folder has not been added')
   let rootFolderIndex = 0

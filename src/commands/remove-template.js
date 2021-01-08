@@ -1,5 +1,5 @@
 const { join } = require('path')
-const loadConfig = require('../functions/loadConfig')
+const loadGlobalConfig = require('../functions/loadGlobalConfig')
 const saveGlobalConfig = require('../functions/saveGlobalConfig')
 const resolvePath = require('../functions/resolvePath')
 const directoryExists = require('directory-exists')
@@ -20,7 +20,7 @@ async function removeTemplate(options) {
   const templatePath = resolvePath(templateFolder, process.cwd())
   if (!(await directoryExists(templatePath)))
     throw new Error(`The folder "${templatePath}" does not exist`)
-  let config = loadConfig()
+  let config = loadGlobalConfig()
   if (!Array.isArray(config.templatePaths) || !config.templatePaths.includes(templatePath))
     throw new Error('That folder has not been added')
   let templatePathIndex = 0

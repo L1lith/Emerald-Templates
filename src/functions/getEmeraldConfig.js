@@ -8,16 +8,20 @@ const defaultOptions = {}
 const dashesRegex = /[\-]+/g
 
 async function getEmeraldConfig(targetFolder, options = {}) {
-  const { generateDefaultConfig = false, defaultConfigOptions = {} } = options
+  const { generateDefaultConfig = false, defaultConfigOptions = {}, debug = false } = options
   if (typeof generateDefaultConfig != 'boolean')
     throw new Error('second argument must be a boolean')
   let output = defaultConfigOptions
   setDefaultValue(output, 'defaultOptions', true) // If this object is not overwritten we know it's the default options so we assign this property as a signature
-  let package = null
+  let ourPackage = null
   try {
-    package = output.package = require(join(targetFolder, 'package.json'))
+    ourPackage = require(join(targetFolder, 'package.json'))
   } catch (error) {
     // Do nothing
+    if (debug) {
+      console.warn('The following error occurred while trying to load the package.json')
+      console.error(error)
+    }
   }
   try {
     const result = require(join(targetFolder, 'emerald-config.js'))
@@ -25,6 +29,10 @@ async function getEmeraldConfig(targetFolder, options = {}) {
       throw new Error('Emerald Config must export an object')
     output = result
   } catch (err1) {
+    if (debug) {
+      console.warn('The following error occurred while trying to load the emerald-config.js')
+      console.error(err1)
+    }
     if (!(err1 instanceof Error) || !err1.message.toLowerCase().includes('cannot find module'))
       throw err1
     try {
@@ -33,6 +41,10 @@ async function getEmeraldConfig(targetFolder, options = {}) {
         throw new Error('Emerald Config must export an object')
       output = result
     } catch (err2) {
+      if (debug) {
+        console.warn('The following error occurred while trying to load the emerald-config.json')
+        console.error(err2)
+      }
       if (
         !(err2 instanceof Error) ||
         (!err2.message.includes('Cannot find module') && generateDefaultConfig === false)
@@ -44,8 +56,8 @@ async function getEmeraldConfig(targetFolder, options = {}) {
 
   if (!output.hasOwnProperty('name')) {
     // Assure it has a name
-    if (package && package.hasOwnProperty('name')) {
-      output.name = titleCase(package.name.split(dashesRegex).join(' ').trim())
+    if (ourPackage && ourPackage.hasOwnProperty('name')) {
+      output.name = titleCase(ourPackage.name.split(dashesRegex).join(' ').trim())
     } else {
       output.name = titleCase(basename(targetFolder).split(dashesRegex).join(' ').trim())
     }
@@ -56,7 +68,7 @@ async function getEmeraldConfig(targetFolder, options = {}) {
       setDefaultValue(output, key, value)
     })
     if (generateDefaultConfig === true) {
-      writeJson(join(targetFolder, '.emerald-config.json'), output)
+      writeJson(join(targetFolder, 'emerald-config.json'), output)
     }
   } else {
     Object.entries(defaultOptions).forEach(([key, value]) => {
