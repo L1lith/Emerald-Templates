@@ -3,6 +3,9 @@ const onlyUnique = require('./onlyUnique')
 const getSubdirectories = require('./getSubdirectories')
 const { join, basename } = require('path')
 const getEmeraldConfig = require('./getEmeraldConfig')
+const findTemplateFolder = require('./findTemplateFolder')
+const getTemplateFolders = require('./getTemplateFolders')
+const { template } = require('handlebars')
 
 async function findGemPath(projectPath, gemName, options = {}) {
   const { doLogging = true } = options
@@ -19,8 +22,9 @@ async function findGemPath(projectPath, gemName, options = {}) {
   if (doLogging) {
     console.log('Found ' + sources.length + ' source(s), locating matching gem...')
   }
+  const templateFolders = await getTemplateFolders()
   for (let i = 0; i < sources.length; i++) {
-    const output = await findGemPathFromTemplate(sources[i], gemName)
+    const output = await findGemPathFromTemplate(sources[i], gemName, templateFolders)
     if (output !== null) return output
   }
   return null
@@ -28,14 +32,16 @@ async function findGemPath(projectPath, gemName, options = {}) {
 
 const nonEssentialCharacters = /[\s\-]+/g
 
-async function findGemPathFromTemplate(templateFolder, originalGemName) {
+async function findGemPathFromTemplate(templateName, originalGemName, templateFolders) {
   const gemName = originalGemName.toLowerCase().replace(nonEssentialCharacters, '')
   if (gemName.length < 1) throw new Error('Invalid Gem Name')
   let potentialGems
+  const templateFolder = await findTemplateFolder(templateName, templateFolders)
+  if (templateFolder === null) throw new Error('That was weird, an unexpected error occured')
   try {
     potentialGems = await getSubdirectories(join(templateFolder, 'gems'))
   } catch (error) {
-    //console.error(error)
+    console.error(error)
     return null
   }
   for (let i = 0; i < potentialGems.length; i++) {
