@@ -25,7 +25,6 @@ async function generate(options) {
 
   // const rootTemplateFolder = config.templateFolder
   // if (!(await directoryExists(rootTemplateFolder))) throw new Error("The folder configured to contain the templates does not exist")
-  console.log(options)
   let templateFolder =
     (
       (options.hasOwnProperty('create-project') ? options['create-project'][0] : undefined) || ''
@@ -94,7 +93,7 @@ async function generate(options) {
   const projectConfig = await getEmeraldConfig(outputFolderPath, {
     generateDefaultConfig: true,
     defaultConfigOptions: {
-      sources: [templateFolderPath]
+      sources: [templateFolder]
     }
   }) // Generate the default .emerald-config.json
   console.log(
