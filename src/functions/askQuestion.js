@@ -11,7 +11,8 @@ function askQuestion(question, options = {}) {
     throw new Error('Valid answers must be an array of at least 1 string')
   const rl = readline.createInterface({
     input: process.stdin,
-    output: process.stdout
+    output: process.stdout,
+    terminal: false
   })
   return new Promise((resolve, reject) => {
     if (typeof question != 'string' || question.length < 1)

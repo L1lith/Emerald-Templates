@@ -4,7 +4,7 @@ const chalk = require('chalk')
 const { inspect } = require('util')
 const askQuestion = require('../functions/askQuestion')
 const resolvePath = require('../functions/resolvePath')
-const saveConfig = require('../functions/saveConfig')
+const saveGlobalConfig = require('../functions/saveGlobalConfig')
 const askYesOrNo = require('../functions/askYesOrNo')
 const getConfiguration = require('../functions/getConfiguration')
 const onDeath = require('ondeath')
@@ -34,7 +34,7 @@ async function configure(options) {
     )
   )
   onDeath(() => {
-    saveConfig(config)
+    saveGlobalConfig(config)
   })
   const rootFolder = (
     await askQuestion(
@@ -152,16 +152,21 @@ async function configure(options) {
     ) + '\n> '
   )
   if (launchCommandResponse.length > 0) {
-    config.launchCommand = launchCommandResponse
-    console.log(
-      chalk.cyan(
-        `Set the project launch command as ${chalk.green(
-          chalk.bold('"' + config.launchCommand + '"')
-        )}`
+    if (launchCommandResponse.toLowerCase().trim() === 'delete') {
+      console.log(chalk.green('Resetting the launch command'))
+      delete config.launchCommand
+    } else {
+      config.launchCommand = launchCommandResponse
+      console.log(
+        chalk.cyan(
+          `Set the project launch command as ${chalk.green(
+            chalk.bold('"' + config.launchCommand + '"')
+          )}`
+        )
       )
-    )
+    }
   }
-  saveConfig(config)
+  saveGlobalConfig(config)
   console.log(chalk.bold(chalk.green('Emerald Templates Configured.')))
 }
 
