@@ -18,7 +18,7 @@ async function removeSource(options) {
   if (typeof sourceName !== 'string') throw new Error('The source template name is not a string')
 
   const templateDirectory = findTemplateFolder(sourceName)
-  if (!templateDirectory) throw new Error('Could not find an installed template by that name')
+  if (!templateDirectory) console.warn('WARNING: Could not find an installed template by that name')
   //sourceName = resolvePath(sourceName.trim(), dir)
   //if (!(await exists(sourceName))) throw new Error('Source path does not exist')
 
