@@ -26,7 +26,8 @@ async function generateGem(options) {
   if (gemPath === null) throw new Error('Could not find a matching gem')
   console.log('Found the gem! Cloning the contents.')
   await copyTemplate(gemPath, projectPath, {
-    overwrite: false
+    overwrite: false,
+    allowGems: true
   })
   console.log('Handling any scripts, links, etc')
   await processOutputFolder(projectPath, gemPath)

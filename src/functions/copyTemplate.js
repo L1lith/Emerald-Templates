@@ -6,24 +6,27 @@ const mkdirp = require('mkdirp')
 const mvdir = require('mvdir')
 const { isFile, isDirectory } = require('path-type')
 const walk = require('ignore-walk')
+const containsPath = require('contains-path')
 
 async function copyTemplate(templateFolder, outputFolder, options = {}) {
-  const { overwrite = false } = options
+  const { overwrite = false, allowGems = false } = options
   await mkdirp(outputFolder)
   let files = await walk({
     path: templateFolder,
     ignoreFiles: ['.emignore'],
-    follow: false
+    follow: false,
+    filters: ['node_modules', 'gems']
   })
   files = files.filter(
     file =>
       !(
-        file.includes('node_modules') ||
-        file.endsWith('.git') ||
-        file.endsWith('emerald-config.js') ||
-        file.endsWith('emerald-config.json')
+        containsPath(file, 'node_modules') ||
+        containsPath(file, '.git') ||
+        file.includes('emerald-config.js') ||
+        file.includes('emerald-config.json')
       )
   )
+  if (!allowGems) files = files.filter(file => !containsPath(file, 'gems'))
   for (const file of files) {
     const sourcePath = join(templateFolder, file)
     const outputPath = join(outputFolder, file)

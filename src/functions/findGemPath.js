@@ -39,9 +39,7 @@ async function findGemPathFromTemplate(templateFolder, originalGemName) {
     return null
   }
   for (let i = 0; i < potentialGems.length; i++) {
-    const directoryName = basename(potentialGems[i])
-      .toLowerCase()
-      .replace(nonEssentialCharacters, '')
+    const directoryName = potentialGems[i].toLowerCase().replace(nonEssentialCharacters, '')
     if (directoryName.length < 1) {
       console.warn('Template had an invalid gem name')
       continue

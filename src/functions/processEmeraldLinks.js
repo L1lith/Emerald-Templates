@@ -51,7 +51,7 @@ async function processEmeraldLinks(outputFolder, templateFolder, projectConfig, 
         try {
           await processEmeraldLink(emeraldLink, outputFolder, templateFolder)
         } catch (error) {
-          console.log('AAAA ', emeraldLink, outputFolder, templateFolder)
+          //console.log('AAAA ', emeraldLink, outputFolder, templateFolder)
           throw error
         }
       }
