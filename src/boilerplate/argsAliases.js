@@ -20,7 +20,7 @@ module.exports = {
   open: 'open-project',
   info: 'describe',
   d: 'describe',
-  gd: 'get-directory',
+  td: 'template-directory',
   v: 'version',
   ar: 'add-root',
   at: 'add-template',

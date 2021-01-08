@@ -13,7 +13,7 @@ module.exports = [
   'describe',
   'open-project',
   'open-template',
-  'get-directory',
+  'template-directory',
   'version',
   'remove-root',
   'remove-template',
