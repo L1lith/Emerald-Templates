@@ -24,34 +24,21 @@ async function getEmeraldConfig(targetFolder, options = {}) {
     }
   }
   try {
-    const result = require(join(targetFolder, 'emerald-config.js'))
+    const result = require(join(targetFolder, 'emerald-config.json'))
     if (typeof output != 'object' || output === null)
       throw new Error('Emerald Config must export an object')
     output = result
-  } catch (err1) {
+  } catch (err2) {
     if (debug) {
-      console.warn('The following error occurred while trying to load the emerald-config.js')
-      console.error(err1)
+      console.warn('The following error occurred while trying to load the emerald-config.json')
+      console.error(err2)
     }
-    if (!(err1 instanceof Error) || !err1.message.toLowerCase().includes('cannot find module'))
-      throw err1
-    try {
-      const result = require(join(targetFolder, 'emerald-config.json'))
-      if (typeof output != 'object' || output === null)
-        throw new Error('Emerald Config must export an object')
-      output = result
-    } catch (err2) {
-      if (debug) {
-        console.warn('The following error occurred while trying to load the emerald-config.json')
-        console.error(err2)
-      }
-      if (
-        !(err2 instanceof Error) ||
-        (!err2.message.includes('Cannot find module') && generateDefaultConfig === false)
-      )
-        throw err2
-      // Do Nothing
-    }
+    if (
+      !(err2 instanceof Error) ||
+      (!err2.message.includes('Cannot find module') && generateDefaultConfig === false)
+    )
+      throw err2
+    // Do Nothing
   }
 
   if (!output.hasOwnProperty('name')) {

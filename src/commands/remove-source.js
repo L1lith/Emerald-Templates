@@ -4,7 +4,7 @@ const getEmeraldConfig = require('../functions/getEmeraldConfig')
 const resolvePath = require('../functions/resolvePath')
 const saveEmeraldConfig = require('../functions/saveEmeraldConfig')
 
-async function addSource(options) {
+async function removeSource(options) {
   const dir = process.cwd()
   let projectPath = options['project'][0] || process.cwd()
   if (typeof projectPath !== 'string') throw new Error('The project path is not a string')
@@ -20,8 +20,8 @@ async function addSource(options) {
 
   const projectConfig = await getEmeraldConfig(projectPath)
   const sources = projectConfig.source || []
-  if (sources.includes(sourcePath)) return console.warn('You have already added this source')
-  projectConfig.sources.push(sourcePath)
+  if (!sources.includes(sourcePath)) return console.warn('You have not added this source')
+  projectConfig.sources = projectConfig.sources.filter(source => source !== sourcePath)
   await saveEmeraldConfig(join(projectPath, 'emerald-config.json'), projectConfig)
 }
 
