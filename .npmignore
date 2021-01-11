@@ -1,0 +1,5 @@
+node_modules/
+/emerald-global-config.json
+/templates/
+/test/
+prettier.config.js
