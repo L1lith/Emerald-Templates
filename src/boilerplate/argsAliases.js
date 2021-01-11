@@ -24,7 +24,7 @@ module.exports = {
   v: 'version',
   ar: 'add-root',
   at: 'add-template',
-  'get-config': 'print-config'
+  'get-config': 'print-config',
   rr: 'remove-root',
   rt: 'remove-template',
   'list-aliases': 'command-aliases',
