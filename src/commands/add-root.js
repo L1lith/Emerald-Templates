@@ -1,6 +1,6 @@
 const { join } = require('path')
 const getConfiguration = require('../functions/getConfiguration')
-const saveConfig = require('../functions/saveConfig')
+const saveGlobalConfig = require('../functions/saveGlobalConfig')
 const resolvePath = require('../functions/resolvePath')
 const directoryExists = require('directory-exists')
 const askQuestion = require('../functions/askQuestion')
@@ -17,7 +17,7 @@ async function addRoot(options) {
   //config.rootFolders = config.rootFolders
   if (config.rootFolders.includes(rootFolder)) throw new Error('That folder has already been added')
   config.rootFolders = config.rootFolders.concat([rootFolder])
-  saveConfig(config)
+  saveGlobalConfig(config)
   console.log(chalk.green('Done!'))
 }
 

@@ -16,6 +16,7 @@ const askQuestion = require('../functions/askQuestion')
 const askYesOrNo = require('../functions/askYesOrNo')
 //const displayList = require('../functions/displayList')
 const getEmeraldConfig = require('../functions/getEmeraldConfig')
+const { output } = require('../boilerplate/argsAliases')
 
 const validPrexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
@@ -47,7 +48,8 @@ async function generate(options) {
       .trim() ||
     (await askQuestion(chalk.green('What would you like to name the project?') + '\n> '))
   if (!outputFolder) throw new Error('You must specify the output folder')
-  const outputFolderPath = resolvePath(sanitize(outputFolder.replace(/\s+/g, '-')), process.cwd())
+  // .replace(/\s+/g, '-')
+  const outputFolderPath = resolvePath(outputFolder, process.cwd())
   if (!(await directoryExists(join(outputFolderPath, '..'))))
     throw new Error(`The output folder's parent directory does not exist`)
 
