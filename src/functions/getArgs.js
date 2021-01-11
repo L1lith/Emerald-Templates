@@ -44,8 +44,6 @@ function getArgs(fresh = false) {
       } else {
         primaryOptions.push('create-project')
         if (args.hasOwnProperty('create-project')) throw new Error('Unexpected State')
-        args['create-project'] = args._
-        delete args._
       }
     } else {
       primaryOptions.push('help')

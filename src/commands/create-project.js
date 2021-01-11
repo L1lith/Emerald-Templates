@@ -4,7 +4,7 @@ const chalk = require('chalk')
 const { promisify } = require('util')
 const rimraf = require('delete').promise
 const exec = promisify(require('child_process').exec)
-const { copy, readdir, rmdir, readFile, unlink, pathExists } = require('fs-extra')
+const { copy, readdir, rmdir, readFile, unlink, pathExists, ensureDir } = require('fs-extra')
 const getConfiguration = require('../functions/getConfiguration')
 const directoryExists = require('directory-exists')
 const resolvePath = require('../functions/resolvePath')
@@ -27,10 +27,14 @@ async function generate(options) {
   // const rootTemplateFolder = config.templateFolder
   // if (!(await directoryExists(rootTemplateFolder))) throw new Error("The folder configured to contain the templates does not exist")
   let templateFolder =
-    (
-      (options.hasOwnProperty('create-project') ? options['create-project'][0] : undefined) || ''
-    ).trim() || (await askQuestion(chalk.green('Which template would you like to use?') + '\n> '))
-  if (!templateFolder) throw new Error('Please specify which template folder you would like to use')
+    options.template ||
+    options.templateFolder ||
+    options.templateDirectory ||
+    options._ ||
+    askQuestion(chalk.green('Which template would you like to use?') + '\n> ')
+  if (Array.isArray(templateFolder)) templateFolder = templateFolder[0]
+  if (typeof templateFolder != 'string')
+    throw new Error('Please specify which template folder you would like to use')
   const templateFolderPath = await findTemplateFolder(templateFolder)
   if (templateFolderPath === null || !(await directoryExists(templateFolderPath)))
     throw new Error(
@@ -39,19 +43,17 @@ async function generate(options) {
   process.env.TEMPLATE_FOLDER = templateFolderPath
 
   let outputFolder =
-    (Array.isArray(options['create-project'])
-      ? options['create-project']
-      : [options['create-project']]
-    )
-      .slice(1)
-      .join(' ')
-      .trim() ||
-    (await askQuestion(chalk.green('What would you like to name the project?') + '\n> '))
-  if (!outputFolder) throw new Error('You must specify the output folder')
+    options['project'] ||
+    options['projectPath'] ||
+    (Array.isArray(options._) && options._.length >= 2
+      ? options._[1]
+      : await askQuestion(chalk.green('What would you like to name the project?') + '\n> '))
+  if (Array.isArray(outputFolder)) outputFolder = outputFolder[0]
+  if (typeof outputFolder != 'string') throw new Error('You must specify the output folder')
   // .replace(/\s+/g, '-')
   const outputFolderPath = resolvePath(outputFolder, process.cwd())
-  if (!(await directoryExists(join(outputFolderPath, '..'))))
-    throw new Error(`The output folder's parent directory does not exist`)
+  const parentDirectory = join(outputFolderPath, '..')
+  await ensureDir(parentDirectory)
 
   console.log(chalk.green('Creating a new project at ') + chalk.cyan('"' + outputFolderPath + '"'))
 
