@@ -21,7 +21,11 @@
     "templates",
     "code",
     "project",
-    "preset"
+    "preset",
+    "gems",
+    "scripting",
+    "javascript",
+    "templating"
   ],
   "author": "L1lith",
   "license": "MIT",

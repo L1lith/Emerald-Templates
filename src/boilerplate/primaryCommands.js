@@ -20,5 +20,6 @@ module.exports = [
   'list-roots',
   'help',
   'command-aliases',
+  'print-config',
   'reset-config'
 ].sort()

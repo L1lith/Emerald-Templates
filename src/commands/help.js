@@ -103,7 +103,12 @@ const commandHelp = {
     chalk.green('Function: ') +
     'Generates a specified gem from any configured source. See add-source to add new templates to provide gems' +
     chalk.green('\nSyntax: ') +
-    chalk.cyan('$COMMAND <gem name>')
+    chalk.cyan('$COMMAND <gem name>'),
+  'print-config':
+    chalk.green('Function: ') +
+    'Prints your global emerald config to the console' +
+    chalk.green('\nSyntax: ') +
+    chalk.cyan('$COMMAND')
 }
 
 function help(options) {
