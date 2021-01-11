@@ -59,4 +59,6 @@ tests.forEach(test => {
   })
 })
 
-removeSync(tempDirectory)
+after(() => {
+  removeSync(tempDirectory)
+})
