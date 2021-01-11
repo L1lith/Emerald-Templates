@@ -4,7 +4,8 @@ const processEmeraldScripts = require('./processEmeraldScripts')
 const getEmeraldConfig = require('./getEmeraldConfig')
 const { output } = require('../boilerplate/argsAliases')
 
-async function processOutputFolder(outputFolder, templateFolder) {
+async function processOutputFolder(outputFolder, templateFolder, options = {}) {
+  if (typeof options != 'object' || options === null) options = {}
   const projectConfig = await getEmeraldConfig(templateFolder)
   let filesProcessed = 0
   let firstRun = true
@@ -16,14 +17,22 @@ async function processOutputFolder(outputFolder, templateFolder) {
       outputFolder,
       templateFolder,
       projectConfig,
-      firstRun
+      firstRun,
+      options
     )
-    filesProcessed += await populateEmeralds(outputFolder, templateFolder, projectConfig, firstRun)
+    filesProcessed += await populateEmeralds(
+      outputFolder,
+      templateFolder,
+      projectConfig,
+      firstRun,
+      options
+    )
     filesProcessed += await processEmeraldScripts(
       outputFolder,
       templateFolder,
       projectConfig,
-      firstRun
+      firstRun,
+      options
     )
     firstRun = false
   }

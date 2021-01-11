@@ -9,7 +9,8 @@ const findFilesByExtension = require('../functions/findFilesByExtension')
 
 const packageNameRegex = /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/
 
-async function processEmeraldScript(scriptPath) {
+async function processEmeraldScript(scriptPath, options) {
+  const silent = !!options?.silent
   const scriptDirectory = dirname(scriptPath)
   const baseExtension = basename(scriptPath).split('.').splice(-2)[0]
   const rawScript = await readFile(scriptPath, 'utf8')
@@ -51,7 +52,7 @@ async function processEmeraldScript(scriptPath) {
         if (!Array.isArray(dependencies)) throw new Error('Dependencies must be an array')
         if (dependencies.some(value => typeof value != 'string' || !packageNameRegex.test(value)))
           throw new Error('All dependencies must be valid package name strings')
-        console.log('Installing ' + dependencies.length + ' Temporary Dependencies')
+        if (!silent) console.log('Installing ' + dependencies.length + ' Temporary Dependencies')
         for (const dependency of dependencies) {
           let exists = false
           try {
@@ -82,7 +83,7 @@ async function processEmeraldScript(scriptPath) {
       console.error(error)
     }
     if (dependenciesToRemove.length > 0) {
-      console.log('Uninstalling Temporary Dependencies')
+      if (!silent) console.log('Uninstalling Temporary Dependencies')
       for (const dependency of dependenciesToRemove) {
         await exec('npm uninstall ' + dependency, {
           cwd: scriptDirectory
@@ -106,7 +107,7 @@ async function processEmeraldScript(scriptPath) {
 async function processEmeraldScripts(outputFolder, templateFolder, projectConfig, firstRun) {
   const emeraldScripts = await findFilesByExtension(outputFolder, '.emerald-script')
   if (emeraldScripts.length > 0)
-    console.log(`Running ${firstRun ? 'the' : 'additional'} emerald scripts`)
+    if (!silent) console.log(`Running ${firstRun ? 'the' : 'additional'} emerald scripts`)
   for (let i = 0; i < emeraldScripts.length; i++) {
     const scriptPath = emeraldScripts[i]
     await processEmeraldScript(scriptPath)

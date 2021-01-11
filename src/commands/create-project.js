@@ -55,7 +55,12 @@ async function generate(options) {
   const parentDirectory = join(outputFolderPath, '..')
   await ensureDir(parentDirectory)
 
-  console.log(chalk.green('Creating a new project at ') + chalk.cyan('"' + outputFolderPath + '"'))
+  const silent = !!options.silent
+
+  if (!silent)
+    console.log(
+      chalk.green('Creating a new project at ') + chalk.cyan('"' + outputFolderPath + '"')
+    )
 
   process.env.OUTPUT_FOLDER = outputFolderPath
   const exists = await directoryExists(outputFolderPath)
@@ -78,7 +83,7 @@ async function generate(options) {
           "Are you sure you'd like to erase the entire project? (yes/no)\n> "
         )
         if (answer === false) {
-          console.log('Exiting...')
+          if (!silent) console.log('Exiting...')
           process.exit(0)
         }
       }
@@ -89,41 +94,44 @@ async function generate(options) {
       throw new Error('Stop requested')
     }
   }
-  console.log('Copying The Template')
+  if (!silent) console.log('Copying The Template')
   await copyTemplate(templateFolderPath, outputFolderPath, {
     overwrite: overwriteMode === 'overwrite'
   })
-  console.log('Generating the default emerald config')
+  if (!silent) console.log('Generating the default emerald config')
   const projectConfig = await getEmeraldConfig(outputFolderPath, {
     generateDefaultConfig: true,
     defaultConfigOptions: {
       sources: [templateFolder]
     }
   }) // Generate the default .emerald-config.json
-  console.log(
-    chalk.green('The project has been named ') + chalk.cyan('"' + projectConfig.name + '"')
-  )
-  console.log('Handling any scripts, links, etc')
-  await processOutputFolder(outputFolderPath, templateFolderPath)
+  if (!silent) {
+    console.log(
+      chalk.green('The project has been named ') + chalk.cyan('"' + projectConfig.name + '"')
+    )
+    console.log('Handling any scripts, links, etc')
+  }
+
+  await processOutputFolder(outputFolderPath, templateFolderPath, { silent })
   let packageJSON = null
   try {
     packageJSON = require(join(outputFolderPath, 'package.json'))
   } catch (error) {
-    console.log('Could not find or access the package.json')
+    if (!silent) console.log('Could not find or access the package.json')
   }
   if (config.automaticallyInstallDependencies !== false && packageJSON) {
-    console.log('Installing Dependencies')
+    if (!silent) console.log('Installing Dependencies')
     await exec('npm install', { cwd: outputFolderPath })
   }
   if (config.automaticallyInitializeGitRepo === true) {
-    console.log('Initializing Git Repository')
+    if (!silent) console.log('Initializing Git Repository')
     if (!(await pathExists(join(outputFolderPath, '.git'))))
       await exec('git init .', { cwd: outputFolderPath })
   }
   if (typeof launchCommand == 'string') {
     launchCommand = launchCommand.trim()
     if (launchCommand.length > 0) {
-      console.log('Running Launch Command')
+      if (!silent) console.log('Running Launch Command')
       await exec(launchCommand, { cwd: outputFolderPath, shell: true })
     } else {
       console.warn('Invalid Launch Command')
@@ -134,7 +142,7 @@ async function generate(options) {
     config.projectFolders = projectFolders.concat([outputFolderPath])
     saveGlobalConfig(config)
   }
-  console.log(chalk.green('Project Generated Successfully!'))
+  if (!silent) console.log(chalk.green('Project Generated Successfully!'))
 }
 
 module.exports = generate

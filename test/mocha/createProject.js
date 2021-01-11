@@ -44,7 +44,8 @@ tests.forEach(test => {
         // To Do: Actually generate the project
         createProject({
           projectPath: tempOutputPath,
-          templateDirectory: sourceTemplate
+          templateDirectory: sourceTemplate,
+          silent: true
         })
           .then(() => {
             removeSync(outputGitPath)

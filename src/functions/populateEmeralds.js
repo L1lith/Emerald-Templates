@@ -10,7 +10,8 @@ const findFilesByExtension = require('../functions/findFilesByExtension')
 const getConfiguration = require('./getConfiguration')
 const args = require('./getArgs')()
 
-async function populateEmerald(outputFolder, filePath, templateEngine = 'ejs') {
+async function populateEmerald(outputFolder, filePath, templateEngine = 'ejs', options) {
+  const silent = !!options?.silent
   const sourceFile = filePath
   const rawFile = await readFile(filePath, 'utf8')
   filePath = filePath.replace(/.emerald$/, '')
@@ -46,11 +47,18 @@ async function populateEmerald(outputFolder, filePath, templateEngine = 'ejs') {
   await rimraf(sourceFile)
 }
 
-async function populateEmeralds(outputFolder, templateFolder, projectConfig, firstRun) {
+async function populateEmeralds(
+  outputFolder,
+  templateFolder,
+  projectConfig,
+  firstRun,
+  options = {}
+) {
+  const silent = !!options?.silent
   const config = getConfiguration()
   const emeralds = await findFilesByExtension(outputFolder, '.emerald')
   if (emeralds.length > 0) {
-    console.log(`Populating ${firstRun ? 'the' : 'additional'} .emerald files`)
+    if (!silent) console.log(`Populating ${firstRun ? 'the' : 'additional'} .emerald files`)
     for (const emerald of emeralds) {
       await populateEmerald(outputFolder, emerald, config.templateEngine)
     }
