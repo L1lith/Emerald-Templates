@@ -4,7 +4,7 @@ const commands = require('../boilerplate/primaryCommands')
 const displayList = require('../functions/displayList')
 
 const commandHelp = {
-  generate:
+  'create-project':
     chalk.green('Function: ') +
     'Generates a new project from a template' +
     chalk.green('\nSyntax: ') +
@@ -108,7 +108,12 @@ const commandHelp = {
     chalk.green('Function: ') +
     'Prints your global emerald config to the console' +
     chalk.green('\nSyntax: ') +
-    chalk.cyan('$COMMAND')
+    chalk.cyan('$COMMAND'),
+  'list-gems':
+    chalk.green('Function: ') +
+    'Lists all of the available gems to generate from. Note: Defaults the project directory to the current working directory' +
+    chalk.green('\nSyntax: ') +
+    chalk.cyan('$COMMAND <project dir>')
 }
 
 function help(options) {

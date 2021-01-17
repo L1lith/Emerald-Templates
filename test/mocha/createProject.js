@@ -21,6 +21,9 @@ const tests = [
 
 const testRootDirectory = join(__dirname, '..')
 const tempDirectory = join(testRootDirectory, 'tmp')
+before(() => {
+  removeSync(tempDirectory)
+})
 
 tests.forEach(test => {
   const { name, description, sourceTemplate, subTests } = test

@@ -6,9 +6,10 @@ const getEmeraldConfig = require('./getEmeraldConfig')
 const findTemplateFolder = require('./findTemplateFolder')
 const getTemplateFolders = require('./getTemplateFolders')
 const { template } = require('handlebars')
+const findGemFromDirectory = require('./findGemFromDirectory')
 
 async function findGemPath(projectPath, gemName, options = {}) {
-  const { doLogging = true } = options
+  let { doLogging = true, templateFolders = null } = options
   const globalConfig = loadGlobalConfig()
   const projectConfig = await getEmeraldConfig(projectPath)
   //   if (!Array.isArray(projectConfig.sources) || projectConfig.sources.length < 1)
@@ -22,35 +23,13 @@ async function findGemPath(projectPath, gemName, options = {}) {
   if (doLogging) {
     console.log('Found ' + sources.length + ' source(s), locating matching gem...')
   }
-  const templateFolders = await getTemplateFolders()
+  if (!Array.isArray(templateFolders)) templateFolders = await getTemplateFolders()
+  const workingDirectoryGem = await findGemPathFromDirectory(projectPath, gemName)
+  if (workingDirectoryGem !== null) return workingDirectoryGem
   for (let i = 0; i < sources.length; i++) {
-    const output = await findGemPathFromTemplate(sources[i], gemName, templateFolders)
+    const templateFolder = await findTemplateFolder(sources[i], templateFolders)
+    const output = await findGemFromDirectory(templateFolder, gemName)
     if (output !== null) return output
-  }
-  return null
-}
-
-const nonEssentialCharacters = /[\s\-]+/g
-
-async function findGemPathFromTemplate(templateName, originalGemName, templateFolders) {
-  const gemName = originalGemName.toLowerCase().replace(nonEssentialCharacters, '')
-  if (gemName.length < 1) throw new Error('Invalid Gem Name')
-  let potentialGems
-  const templateFolder = await findTemplateFolder(templateName, templateFolders)
-  if (templateFolder === null) throw new Error('That was weird, an unexpected error occured')
-  try {
-    potentialGems = await getSubdirectories(join(templateFolder, 'gems'))
-  } catch (error) {
-    console.error(error)
-    return null
-  }
-  for (let i = 0; i < potentialGems.length; i++) {
-    const directoryName = potentialGems[i].toLowerCase().replace(nonEssentialCharacters, '')
-    if (directoryName.length < 1) {
-      console.warn('Template had an invalid gem name')
-      continue
-    }
-    if (directoryName === gemName) return join(templateFolder, 'gems', potentialGems[i])
   }
   return null
 }

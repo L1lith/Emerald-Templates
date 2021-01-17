@@ -21,5 +21,6 @@ module.exports = [
   'help',
   'command-aliases',
   'print-config',
-  'reset-config'
+  'reset-config',
+  'list-gems'
 ].sort()

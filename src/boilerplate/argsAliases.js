@@ -4,6 +4,7 @@ module.exports = {
   info: 'describe',
   gem: 'generate-gem',
   'gen-gem': 'generate-gem',
+  generate: 'create-project',
   new: 'create-project',
   init: 'create-project',
   initialize: 'create-project',
@@ -33,5 +34,6 @@ module.exports = {
   'get-alias': 'command-aliases',
   'command-alias': 'command-aliases',
   ca: 'command-aliases',
-  'remove-config': 'reset-config'
+  'remove-config': 'reset-config',
+  gems: 'list-gems'
 }
