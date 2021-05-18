@@ -15,7 +15,6 @@ async function processEmeraldLink(linkPath, outputFolder, templateFolder) {
   const relativeLinkFolder = dirname(relativePath)
   const fileName = basename(linkPath, extname(linkPath))
   const linkFolder = dirname(linkPath)
-  //if (fileName.length < 1) throw new Error("Emerald Link Error, Filename not given")
   const output = join(linkFolder, fileName.replace(endingEmeraldLinkRegex, ''))
   const sourceCode = (await readFile(linkPath)).toString()
   const sourceLines = sourceCode

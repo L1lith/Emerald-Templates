@@ -18,10 +18,12 @@ const askYesOrNo = require('../functions/askYesOrNo')
 const getEmeraldConfig = require('../functions/getEmeraldConfig')
 const { output } = require('../boilerplate/argsAliases')
 
+const pathSpacingRegex = /[\s\-]+/g
 const validPrexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
 async function generate(options) {
   const config = (process.env.EMERALD_CONFIG = getConfiguration())
+  console.log('x', options)
   let { launchCommand } = config
 
   // const rootTemplateFolder = config.templateFolder
@@ -30,8 +32,9 @@ async function generate(options) {
     options.template ||
     options.templateFolder ||
     options.templateDirectory ||
-    options._ ||
-    askQuestion(chalk.green('Which template would you like to use?') + '\n> ')
+    (options._ || [])[0] ||
+    (await askQuestion(chalk.green('Which template would you like to use?') + '\n> '))
+  console.log('n', templateFolder)
   if (Array.isArray(templateFolder)) templateFolder = templateFolder[0]
   if (typeof templateFolder != 'string')
     throw new Error('Please specify which template folder you would like to use')
@@ -46,10 +49,11 @@ async function generate(options) {
     options['project'] ||
     options['projectPath'] ||
     (Array.isArray(options._) && options._.length >= 2
-      ? options._[1]
+      ? options._.slice(1).join(' ')
       : await askQuestion(chalk.green('What would you like to name the project?') + '\n> '))
   if (Array.isArray(outputFolder)) outputFolder = outputFolder[0]
   if (typeof outputFolder != 'string') throw new Error('You must specify the output folder')
+  outputFolder = outputFolder.trim().toLowerCase().replace(pathSpacingRegex, '-')
   // .replace(/\s+/g, '-')
   const outputFolderPath = resolvePath(outputFolder, process.cwd())
   const parentDirectory = join(outputFolderPath, '..')

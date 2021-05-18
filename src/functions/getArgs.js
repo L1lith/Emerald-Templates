@@ -32,15 +32,16 @@ function getArgs(fresh = false) {
   if (primaryOptions.length < 1) {
     if (args._.length > 0) {
       let primaryOption = resolveCommandAlias(args._[0])
+      const newArgs = args._.slice(1)
       if (primaryOptionNames.includes(primaryOption)) {
         primaryOptions.push(primaryOption)
         if (args.hasOwnProperty(primaryOption)) throw new Error('Unexpected State')
         if (args._.length > 1) {
-          args[primaryOption] = args._.slice(1)
+          args[primaryOption] = newArgs
         } else {
           args[primaryOption] = true
         }
-        args._ = []
+        args._ = newArgs
       } else {
         primaryOptions.push('create-project')
         if (args.hasOwnProperty('create-project')) throw new Error('Unexpected State')
