@@ -23,7 +23,6 @@ const validPrexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
 async function generate(options) {
   const config = (process.env.EMERALD_CONFIG = getConfiguration())
-  console.log('x', options)
   let { launchCommand } = config
 
   // const rootTemplateFolder = config.templateFolder
@@ -105,7 +104,7 @@ async function generate(options) {
   if (!silent) console.log('Generating the default emerald config')
   const projectConfig = await getEmeraldConfig(outputFolderPath, {
     generateDefaultConfig: true,
-    defaultConfigOptions: {
+    defaultOptions: {
       sources: [templateFolder]
     }
   }) // Generate the default .emerald-config.json

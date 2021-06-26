@@ -7,6 +7,7 @@ const mvdir = require('mvdir')
 const { isFile, isDirectory } = require('path-type')
 const walk = require('ignore-walk')
 const containsPath = require('contains-path')
+const gemRegex = /\.gem/i
 
 async function copyTemplate(templateFolder, outputFolder, options = {}) {
   const { overwrite = false, allowGems = false } = options
@@ -14,8 +15,8 @@ async function copyTemplate(templateFolder, outputFolder, options = {}) {
   let files = await walk({
     path: templateFolder,
     ignoreFiles: ['.emignore'],
-    follow: false,
-    filters: ['node_modules', 'gems']
+    follow: false
+    //filters: ['node_modules', 'gems'] // I don't think this is a real option
   })
   files = files.filter(
     file =>
@@ -26,7 +27,7 @@ async function copyTemplate(templateFolder, outputFolder, options = {}) {
         file.includes('emerald-config.json')
       )
   )
-  if (!allowGems) files = files.filter(file => !containsPath(file, 'gems'))
+  if (allowGems === false) files = files.filter(file => gemRegex.test(file)) // Don't include gems by default
   for (const file of files) {
     const sourcePath = join(templateFolder, file)
     const outputPath = join(outputFolder, file)

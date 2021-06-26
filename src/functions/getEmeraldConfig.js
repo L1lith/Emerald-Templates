@@ -8,7 +8,12 @@ const defaultOptions = {}
 const dashesRegex = /[\-]+/g
 
 async function getEmeraldConfig(targetFolder, options = {}) {
-  const { generateDefaultConfig = false, defaultConfigOptions = {}, debug = false } = options
+  const {
+    generateDefaultConfig = false,
+    defaultConfigOptions = {},
+    debug = false,
+    defaultOptions
+  } = options
   if (typeof generateDefaultConfig != 'boolean')
     throw new Error('second argument must be a boolean')
   let output = defaultConfigOptions
@@ -50,19 +55,13 @@ async function getEmeraldConfig(targetFolder, options = {}) {
     }
   }
   //output = {...defaultOptions, ...output} // Merge the default options with whatever we find
-  if (output.defaultOptions === true) {
+  if (typeof defaultOptions == 'object' && defaultOptions !== null) {
     Object.entries(defaultOptions).forEach(([key, value]) => {
-      setDefaultValue(output, key, value)
+      output[key] = value
     })
-    if (generateDefaultConfig === true) {
-      writeJson(join(targetFolder, 'emerald-config.json'), output)
-    }
-  } else {
-    Object.entries(defaultOptions).forEach(([key, value]) => {
-      if (!output.hasOwnProperty(key)) {
-        setDefaultValue(output, key, value)
-      }
-    })
+  }
+  if (generateDefaultConfig === true) {
+    await writeJson(join(targetFolder, 'emerald-config.json'), output)
   }
   return output
 }

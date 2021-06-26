@@ -40,6 +40,7 @@
     "delete": "^1.1.0",
     "directory-exists": "^2.0.1",
     "ejs": "^2.6.1",
+    "fly-install": "0.0.1",
     "fs-extra": "^8.0.1",
     "handlebars": "^4.1.2",
     "ignore-walk": "^3.0.3",
