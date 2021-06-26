@@ -6,6 +6,7 @@ const { writeJson } = require('fs-extra')
 const defaultOptions = {}
 
 const dashesRegex = /[\-]+/g
+const gemRegex = /.gem$/i
 
 async function getEmeraldConfig(targetFolder, options = {}) {
   const {
@@ -54,6 +55,8 @@ async function getEmeraldConfig(targetFolder, options = {}) {
       output.name = titleCase(basename(targetFolder).split(dashesRegex).join(' ').trim())
     }
   }
+  while (output.name.endsWith('.gem')) output.name = output.name.replace(gemRegex, '')
+  output.pathName = output.name.toLowerCase().trim().replace(/\s+/g, '-')
   //output = {...defaultOptions, ...output} // Merge the default options with whatever we find
   if (typeof defaultOptions == 'object' && defaultOptions !== null) {
     Object.entries(defaultOptions).forEach(([key, value]) => {

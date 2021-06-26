@@ -1,5 +1,6 @@
 const { join, extname, basename } = require('path')
 const { readdir, stat } = require('fs-extra')
+const { match } = require('assert')
 
 const gemRegex = /.gem/i
 
@@ -20,7 +21,7 @@ async function findFilesByExtension(directory, extension, options = {}) {
         (ignoreGems === true && gemRegex.test(fileName))
       )
         continue // Don't look for templates in the node modules
-      output = output.concat(await findFilesByExtension(filePath, extension))
+      output = output.concat(await findFilesByExtension(filePath, extension, options))
     }
     if (
       ((isDir ? matchFolders : matchFiles) && extname(fileName) === extension) ||
