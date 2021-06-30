@@ -1,5 +1,4 @@
-const { exists } = require('fs-extra')
-const { join } = require('path')
+const { join, relative, resolve } = require('path')
 const findTemplateFolder = require('./findTemplateFolder')
 const getTemplateFolders = require('./getTemplateFolders')
 const getEmeraldConfig = require('./getEmeraldConfig')
@@ -24,10 +23,11 @@ async function getAvailableGems(projectPath, options = {}) {
         matchFiles: false
       })
       await Promise.all(
-        gems.map(async gem => {
-          const gemPath = join(templatePath, gem)
-          const config = await getEmeraldConfig(gemPath)
+        gems.map(async gemPath => {
+          const config = await getEmeraldConfig(gemPath, { type: 'gem' })
           config.path = gemPath
+          config.project = templatePath
+          config.destination = relative(templatePath, resolve(gemPath, '..'))
           sources[config.pathName] = config
         })
       )
@@ -39,12 +39,13 @@ async function getAvailableGems(projectPath, options = {}) {
     matchFiles: false
   })
   await Promise.all(
-    projectGems.map(async gem => {
-      const gemPath = join(projectPath, gem)
-      const config = await getEmeraldConfig(gemPath)
+    projectGems.map(async gemPath => {
+      const config = await getEmeraldConfig(gemPath, { type: 'gem' })
       if (sources.hasOwnProperty(config.pathName))
         throw new Error(`Found duplicate gems: "${config.name}"`)
       config.path = gemPath
+      config.project = projectPath
+      config.destination = relative(projectPath, resolve(gemPath, '..'))
       sources[config.pathName] = config
     })
   )

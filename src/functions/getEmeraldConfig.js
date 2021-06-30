@@ -8,29 +8,34 @@ const defaultOptions = {}
 const dashesRegex = /[\-]+/g
 const gemRegex = /.gem$/i
 
+const validTypes = ['project', 'gem']
+
 async function getEmeraldConfig(targetFolder, options = {}) {
   const {
     generateDefaultConfig = false,
     defaultConfigOptions = {},
     debug = false,
-    defaultOptions
+    defaultOptions,
+    type = 'project'
   } = options
   if (typeof generateDefaultConfig != 'boolean')
     throw new Error('second argument must be a boolean')
+  if (!validTypes.includes(type)) throw new Error(`Invalid Project Type "${type}"`)
   let output = defaultConfigOptions
   setDefaultValue(output, 'defaultOptions', true) // If this object is not overwritten we know it's the default options so we assign this property as a signature
   let ourPackage = null
+  const configPath = join(targetFolder, type === 'project' ? 'emerald-config.json' : 'gem.json')
+  // try { // using package.json as a fallback is disabled
+  //   ourPackage = require(join(targetFolder, 'package.json'))
+  // } catch (error) {
+  //   // Do nothing
+  //   if (debug) {
+  //     console.warn('The following error occurred while trying to load the package.json')
+  //     console.error(error)
+  //   }
+  // }
   try {
-    ourPackage = require(join(targetFolder, 'package.json'))
-  } catch (error) {
-    // Do nothing
-    if (debug) {
-      console.warn('The following error occurred while trying to load the package.json')
-      console.error(error)
-    }
-  }
-  try {
-    const result = require(join(targetFolder, 'emerald-config.json'))
+    const result = require(configPath)
     if (typeof output != 'object' || output === null)
       throw new Error('Emerald Config must export an object')
     output = result
@@ -55,7 +60,8 @@ async function getEmeraldConfig(targetFolder, options = {}) {
       output.name = titleCase(basename(targetFolder).split(dashesRegex).join(' ').trim())
     }
   }
-  while (output.name.endsWith('.gem')) output.name = output.name.replace(gemRegex, '')
+  if (type === 'gem')
+    while (output.name.endsWith('.gem')) output.name = output.name.replace(gemRegex, '')
   output.pathName = output.name.toLowerCase().trim().replace(/\s+/g, '-')
   //output = {...defaultOptions, ...output} // Merge the default options with whatever we find
   if (typeof defaultOptions == 'object' && defaultOptions !== null) {
@@ -64,7 +70,7 @@ async function getEmeraldConfig(targetFolder, options = {}) {
     })
   }
   if (generateDefaultConfig === true) {
-    await writeJson(join(targetFolder, 'emerald-config.json'), output)
+    await writeJson(configPath, output)
   }
   return output
 }

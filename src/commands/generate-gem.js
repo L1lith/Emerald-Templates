@@ -1,11 +1,12 @@
 const getEmeraldConfig = require('../functions/getEmeraldConfig')
-const findGemPath = require('../functions/findGemPath')
+const findGem = require('../functions/findGem')
 const resolvePath = require('../functions/resolvePath')
 const askQuestion = require('../functions/askQuestion')
 const processOutputFolder = require('../functions/processOutputFolder')
 const copyTemplate = require('../functions/copyTemplate')
 const chalk = require('chalk')
 const { inspect } = require('util')
+const { join } = require('path')
 
 async function generateGem(options) {
   const dir = process.cwd()
@@ -22,15 +23,16 @@ async function generateGem(options) {
     ? options._[1]
     : dir
 
-  const gemPath = await findGemPath(projectPath, gemName)
-  if (gemPath === null) throw new Error('Could not find a matching gem')
+  const gem = await findGem(projectPath, gemName)
+  if (gem === null) throw new Error('Could not find a matching gem')
   console.log('Found the gem! Cloning the contents.')
-  await copyTemplate(gemPath, projectPath, {
+  const destination = join(projectPath, gem.destination)
+  await copyTemplate(gem.path, destination, {
     overwrite: false,
     allowGems: true
   })
   console.log('Handling any scripts, links, etc')
-  await processOutputFolder(projectPath, gemPath)
+  await processOutputFolder(projectPath, gem.path)
   console.log(chalk.green('Gem Generated Successfully!'))
 }
 

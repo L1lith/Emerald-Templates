@@ -13,10 +13,11 @@ async function listGems(options) {
   directory = resolvePath(directory, dir)
   //if (!exists(directory)) throw new Error("")
   const availableGems = Object.keys(await getAvailableGems(directory))
-  console.log(
-    chalk.green('Available Gems: ') +
-      (availableGems.length > 0 ? displayList(availableGems) : chalk.cyan('(none)'))
-  )
+  if (availableGems.length > 0) {
+    displayList(availableGems, 'Available Gems')
+  } else {
+    console.log(chalk.green('Available Gems ') + chalk.cyan('(none)'))
+  }
 }
 
 module.exports = listGems
