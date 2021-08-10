@@ -29,4 +29,4 @@ async function addTemplate(options) {
   console.log(chalk.green('Done!'))
 }
 
-module.exports = addTemplate
+module.exports = { handler: addTemplate }

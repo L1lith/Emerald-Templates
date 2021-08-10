@@ -29,4 +29,4 @@ async function addSource(options) {
   await saveEmeraldConfig(join(projectPath, 'emerald-config.json'), projectConfig)
 }
 
-module.exports = addSource
+module.exports = { handler: addSource, description: 'Adds a template source to get gems from' }

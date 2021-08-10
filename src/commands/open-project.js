@@ -28,4 +28,4 @@ async function openProject(options) {
   console.log(chalk.green('Done!'))
 }
 
-module.exports = openProject
+module.exports = { handler: openProject, aliases: ['open'], description: 'Opens a project' }

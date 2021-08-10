@@ -4,7 +4,7 @@ const askQuestion = require('../functions/askQuestion')
 const { basename } = require('path')
 const chalk = require('chalk')
 
-async function describe(options) {
+async function describeTemplate(options) {
   let targetTemplate =
     (options['describe'][0] || '').trim() ||
     (
@@ -26,4 +26,11 @@ async function describe(options) {
 Location: ${chalk.green('"' + templateFolder + '"')}`)
 }
 
-module.exports = describe
+module.exports = {
+  handler: describeTemplate,
+  description: 'Get info about a template',
+  aliases: ['describe'],
+  args: {
+    template: { format: String }
+  }
+}

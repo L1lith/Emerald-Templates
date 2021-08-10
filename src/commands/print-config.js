@@ -5,4 +5,4 @@ async function printConfig() {
   console.log(inspect(await loadGlobalConfig()))
 }
 
-module.exports = printConfig
+module.exports = { handler: printConfig, description: 'Prints the global emerald-templates config' }

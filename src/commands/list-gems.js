@@ -20,4 +20,7 @@ async function listGems(options) {
   }
 }
 
-module.exports = listGems
+module.exports = {
+  handler: listGems,
+  aliases: ['gems']
+}

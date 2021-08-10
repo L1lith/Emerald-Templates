@@ -1,22 +1,7 @@
 #!/usr/bin/env node
-const args = require('./functions/getArgs')()
+const { CommandFunctions } = require('command-functions')
+const commands = require('./commands')
 
-const commandFunction = require('./commands/' + args.primaryOption)
-const result = commandFunction(args)
+const app = new CommandFunctions(commands)
 
-console.trueLog = console.log
-if (args.silent === true) {
-  // Disable Console.log
-  console.log = () => {}
-}
-
-if (result instanceof Promise) {
-  result
-    .then(() => {
-      //process.exit(0)
-    })
-    .catch(error => {
-      console.error(error)
-      process.exit(1)
-    })
-}
+module.exports = app.autoRun()

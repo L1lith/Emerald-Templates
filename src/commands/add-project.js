@@ -7,11 +7,8 @@ const directoryExists = require('directory-exists')
 const askQuestion = require('../functions/askQuestion')
 const chalk = require('chalk')
 
-async function addProject(options) {
-  let projectPath =
-    options['add-project'][0] ||
-    (await askQuestion('Please enter the path to your project templates storage folder\n> ')).trim()
-  const projectFolder = resolvePath(projectPath, process.cwd())
+async function addProject(project, options) {
+  const projectFolder = resolvePath(project, process.cwd())
   if (!(await directoryExists(projectFolder)))
     throw new Error(`The folder "${projectPath}" does not exist`)
   let config = getConfiguration()
@@ -27,4 +24,13 @@ async function addProject(options) {
   console.log(chalk.green('Done!'))
 }
 
-module.exports = addProject
+module.exports = {
+  handler: addProject,
+  args: {
+    project: {
+      argsPosition: 0,
+      format: String,
+      prompt: 'Please enter the path to your project templates storage folder'
+    }
+  }
+}

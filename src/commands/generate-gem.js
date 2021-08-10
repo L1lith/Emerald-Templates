@@ -36,4 +36,7 @@ async function generateGem(options) {
   console.log(chalk.green('Gem Generated Successfully!'))
 }
 
-module.exports = generateGem
+module.exports = {
+  aliases: ['gem'],
+  handler: generateGem
+}

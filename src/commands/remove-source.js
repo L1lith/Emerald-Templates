@@ -30,4 +30,4 @@ async function removeSource(options) {
   await saveEmeraldConfig(join(projectPath, 'emerald-config.json'), projectConfig)
 }
 
-module.exports = removeSource
+module.exports = { handler: removeSource, description: 'Removes a template source' }

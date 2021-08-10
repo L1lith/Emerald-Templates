@@ -27,7 +27,7 @@ async function copyTemplate(templateFolder, outputFolder, options = {}) {
         file.includes('emerald-config.json')
       )
   )
-  if (allowGems === false) files = files.filter(file => gemRegex.test(file)) // Don't include gems by default
+  if (allowGems === false) files = files.filter(file => !gemRegex.test(file)) // Don't include gems by default
   for (const file of files) {
     const sourcePath = join(templateFolder, file)
     const outputPath = join(outputFolder, file)

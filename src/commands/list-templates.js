@@ -6,7 +6,7 @@ const displayList = require('../functions/displayList')
 
 const excludedDirectoryNames = ['.git']
 
-async function list() {
+async function listTemplates() {
   getConfiguration()
   let templateFolders = await getTemplateFolders()
   if (templateFolders.length < 1)
@@ -25,4 +25,8 @@ async function list() {
   //console.log(chalk.bold(" Available Templates:\n- ") + templateFolders.map(path => basename(path)).sort().map(value => chalk.green(value)).join(', '))
 }
 
-module.exports = list
+module.exports = {
+  handler: listTemplates,
+  aliases: ['list', 'templates'],
+  description: 'Lists the available templates'
+}

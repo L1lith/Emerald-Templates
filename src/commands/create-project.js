@@ -21,18 +21,13 @@ const { output } = require('../boilerplate/argsAliases')
 const pathSpacingRegex = /[\s\-]+/g
 const validPrexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
-async function generate(options) {
+async function createProject(templateFolder, outputFolder, options) {
   const config = (process.env.EMERALD_CONFIG = getConfiguration())
   let { launchCommand } = config
 
   // const rootTemplateFolder = config.templateFolder
   // if (!(await directoryExists(rootTemplateFolder))) throw new Error("The folder configured to contain the templates does not exist")
-  let templateFolder =
-    options.template ||
-    options.templateFolder ||
-    options.templateDirectory ||
-    (options._ || [])[0] ||
-    (await askQuestion(chalk.green('Which template would you like to use?') + '\n> '))
+  while (!templateFolder) templateFolder = await askQuestion(chalk.green('') + '\n> ')
   console.log('n', templateFolder)
   if (Array.isArray(templateFolder)) templateFolder = templateFolder[0]
   if (typeof templateFolder != 'string')
@@ -44,12 +39,12 @@ async function generate(options) {
     )
   process.env.TEMPLATE_FOLDER = templateFolderPath
 
-  let outputFolder =
+  /*let outputFolder =
     options['project'] ||
     options['projectPath'] ||
     (Array.isArray(options._) && options._.length >= 2
       ? options._.slice(1).join(' ')
-      : await askQuestion(chalk.green('What would you like to name the project?') + '\n> '))
+      : await askQuestion(chalk.green() + '\n> ')) */
   if (Array.isArray(outputFolder)) outputFolder = outputFolder[0]
   if (typeof outputFolder != 'string') throw new Error('You must specify the output folder')
   outputFolder = outputFolder.trim().toLowerCase().replace(pathSpacingRegex, '-')
@@ -98,6 +93,7 @@ async function generate(options) {
     }
   }
   if (!silent) console.log('Copying The Template')
+  console.log(templateFolderPath, outputFolderPath)
   await copyTemplate(templateFolderPath, outputFolderPath, {
     overwrite: overwriteMode === 'overwrite'
   })
@@ -148,4 +144,21 @@ async function generate(options) {
   if (!silent) console.log(chalk.green('Project Generated Successfully!'))
 }
 
-module.exports = generate
+module.exports = {
+  handler: createProject,
+  aliases: ['generate', 'gen', 'g'],
+  args: {
+    templateFolder: {
+      format: String,
+      argsPosition: 0,
+      prompt: 'Which template would you like to use?',
+      required: true
+    },
+    outputFolder: {
+      format: String,
+      argsPosition: 1,
+      prompt: 'What would you like to name the project?',
+      required: true
+    }
+  }
+}

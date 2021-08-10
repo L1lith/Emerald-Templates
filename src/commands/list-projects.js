@@ -18,4 +18,7 @@ async function listProjects() {
   //console.log(` Configured for the following root folders:\n${).join('\n')}`)
 }
 
-module.exports = listProjects
+module.exports = {
+  handler: listProjects,
+  aliases: ['projects']
+}

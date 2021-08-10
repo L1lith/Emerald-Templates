@@ -27,4 +27,4 @@ async function openTemplate(options) {
   }
 }
 
-module.exports = openTemplate
+module.exports = { handler: openTemplate, description: 'Opens a template' }

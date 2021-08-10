@@ -14,4 +14,7 @@ function listRoots() {
   //console.log(` Configured for the following root folders:\n${).join('\n')}`)
 }
 
-module.exports = listRoots
+module.exports = {
+  handler: listRoots,
+  aliases: ['roots']
+}

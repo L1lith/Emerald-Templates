@@ -170,4 +170,4 @@ async function configure(options) {
   console.log(chalk.bold(chalk.green('Emerald Templates Configured.')))
 }
 
-module.exports = configure
+module.exports = { handler: configure, aliases: ['config'] }

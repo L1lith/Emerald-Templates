@@ -1,6 +1,5 @@
 const { join, extname, basename } = require('path')
 const { readdir, stat } = require('fs-extra')
-const { match } = require('assert')
 
 const gemRegex = /.gem/i
 

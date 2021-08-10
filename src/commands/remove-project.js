@@ -6,7 +6,7 @@ const directoryExists = require('directory-exists')
 const askQuestion = require('../functions/askQuestion')
 const chalk = require('chalk')
 
-async function removeRoot(options) {
+async function removeProject(options) {
   let projectPath = options['remove-project'][0]
   if (typeof projectPath != 'string' || projectPath.length < 1) {
     projectPath = (
@@ -35,4 +35,7 @@ async function removeRoot(options) {
   console.log(chalk.green('Done!'))
 }
 
-module.exports = removeRoot
+module.exports = {
+  handler: removeProject,
+  description: 'Removes a project from Emerald Templates without deleting it from the file system'
+}

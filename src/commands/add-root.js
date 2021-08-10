@@ -6,10 +6,11 @@ const directoryExists = require('directory-exists')
 const askQuestion = require('../functions/askQuestion')
 const chalk = require('chalk')
 
-async function addRoot(options) {
-  let rootPath =
-    options['add-root'][0] ||
-    (await askQuestion('Please enter the path to your root templates storage folder\n> ')).trim()
+async function addRoot(root, options) {
+  if (!root)
+    root = (
+      await askQuestion('Please enter the path to your root templates storage folder\n> ')
+    ).trim()
   const rootFolder = resolvePath(rootPath, process.cwd())
   if (!(await directoryExists(rootFolder)))
     throw new Error(`The folder "${rootPath}" does not exist`)
@@ -21,4 +22,14 @@ async function addRoot(options) {
   console.log(chalk.green('Done!'))
 }
 
-module.exports = addRoot
+module.exports = {
+  handler: addRoot,
+  args: {
+    root: {
+      argsPosition: 0,
+      format: String,
+      prompt: 'Please enter the path to the root you would like to add',
+      required: true
+    }
+  }
+}

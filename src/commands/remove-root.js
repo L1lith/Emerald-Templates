@@ -37,4 +37,7 @@ async function removeRoot(options) {
   console.log(chalk.green('Done!'))
 }
 
-module.exports = removeRoot
+module.exports = {
+  handler: removeRoot,
+  description: 'Removes a root from Emerald Templates without deleting it from the file system'
+}
