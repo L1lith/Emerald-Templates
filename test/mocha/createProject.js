@@ -3,7 +3,7 @@ const { removeSync } = require('fs-extra')
 const chai = require('chai')
 const { expect } = chai
 chai.use(require('chai-fs'))
-const createProject = require('../../src/commands/create-project')
+const { createProject } = require('../../src/index.js')
 const { output } = require('../../src/boilerplate/argsAliases')
 
 const tests = [
@@ -45,13 +45,9 @@ tests.forEach(test => {
         const outputGitPath = join(tempOutputPath, '.git')
         removeSync(tempOutputPath)
         // To Do: Actually generate the project
-        createProject({
-          projectPath: tempOutputPath,
-          templateDirectory: sourceTemplate,
-          silent: true
-        })
+        createProject(sourceTemplate, tempOutputPath)
           .then(() => {
-            removeSync(outputGitPath)
+            //removeSync(outputGitPath)
             expect(tempOutputPath).to.be.a.directory().and.equal(testComparisonDirectory)
             done()
           })
