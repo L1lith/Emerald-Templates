@@ -52,7 +52,7 @@ async function getEmeraldConfig(targetFolder, options = {}) {
     })
   }
   if (generateDefaultConfig === true) {
-    await writeJson(configPath, output)
+    await writeJson(configPath + '.json', output)
   }
   return output
 }
