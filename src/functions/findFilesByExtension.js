@@ -3,10 +3,13 @@ const { readdir, stat } = require('fs-extra')
 
 const gemRegex = /.gem/i
 
-async function findFilesByExtension(directory, extension, options = {}) {
-  if (typeof extension != 'string' || extension.length < 1 || !extension.startsWith('.'))
-    throw new Error("The extension must be a string of at least 2 characters starting with '.'")
+async function findFilesByExtension(directory, extensions, options = {}) {
   const { deep = true, ignoreGems = false, matchFolders = false, matchFiles = true } = options
+  if (!Array.isArray(extensions)) extensions = [extensions]
+  extensions.forEach(extension => {
+    if (typeof extension != 'string' || extension.length < 2 || !extension.startsWith('.'))
+      throw new Error("The extension must be a string of at least 2 characters starting with '.'")
+  })
   const files = await readdir(directory)
   let output = []
 
@@ -20,11 +23,11 @@ async function findFilesByExtension(directory, extension, options = {}) {
         (ignoreGems === true && gemRegex.test(fileName))
       )
         continue // Don't look for templates in the node modules
-      output = output.concat(await findFilesByExtension(filePath, extension, options))
+      output = output.concat(await findFilesByExtension(filePath, extensions, options))
     }
     if (
-      ((isDir ? matchFolders : matchFiles) && extname(fileName) === extension) ||
-      basename(fileName) === extension
+      ((isDir ? matchFolders : matchFiles) && extensions.includes(extname(fileName))) ||
+      extensions.includes(basename(fileName))
     ) {
       output.push(filePath)
     }

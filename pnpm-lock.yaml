@@ -1,12 +1,12 @@
 dependencies:
   chalk: 4.1.1
-  command-functions: 0.0.4
+  command-functions: 0.0.6
   contains-path: 1.0.0
   deglob: 4.0.1
   delete: 1.1.0
   directory-exists: 2.0.1
   ejs: 2.7.4
-  fly-install: 0.0.1
+  fly-install: 0.0.2
   fs-extra: 8.1.0
   handlebars: 4.7.7
   ignore-walk: 3.0.4
@@ -22,6 +22,7 @@ dependencies:
   rimraf: 3.0.2
   sandhands: 1.8.9
   sanitize-filename: 1.6.3
+  shelljs: 0.8.4
   subdir: 0.0.3
   yargs: 16.2.0
 devDependencies:
@@ -50,6 +51,12 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha1-7QMXwyIGT3lGbAKWa922Bas32Zg=
+  /ansi-regex/4.1.0:
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-1apePfXM1UOSqw0o9IiFAovVz9M5S1Dg+4TrDwfMewQ6p/rmMueb7tWZjQ1rx4Loy1ArBggoqGpfqqdI4rondg==
   /ansi-regex/5.0.0:
     engines:
       node: '>=8'
@@ -240,16 +247,18 @@ packages:
   /color-name/1.1.4:
     resolution:
       integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
-  /command-functions/0.0.4:
+  /command-functions/0.0.6:
     dependencies:
       auto-bind: 4.0.0
       chalk: 4.1.2
       javascript-stringify: 2.1.0
       minimist: 1.2.5
+      prompt-sync: 4.2.0
       sandhands: 1.8.9
     dev: false
+    hasBin: true
     resolution:
-      integrity: sha512-rIoLOKo1S6JgJcu8N640xbjxVr1OLgqI80/vVgx808A7FefMm62eLMQlthpCJwmMgQLq48ZtiOzgMIFDrz1Mqg==
+      integrity: sha512-2irh385vnMeCiRz8Tod/2zFgUzNxNohVYXr7acaMis4ZXBBhh1GrQLfj4e2NLRtAvZ9/OoEQT/09aLzU2H9mag==
   /commander/5.1.0:
     dev: false
     engines:
@@ -412,15 +421,16 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-b6suED+5/3rTpUBdG1gupIl8MPFCAMA0QXwmljLhvCUKcUvdE4gWky9zpuGCcXHOsz4J9wPGNWq6OKpmIzz3hQ==
-  /fly-install/0.0.1:
+  /fly-install/0.0.2:
     dependencies:
+      auto-bind: 4.0.0
       exec-sh: 0.4.0
       path-exists: 4.0.0
       sandhands: 1.8.9
       tmp-promise: 3.0.2
     dev: false
     resolution:
-      integrity: sha512-d/eCNFo3uu7HkaQh67h1RWueIccZzQ5s8tn/GZssge12ZXKDQJNnhG8VRXJBP/HF/vjaa+QRxkHG6XXpQX4f+g==
+      integrity: sha512-wZ9g/QCbDiIMbQxuPq94mrW0ftJApiGAJfGeYCejCft++sdHmwCIBT0Trmgp1mSNLWOU4xVEWmt5aIejONZekg==
   /fs-extra/8.1.0:
     dependencies:
       graceful-fs: 4.2.6
@@ -443,6 +453,10 @@ packages:
       - darwin
     resolution:
       integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==
+  /function-bind/1.1.1:
+    dev: false
+    resolution:
+      integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
   /get-caller-file/2.0.5:
     engines:
       node: 6.* || 8.* || >= 10.*
@@ -545,6 +559,14 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-mqqe7b/7G6OZCnsAEPtnjuAIEgc=
+  /has/1.0.3:
+    dependencies:
+      function-bind: 1.1.1
+    dev: false
+    engines:
+      node: '>= 0.4.0'
+    resolution:
+      integrity: sha512-f2dvO0VU6Oej7RkWJGrehjbzMAjFp5/VKPp5tTpWIV4JHHZK1/BxbFRtf/siA2SWTe09caDmVtYYzWEIbBS4zw==
   /he/1.2.0:
     dev: true
     hasBin: true
@@ -583,6 +605,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==
+  /interpret/1.4.0:
+    dev: false
+    engines:
+      node: '>= 0.10'
+    resolution:
+      integrity: sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
   /is-binary-path/2.1.0:
     dependencies:
       binary-extensions: 2.2.0
@@ -591,6 +619,12 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==
+  /is-core-module/2.5.0:
+    dependencies:
+      has: 1.0.3
+    dev: false
+    resolution:
+      integrity: sha512-TXCMSDsEHMEEZ6eCA8rwRDbLu55MRGmrctljsBX/2v1d9/GzqHOxW5c5oPSgrUt2vBFXebu9rGqckXGPWOlYpg==
   /is-extendable/0.1.1:
     dev: false
     engines:
@@ -860,6 +894,10 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-F0uSaHNVNP+8es5r9TpanhtcX18=
+  /path-parse/1.0.7:
+    dev: false
+    resolution:
+      integrity: sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==
   /path-starts-with/1.0.0:
     dependencies:
       normalize-path: 2.1.1
@@ -894,6 +932,12 @@ packages:
       node: '>=0.10'
     resolution:
       integrity: sha1-VX7yLXPaPIg3EHdmxS6tq94pj+Q=
+  /prompt-sync/4.2.0:
+    dependencies:
+      strip-ansi: 5.2.0
+    dev: false
+    resolution:
+      integrity: sha512-BuEzzc5zptP5LsgV5MZETjDaKSWfchl5U9Luiu8SKp7iZWD5tZalOxvNcZRwv+d2phNFr8xlbxmFNcRKfJOzJw==
   /queue-microtask/1.2.3:
     dev: false
     resolution:
@@ -920,6 +964,14 @@ packages:
       node: '>=8.10.0'
     resolution:
       integrity: sha512-cMhu7c/8rdhkHXWsY+osBhfSy0JikwpHK/5+imo+LpeasTF8ouErHrlYkwT0++njiyuDvc7OFY5T3ukvZ8qmFQ==
+  /rechoir/0.6.2:
+    dependencies:
+      resolve: 1.20.0
+    dev: false
+    engines:
+      node: '>= 0.10'
+    resolution:
+      integrity: sha1-hSBLVNuoLVdC4oyWdW70OvUOM4Q=
   /remove-trailing-separator/1.1.0:
     dev: false
     resolution:
@@ -938,6 +990,13 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-eaQGRMNivoLybv/nOcm7U4IEb0M=
+  /resolve/1.20.0:
+    dependencies:
+      is-core-module: 2.5.0
+      path-parse: 1.0.7
+    dev: false
+    resolution:
+      integrity: sha512-wENBPt4ySzg4ybFQW2TT1zMQucPK95HSh/nq2CFTZVOGut2+pQvSsgtda4d26YrYcr067wjbmzOG8byDPBX63A==
   /rimraf/2.7.1:
     dependencies:
       glob: 7.1.7
@@ -980,6 +1039,17 @@ packages:
     dev: true
     resolution:
       integrity: sha512-SaaNal9imEO737H2c05Og0/8LUXG7EnsZyMa8MzkmuHoELfT6txuj0cMqRj6zfPKnmQ1yasR4PCJc8x+M4JSPA==
+  /shelljs/0.8.4:
+    dependencies:
+      glob: 7.1.7
+      interpret: 1.4.0
+      rechoir: 0.6.2
+    dev: false
+    engines:
+      node: '>=4'
+    hasBin: true
+    resolution:
+      integrity: sha512-7gk3UZ9kOfPLIAbslLzyWeGiEqx9e3rxwZM0KE6EL8GlGwjym9Mrlx5/p33bWTu9YG6vcS4MBxYZDHYr5lr8BQ==
   /sift/13.5.4:
     dev: true
     resolution:
@@ -1016,6 +1086,14 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha1-qEeQIusaw2iocTibY1JixQXuNo8=
+  /strip-ansi/5.2.0:
+    dependencies:
+      ansi-regex: 4.1.0
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-DuRs1gKbBqsMKIZlrffwlug8MHkcnpjs5VPmL1PAh+mA30U0DTotfDZ0d2UUsXpPmPmMMJ6W773MaA3J+lbiWA==
   /strip-ansi/6.0.0:
     dependencies:
       ansi-regex: 5.0.0
@@ -1206,13 +1284,13 @@ specifiers:
   chai: ^4.2.0
   chai-fs: ^2.0.0
   chalk: ^4.1.0
-  command-functions: 0.0.4
+  command-functions: 0.0.6
   contains-path: ^1.0.0
   deglob: ^4.0.1
   delete: ^1.1.0
   directory-exists: ^2.0.1
   ejs: ^2.6.1
-  fly-install: 0.0.1
+  fly-install: 0.0.2
   fs-extra: ^8.0.1
   handlebars: ^4.1.2
   ignore-walk: ^3.0.3
@@ -1229,5 +1307,6 @@ specifiers:
   rimraf: ^3.0.2
   sandhands: ^1.6.1
   sanitize-filename: ^1.6.3
+  shelljs: ^0.8.4
   subdir: 0.0.3
   yargs: ^16.2.0

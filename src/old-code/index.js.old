@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const args = require('./functions/getArgs')()
+const args = require('../functions/getArgs')()
 
 const commandFunction = require('./commands/' + args.primaryOption)
 const result = commandFunction(args)

@@ -41,7 +41,7 @@
     "delete": "^1.1.0",
     "directory-exists": "^2.0.1",
     "ejs": "^2.6.1",
-    "fly-install": "0.0.1",
+    "fly-install": "0.0.2",
     "fs-extra": "^8.0.1",
     "handlebars": "^4.1.2",
     "ignore-walk": "^3.0.3",
@@ -57,6 +57,7 @@
     "rimraf": "^3.0.2",
     "sandhands": "^1.6.1",
     "sanitize-filename": "^1.6.3",
+    "shelljs": "^0.8.4",
     "subdir": "0.0.3",
     "yargs": "^16.2.0"
   },

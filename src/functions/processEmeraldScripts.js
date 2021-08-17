@@ -2,11 +2,14 @@ const { copy, readdir, rmdir, readFile, exists } = require('fs-extra')
 const rimraf = require('delete').promise
 const { promisify } = require('util')
 const { join, basename, dirname } = require('path')
-const exec = promisify(require('child_process').exec)
+//const exec = promisify(require('child_process').exec)
+const { exec } = require('shelljs')
 const args = require('./getArgs')()
 const ensureArguments = require('./ensureArguments')
 const findFilesByExtension = require('../functions/findFilesByExtension')
+const { TempInstaller } = require('fly-install')
 
+const installer = new TempInstaller()
 const packageNameRegex = /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/
 
 async function processEmeraldScript(scriptPath, options) {
@@ -18,64 +21,43 @@ async function processEmeraldScript(scriptPath, options) {
     .split('\n')
     .map(line => line.trim())
     .filter(line => line.length > 0)
-  if (baseExtension === 'js') {
-    let config = null
-    // get the config
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim()
-      if (line.length > 0) {
-        if (line.startsWith('//@')) {
-          try {
-            config = JSON.parse(line.slice(3))
-          } catch (error) {
-            error.message =
-              'Could not parse config line inside .emerald-script, ignoring. Error: ' +
-              error.message
-            console.error(error)
-          }
-        }
-        break
-      }
-    }
-    // handle the config
+  if (baseExtension === 'js' || baseExtension === 'mjs') {
+    // let config = null
+    // // get the config
+    // for (let i = 0; i < 1 /*lines.length*/; i++) {
+    //   const line = lines[i].trim()
+    //   if (line.startsWith('//@')) {
+    //     const configContent = `(${line.slice(3)})`
+    //     try {
+    //       config = eval(configContent)
+    //     } catch (error) {
+    //       error.message =
+    //         'Could not parse config line inside .emerald-script, ignoring. Error: ' + error.message
+    //       console.error(error)
+    //     }
+    //     break
+    //   }
+    // }
+
+    // if (typeof config == 'object') {
+    //   let args = []
+    //   const getInput = new CommandFunction({
+    //     ...config,
+    //     handler: (...receivedArgs) => {
+    //       args = receivedArgs
+    //     }
+    //   })
+    //   await getInput.runCLI([]) // Args should be set now
+    //   process.env.GEM_ARGS = args
+    // }
+    // // handle the config
     const dependenciesToRemove = []
-    const scriptArgs =
-      config !== null && config.hasOwnProperty('defaultArguments')
-        ? { ...config.defaultArguments, ...args }
-        : { ...args }
-    if (config !== null) {
-      const { dependencies, requiredArguments } = config
-      if (config.hasOwnProperty('requiredArguments')) {
-        ensureArguments(scriptArgs, requiredArguments)
-      }
-      if (config.hasOwnProperty('dependencies')) {
-        if (!Array.isArray(dependencies)) throw new Error('Dependencies must be an array')
-        if (dependencies.some(value => typeof value != 'string' || !packageNameRegex.test(value)))
-          throw new Error('All dependencies must be valid package name strings')
-        if (!silent) console.log('Installing ' + dependencies.length + ' Temporary Dependencies')
-        for (const dependency of dependencies) {
-          let exists = false
-          try {
-            exists = await exists(join(scriptDirectory, 'node_modules', dependency))
-          } catch (error) {
-            /* do nothing*/
-          }
-          if (exists !== true) {
-            // do a temp install
-            await exec('npm install --prefix ./ ' + dependency, {
-              cwd: scriptDirectory
-            })
-            dependenciesToRemove.push(dependency)
-          }
-        }
-      }
-    }
-    process.env.EMERALD_SCRIPT_ARGS = JSON.stringify(scriptArgs)
     try {
       let output = await require(scriptPath)
       if (typeof output == 'function') {
-        output = await output()
+        output = output()
       }
+      output = await output
     } catch (error) {
       error.message =
         'The following error occured while processing a .emerald-script (this script will continue anyways): ' +
@@ -86,7 +68,9 @@ async function processEmeraldScript(scriptPath, options) {
       if (!silent) console.log('Uninstalling Temporary Dependencies')
       for (const dependency of dependenciesToRemove) {
         await exec('npm uninstall ' + dependency, {
-          cwd: scriptDirectory
+          cwd: scriptDirectory,
+          async: true,
+          silent: true
         })
       }
     }
@@ -94,23 +78,31 @@ async function processEmeraldScript(scriptPath, options) {
     for (let x = 0; x < lines.length; x++) {
       const line = lines[x]
       try {
-        await exec(line, { cwd: join(scriptPath, '..') })
+        const output = exec(line, { cwd: join(scriptPath, '..'), async: true, silent: false })
+        const { stdin } = output
+        await output(stdin)
       } catch (error) {
         console.error(error)
       }
     }
   }
   await rimraf(scriptPath)
-  delete process.env.EMERALD_SCRIPT_ARGS
+  //delete process.env.EMERALD_SCRIPT_ARGS
 }
 
-async function processEmeraldScripts(outputFolder, templateFolder, projectConfig, firstRun) {
-  const emeraldScripts = await findFilesByExtension(outputFolder, '.emerald-script')
+async function processEmeraldScripts(
+  outputFolder,
+  templateFolder,
+  projectConfig,
+  firstRun,
+  options
+) {
+  const emeraldScripts = await findFilesByExtension(outputFolder, ['.emerald-script', '.emscript'])
   if (emeraldScripts.length > 0)
-    if (!silent) console.log(`Running ${firstRun ? 'the' : 'additional'} emerald scripts`)
+    if (!options.silent) console.log(`Running ${firstRun ? 'the' : 'additional'} emerald scripts`)
   for (let i = 0; i < emeraldScripts.length; i++) {
     const scriptPath = emeraldScripts[i]
-    await processEmeraldScript(scriptPath)
+    await processEmeraldScript(scriptPath, options)
   }
   return emeraldScripts.length
 }

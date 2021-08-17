@@ -15,6 +15,7 @@ async function getAvailableGems(projectPath, options = {}) {
     .filter(onlyUnique)
   if (templateDirectories === null) templateDirectories = await getTemplateFolders()
   const sources = {}
+
   await Promise.all(
     templateSources.map(async source => {
       const templatePath = await findTemplateFolder(source, templateDirectories)
