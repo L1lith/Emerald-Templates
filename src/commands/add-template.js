@@ -6,8 +6,7 @@ const askQuestion = require('../functions/askQuestion')
 const chalk = require('chalk')
 const directoryExists = require('directory-exists')
 
-async function addTemplate(options) {
-  let templateFolder = options['add-template'][0]
+async function addTemplate(templateFolder, options) {
   if (typeof templateFolder != 'string' || templateFolder.length < 0) {
     templateFolder = (
       await askQuestion('Please enter the path to your template folder (relative or absolute)\n> ')
@@ -29,4 +28,14 @@ async function addTemplate(options) {
   console.log(chalk.green('Done!'))
 }
 
-module.exports = { handler: addTemplate }
+module.exports = {
+  handler: addTemplate,
+  args: {
+    templateFolder: {
+      prompt: 'What is the path to the template folder?',
+      argsPosition: 0,
+      format: String,
+      required: true
+    }
+  }
+}
