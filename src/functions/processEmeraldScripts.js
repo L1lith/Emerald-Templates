@@ -8,6 +8,7 @@ const args = require('./getArgs')()
 const ensureArguments = require('./ensureArguments')
 const findFilesByExtension = require('../functions/findFilesByExtension')
 const { TempInstaller } = require('fly-install')
+const spawnAsync = require('./spawnAsync')
 
 const installer = new TempInstaller()
 const packageNameRegex = /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/
@@ -67,7 +68,7 @@ async function processEmeraldScript(scriptPath, options) {
     if (dependenciesToRemove.length > 0) {
       if (!silent) console.log('Uninstalling Temporary Dependencies')
       for (const dependency of dependenciesToRemove) {
-        await exec('npm uninstall ' + dependency, {
+        await spawnAsync('npm uninstall ' + dependency, {
           cwd: scriptDirectory,
           async: true,
           silent: true
@@ -78,9 +79,7 @@ async function processEmeraldScript(scriptPath, options) {
     for (let x = 0; x < lines.length; x++) {
       const line = lines[x]
       try {
-        const output = exec(line, { cwd: join(scriptPath, '..'), async: true, silent: false })
-        const { stdin } = output
-        await output(stdin)
+        await spawnAsync(line, { cwd: join(scriptPath, '..'), async: true, silent: false })
       } catch (error) {
         console.error(error)
       }

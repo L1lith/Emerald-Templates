@@ -17,6 +17,7 @@ const askYesOrNo = require('../functions/askYesOrNo')
 //const displayList = require('../functions/displayList')
 const getEmeraldConfig = require('../functions/getEmeraldConfig')
 const { output } = require('../boilerplate/argsAliases')
+const spawnAsync = require('../functions/spawnAsync')
 
 const pathSpacingRegex = /[\s\-]+/g
 const validPrexistingOptions = ['overwrite', 'erase', 'stop', 'available']
