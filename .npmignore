@@ -3,3 +3,4 @@ node_modules/
 /templates/
 /test/
 prettier.config.js
+/icons/
