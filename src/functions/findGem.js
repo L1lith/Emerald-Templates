@@ -6,8 +6,8 @@
 // const findTemplateFolder = require('../functions/findTemplateFolder')
 // const getTemplateFolders = require('../functions/getTemplateFolders')
 // const { template } = require('handlebars')
-const getAvailableGems = require('../functions/getAvailableGems')
-const pathCase = require('../functions/pathCase')
+const getAvailableGems = require('./getAvailableGems')
+const pathCase = require('./pathCase')
 
 async function findGem(projectPath, gemName, options = {}) {
   let { doLogging = true, templateFolders = null, availableGems = null } = options

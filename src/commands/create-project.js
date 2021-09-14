@@ -1,4 +1,4 @@
-const { join, basename } = require('path')
+const { join, basename, dirname } = require('path')
 const sanitize = require('sanitize-filename')
 const chalk = require('chalk')
 const { promisify } = require('util')
@@ -18,18 +18,19 @@ const askYesOrNo = require('../functions/askYesOrNo')
 const getEmeraldConfig = require('../functions/getEmeraldConfig')
 const { output } = require('../boilerplate/argsAliases')
 const spawnAsync = require('../functions/spawnAsync')
+const getProjectStore = require('../functions/getProjectStore')
 
 const pathSpacingRegex = /[\s\-]+/g
-const validPrexistingOptions = ['overwrite', 'erase', 'stop', 'available']
+const validPreexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
 async function createProject(templateFolder, outputFolder, options) {
+  console.log('hi', options)
   const config = (process.env.EMERALD_CONFIG = getConfiguration())
   let { launchCommand } = config
 
   // const rootTemplateFolder = config.templateFolder
   // if (!(await directoryExists(rootTemplateFolder))) throw new Error("The folder configured to contain the templates does not exist")
   while (!templateFolder) templateFolder = await askQuestion(chalk.green('') + '\n> ')
-  console.log('n', templateFolder)
   if (Array.isArray(templateFolder)) templateFolder = templateFolder[0]
   if (typeof templateFolder != 'string')
     throw new Error('Please specify which template folder you would like to use')
@@ -48,9 +49,12 @@ async function createProject(templateFolder, outputFolder, options) {
       : await askQuestion(chalk.green() + '\n> ')) */
   if (Array.isArray(outputFolder)) outputFolder = outputFolder[0]
   if (typeof outputFolder != 'string') throw new Error('You must specify the output folder')
-  outputFolder = outputFolder.trim().toLowerCase().replace(pathSpacingRegex, '-')
   // .replace(/\s+/g, '-')
-  const outputFolderPath = resolvePath(outputFolder, process.cwd())
+  let outputFolderPath = resolvePath(outputFolder, process.cwd())
+  outputFolderPath = join(
+    dirname(outputFolderPath),
+    basename(outputFolderPath).trim().toLowerCase().replace(pathSpacingRegex, '-')
+  )
   const parentDirectory = join(outputFolderPath, '..')
   await ensureDir(parentDirectory)
 
@@ -66,11 +70,11 @@ async function createProject(templateFolder, outputFolder, options) {
   let overwriteMode = null
   if (exists) {
     //throw new Error(`The output folder "${outputFolderPath}" already exists and is not empty.`)
-    while (!validPrexistingOptions.includes(overwriteMode))
+    while (!validPreexistingOptions.includes(overwriteMode))
       overwriteMode = (
         await askQuestion(
           'That folder already exists, how would you like to proceed?\nOptions: \n- ' +
-            validPrexistingOptions.join(', ') +
+            validPreexistingOptions.join(', ') +
             '\n> '
         )
       )
@@ -105,12 +109,14 @@ async function createProject(templateFolder, outputFolder, options) {
       sources: [templateFolder]
     }
   }) // Generate the default .emerald-config.json
+
   if (!silent) {
     console.log(
       chalk.green('The project has been named ') + chalk.cyan('"' + projectConfig.name + '"')
     )
     console.log('Handling any scripts, links, etc')
   }
+  global.PROJECT_STORE = getProjectStore(outputFolderPath, projectConfig)
 
   await processOutputFolder(outputFolderPath, templateFolderPath, { silent })
   let packageJSON = null
@@ -128,7 +134,7 @@ async function createProject(templateFolder, outputFolder, options) {
     if (!(await pathExists(join(outputFolderPath, '.git'))))
       await exec('git init .', { cwd: outputFolderPath })
   }
-  if (typeof launchCommand == 'string') {
+  if (options.noLaunch !== true && typeof launchCommand == 'string') {
     launchCommand = launchCommand.trim()
     if (launchCommand.length > 0) {
       if (!silent) console.log('Running Launch Command')
@@ -160,6 +166,10 @@ module.exports = {
       argsPosition: 1,
       prompt: 'What would you like to name the project?',
       required: true
+    },
+    noLaunch: {
+      format: Boolean,
+      default: false
     }
   }
 }

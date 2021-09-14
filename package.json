@@ -45,6 +45,7 @@
     "fs-extra": "^8.0.1",
     "handlebars": "^4.1.2",
     "ignore-walk": "^3.0.3",
+    "jabr": "^0.2.8",
     "minimist": "^1.2.5",
     "mkdirp": "^1.0.4",
     "mustache": "^3.0.1",

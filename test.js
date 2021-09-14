@@ -1,11 +1,10 @@
-const findFilesByExtension = require('./src/functions/findFilesByExtension')
-const getAvailableGems = require('./src/functions/getAvailableGems')
 const { join } = require('path')
+const findProjectRoot = require('./src/functions/findProjectRoot')
 
-const dir = join(__dirname, '../fly-install/')
+const dir = join(__dirname, '../Command-Functions/node_modules')
 
 async function run() {
-  console.log(await getAvailableGems(dir))
+  console.log(await findProjectRoot(dir))
 }
 
 run().catch(console.error)

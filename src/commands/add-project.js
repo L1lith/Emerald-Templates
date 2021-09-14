@@ -5,10 +5,16 @@ const saveGlobalConfig = require('../functions/saveGlobalConfig')
 const resolvePath = require('../functions/resolvePath')
 const directoryExists = require('directory-exists')
 const askQuestion = require('../functions/askQuestion')
+const findProjectRoot = require('../functions/findProjectRoot')
 const chalk = require('chalk')
 
 async function addProject(project, options) {
-  const projectFolder = resolvePath(project, process.cwd())
+  const dir = process.cwd()
+  if (typeof project == 'string') {
+    project = resolvePath(project, dir)
+  } else {
+    project = dir
+  }
   if (!(await directoryExists(projectFolder)))
     throw new Error(`The folder "${projectPath}" does not exist`)
   let config = getConfiguration()

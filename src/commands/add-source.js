@@ -4,6 +4,7 @@ const getEmeraldConfig = require('../functions/getEmeraldConfig')
 const resolvePath = require('../functions/resolvePath')
 const saveEmeraldConfig = require('../functions/saveEmeraldConfig')
 const findTemplateFolder = require('../functions/findTemplateFolder')
+const findProjectRoot = require('../functions/findProjectRoot')
 
 async function addSource(options) {
   const dir = process.cwd()
