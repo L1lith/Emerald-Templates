@@ -1,6 +1,6 @@
 {
   "name": "emerald-templates",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "Intelligent Template Generation & Project Management",
   "scripts": {
     "test": "mocha ./test/mocha/**/*.js"
@@ -35,7 +35,7 @@
   "homepage": "https://github.com/L1lith/Emerald-Templates#readme",
   "dependencies": {
     "chalk": "^4.1.0",
-    "command-functions": "0.0.6",
+    "command-functions": "^0.0.8",
     "contains-path": "^1.0.0",
     "deglob": "^4.0.1",
     "delete": "^1.1.0",
