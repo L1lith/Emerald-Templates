@@ -67,10 +67,10 @@ tests.forEach(test => {
           new Options({ noLaunch: true })
         )
         try {
-          await rm(outputGitPath, { recursive: true })
+          await rm(outputGitPath, { recursive: true }) // delete the .git folder for comparison
         } catch (err) {}
         try {
-          await rm(nodeModulesPath, { recursive: true })
+          await rm(nodeModulesPath, { recursive: true }) // delete the node_modules folder for comparison
         } catch (err) {}
         expect(tempOutputPath).to.be.a.directory().and.equal(testComparisonDirectory)
       })
