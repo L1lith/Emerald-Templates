@@ -3,7 +3,7 @@
   "version": "0.4.6",
   "description": "Intelligent Template Generation & Project Management",
   "scripts": {
-    "test": "mocha ./test/mocha/**/*.js"
+    "test": "mocha ./test/**/*.test.js"
   },
   "bin": {
     "emerald-templates": "./src/index.js",

@@ -5,16 +5,16 @@ const { rm } = require('fs/promises')
 const chai = require('chai')
 const { expect } = chai
 chai.use(require('chai-fs'))
-const { createProject } = require('../../src/index.js')
+const { createProject } = require('../../../src/index.js')
 const { Options } = require('command-functions')
-const { output } = require('../../src/boilerplate/argsAliases')
+const { output } = require('../../../src/boilerplate/argsAliases')
 const directoryExists = require('directory-exists')
 
 const tests = [
   {
     name: 'test-1',
     sourceTemplate: 'rollup-test',
-    description: 'The rollup template functions correctly',
+    description: 'Project creation working properly',
     subTests: {
       'no-input': {
         description: 'a basic rollup project with no cli arguments'
@@ -70,7 +70,7 @@ tests.forEach(test => {
           await rm(outputGitPath, { recursive: true }) // delete the .git folder for comparison
         } catch (err) {}
         try {
-          await rm(nodeModulesPath, { recursive: true }) // delete the node_modules folder for comparison
+          await rm(nodeModulesPath, { recursive: true }) // delete the node_modules  folder for comparison
         } catch (err) {}
         expect(tempOutputPath).to.be.a.directory().and.equal(testComparisonDirectory)
       })
