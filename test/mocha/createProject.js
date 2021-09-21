@@ -8,11 +8,12 @@ chai.use(require('chai-fs'))
 const { createProject } = require('../../src/index.js')
 const { Options } = require('command-functions')
 const { output } = require('../../src/boilerplate/argsAliases')
+const directoryExists = require('directory-exists')
 
 const tests = [
   {
     name: 'test-1',
-    sourceTemplate: 'rollup',
+    sourceTemplate: 'rollup-test',
     description: 'The rollup template functions correctly',
     subTests: {
       'no-input': {
@@ -24,6 +25,8 @@ const tests = [
 
 const testRootDirectory = join(__dirname, '..')
 const tempDirectory = join(testRootDirectory, 'tmp')
+const sourcesDirectory = join(__dirname, '..', 'templates')
+
 before(done => {
   rm(tempDirectory, { recursive: true })
     .then(() => {
@@ -50,38 +53,28 @@ tests.forEach(test => {
     throw new Error('No subtests provided')
   //expect(path).to.be.a.directory(?msg).and.deep.equal(otherPath, ?msg)
   describe(description, () => {
-    Promise.all(
-      Object.entries(subTests).map(([subTestName, subTestOptions]) => {
-        const testComparisonDirectory = join(
-          testRootDirectory,
-          'expectedOutputs',
-          name,
-          subTestName
+    Object.entries(subTests).forEach(([subTestName, subTestOptions]) => {
+      const testComparisonDirectory = join(testRootDirectory, 'expectedOutputs', name, subTestName)
+      it(subTestOptions.description, async function () {
+        this.timeout(1000 * 60 * 2) // Timeout after 2 minutes
+        const tempOutputPath = join(tempDirectory, name, subTestName)
+        const outputGitPath = join(tempOutputPath, '.git')
+        const nodeModulesPath = join(tempOutputPath, 'node_modules')
+        // To Do: Actually generate the project
+        await createProject(
+          join(sourcesDirectory, sourceTemplate),
+          tempOutputPath,
+          new Options({ noLaunch: true })
         )
-        it(subTestOptions.description, async function (done) {
-          this.timeout(1000 * 60 * 2) // Timeout after 2 minutes
-          const tempOutputPath = join(tempDirectory, name, subTestName)
-          const outputGitPath = join(tempOutputPath, '.git')
-          const nodeModulesPath = join(tempOutputPath, 'node_modules')
-          try {
-            await rm(outputGitPath, { recursive: true })
-          } catch (err) {}
-          try {
-            await rm(nodeModulesPath, { recursive: true })
-          } catch (err) {}
-          // To Do: Actually generate the project
-          createProject(sourceTemplate, tempOutputPath, new Options({ noLaunch: true }))
-            .then(() => {
-              //removeSync(outputGitPath)
-              expect(tempOutputPath).to.be.a.directory().and.equal(testComparisonDirectory)
-              done()
-            })
-            .catch(error => {
-              done(error)
-            })
-        })
+        try {
+          await rm(outputGitPath, { recursive: true })
+        } catch (err) {}
+        try {
+          await rm(nodeModulesPath, { recursive: true })
+        } catch (err) {}
+        expect(tempOutputPath).to.be.a.directory().and.equal(testComparisonDirectory)
       })
-    ).catch(console.error)
+    })
   })
 })
 

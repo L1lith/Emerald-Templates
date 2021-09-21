@@ -35,7 +35,7 @@
   "homepage": "https://github.com/L1lith/Emerald-Templates#readme",
   "dependencies": {
     "chalk": "^4.1.0",
-    "command-functions": "^0.0.8",
+    "command-functions": "^0.0.9",
     "contains-path": "^1.0.0",
     "deglob": "^4.0.1",
     "delete": "^1.1.0",

@@ -19,12 +19,12 @@ const getEmeraldConfig = require('../functions/getEmeraldConfig')
 const { output } = require('../boilerplate/argsAliases')
 const spawnAsync = require('../functions/spawnAsync')
 const getProjectStore = require('../functions/getProjectStore')
+const exists = require('../functions/exists')
 
 const pathSpacingRegex = /[\s\-]+/g
 const validPreexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
 async function createProject(templateFolder, outputFolder, options) {
-  console.log('hi', options)
   const config = (process.env.EMERALD_CONFIG = getConfiguration())
   let { launchCommand } = config
 
@@ -34,8 +34,10 @@ async function createProject(templateFolder, outputFolder, options) {
   if (Array.isArray(templateFolder)) templateFolder = templateFolder[0]
   if (typeof templateFolder != 'string')
     throw new Error('Please specify which template folder you would like to use')
-  const templateFolderPath = await findTemplateFolder(templateFolder)
-  if (templateFolderPath === null || !(await directoryExists(templateFolderPath)))
+  const templateFolderPath = (await directoryExists(templateFolder))
+    ? templateFolder
+    : await findTemplateFolder(templateFolder)
+  if (templateFolderPath === null)
     throw new Error(
       chalk.bold(`Could not find the template ${chalk.red('"' + templateFolder + '"')}`)
     )
