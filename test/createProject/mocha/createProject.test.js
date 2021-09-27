@@ -64,7 +64,7 @@ tests.forEach(test => {
         await createProject(
           join(sourcesDirectory, sourceTemplate),
           tempOutputPath,
-          new Options({ noLaunch: true })
+          new Options({ noLaunch: true, silent: true })
         )
         try {
           await rm(outputGitPath, { recursive: true }) // delete the .git folder for comparison

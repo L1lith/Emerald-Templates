@@ -156,6 +156,7 @@ async function createProject(templateFolder, outputFolder, options) {
 module.exports = {
   handler: createProject,
   aliases: ['generate', 'gen', 'g'],
+  allowBonusArgs: true,
   args: {
     templateFolder: {
       format: String,
