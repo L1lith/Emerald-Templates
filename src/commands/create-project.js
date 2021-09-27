@@ -100,7 +100,7 @@ async function createProject(templateFolder, outputFolder, options) {
     }
   }
   if (!silent) console.log('Copying The Template')
-  console.log(templateFolderPath, outputFolderPath)
+  //console.log(templateFolderPath, outputFolderPath)
   await copyTemplate(templateFolderPath, outputFolderPath, {
     overwrite: overwriteMode === 'overwrite'
   })
