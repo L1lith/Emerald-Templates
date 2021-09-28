@@ -24,7 +24,9 @@ const exists = require('../functions/exists')
 const pathSpacingRegex = /[\s\-]+/g
 const validPreexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
-async function createProject(templateFolder, outputFolder, options) {
+async function createProject(args, options) {
+  const [templateFolder] = args
+  const outputFolder = args.slice(1).join(' ')
   const config = (process.env.EMERALD_CONFIG = getConfiguration())
   let { launchCommand } = config
 
@@ -157,6 +159,7 @@ module.exports = {
   handler: createProject,
   aliases: ['generate', 'gen', 'g'],
   allowBonusArgs: true,
+  spreadArgs: false,
   args: {
     templateFolder: {
       format: String,
