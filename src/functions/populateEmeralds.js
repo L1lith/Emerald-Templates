@@ -44,7 +44,7 @@ async function populateEmerald(outputFolder, filePath, templateEngine = 'ejs', o
     throw new Error('Unrecognized template engine')
   }
   await writeFile(filePath, output)
-  await rimraf(sourceFile)
+  await rimraf(sourceFile, { force: true })
 }
 
 async function populateEmeralds(

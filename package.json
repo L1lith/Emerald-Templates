@@ -3,7 +3,8 @@
   "version": "0.4.6",
   "description": "Intelligent Template Generation & Project Management",
   "scripts": {
-    "test": "mocha ./test/**/*.test.js"
+    "test": "mocha ./test/**/*.test.js",
+    "pretty": "prettier --write \"./**/*.js\""
   },
   "bin": {
     "emerald-templates": "./src/index.js",
@@ -66,6 +67,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-fs": "^2.0.0",
-    "mocha": "^8.2.1"
+    "mocha": "^8.2.1",
+    "prettier": "^2.6.2"
   }
 }

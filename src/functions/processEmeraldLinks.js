@@ -33,7 +33,7 @@ async function processEmeraldLink(linkPath, outputFolder, templateFolder) {
   if (areRelatedPaths(source, output))
     throw new Error(`Cannot clone related paths: "${source}", "${output}"`)
   await mkdirp(linkFolder)
-  await rimraf(linkPath)
+  await rimraf(linkPath, { force: true })
   await smartCopy(source, output, { templateOptions: { overwrite: false } })
 }
 
