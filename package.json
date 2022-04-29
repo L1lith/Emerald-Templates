@@ -45,7 +45,7 @@
     "fly-install": "0.0.2",
     "fs-extra": "^8.0.1",
     "ignore-walk": "^3.0.3",
-    "jabr": "^0.2.8",
+    "jabr": "^0.3.1",
     "minimist": "^1.2.6",
     "mkdirp": "^1.0.4",
     "mvdir": "^1.0.17",
