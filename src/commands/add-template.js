@@ -1,4 +1,3 @@
-const { join } = require('path')
 const getConfiguration = require('../functions/getConfiguration')
 const saveGlobalConfig = require('../functions/saveGlobalConfig')
 const resolvePath = require('../functions/resolvePath')
@@ -6,7 +5,7 @@ const askQuestion = require('../functions/askQuestion')
 const chalk = require('chalk')
 const directoryExists = require('directory-exists')
 
-async function addTemplate(templateFolder, options) {
+async function addTemplate(templateFolder) {
   if (typeof templateFolder != 'string' || templateFolder.length < 0) {
     templateFolder = (
       await askQuestion('Please enter the path to your template folder (relative or absolute)\n> ')

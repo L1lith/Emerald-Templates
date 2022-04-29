@@ -1,10 +1,10 @@
-const { exists, writeJSON } = require('fs-extra')
+const { exists } = require('fs-extra')
+const { join } = require('path')
 const askQuestion = require('../functions/askQuestion')
 const getEmeraldConfig = require('../functions/getEmeraldConfig')
 const resolvePath = require('../functions/resolvePath')
 const saveEmeraldConfig = require('../functions/saveEmeraldConfig')
 const findTemplateFolder = require('../functions/findTemplateFolder')
-const findProjectRoot = require('../functions/findProjectRoot')
 
 async function addSource(options) {
   const dir = process.cwd()

@@ -1,4 +1,3 @@
-const { join } = require('path')
 const directoryExists = require('directory-exists')
 const chalk = require('chalk')
 const { inspect } = require('util')
@@ -9,11 +8,9 @@ const askYesOrNo = require('../functions/askYesOrNo')
 const getConfiguration = require('../functions/getConfiguration')
 const onDeath = require('ondeath')
 
-const configPath = join(__dirname, '..', '..', 'emerald-config.json')
 const templateEngines = ['ejs', 'nunjucks', 'handlebars', 'mustache']
-const yesOrNo = ['yes', 'no']
 
-async function configure(options) {
+async function configure() {
   let config = getConfiguration()
   const configKeys = Object.keys(config).sort()
   if (configKeys.length > 0) {
@@ -88,7 +85,7 @@ async function configure(options) {
       ) + '\n> ',
       { validAnswers: ['yes', 'no', 'delete'] }
     )
-    if (reponse !== 'delete') {
+    if (dependencyResponse !== 'delete') {
       config.automaticallyInstallDependencies = dependencyResponse === 'yes'
       console.log(
         chalk.green(
@@ -113,7 +110,7 @@ async function configure(options) {
       ) + '\n> ',
       { validAnswers: ['yes', 'no', 'delete'] }
     )
-    if (reponse !== 'delete') {
+    if (gitResponse !== 'delete') {
       config.automaticallyInitializeGitRepo = gitResponse === 'yes'
       console.log(
         chalk.green(

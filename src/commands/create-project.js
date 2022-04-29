@@ -17,12 +17,12 @@ const askYesOrNo = require('../functions/askYesOrNo')
 const getEmeraldConfig = require('../functions/getEmeraldConfig')
 const getProjectStore = require('../functions/getProjectStore')
 
-const pathSpacingRegex = /[\s\-]+/g
+const pathSpacingRegex = /[\s-]+/g
 const validPreexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
 async function createProject(args, options) {
   let [templateFolder] = args
-  const outputFolder = args.slice(1).join(' ')
+  let outputFolder = args.slice(1).join(' ')
   const config = (process.env.EMERALD_CONFIG = getConfiguration())
   let { launchCommand } = config
 

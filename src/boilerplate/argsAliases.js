@@ -19,7 +19,6 @@ module.exports = {
   output: 'outputFolder',
   o: 'open-project',
   open: 'open-project',
-  info: 'describe',
   d: 'describe',
   td: 'template-directory',
   v: 'version',
