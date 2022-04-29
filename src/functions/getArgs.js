@@ -4,7 +4,7 @@ const primaryOptionNames = require('../boilerplate/primaryCommands')
 const resolveCommandAlias = require('./resolveCommandAlias')
 
 let storedArgs = null
-const removeLeadingDashes = /^[\-]*/
+//const removeLeadingDashes = /^[\-]*/
 
 function getArgs(fresh = false) {
   if (fresh !== true && storedArgs !== null) return storedArgs
@@ -12,11 +12,11 @@ function getArgs(fresh = false) {
   const args = minimist(process.argv.slice(2))
 
   Object.keys(argsAliases).forEach(alias => {
-    if (args.hasOwnProperty(alias)) {
+    if (alias in args) {
       const oldValue = args[alias]
       delete args[alias]
       const newName = argsAliases[alias]
-      if (args.hasOwnProperty(newName)) throw new Error('Cannot supply the same option twice')
+      if (newName in args) throw new Error('Cannot supply the same option twice')
       args[newName] = oldValue
     }
   })

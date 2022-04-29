@@ -3,10 +3,7 @@ const titleCase = require('./titleCase')
 const setDefaultValue = require('./setDefaultValue')
 const { writeJson } = require('fs-extra')
 const tryRequire = require('./tryRequire')
-
-const defaultOptions = {}
-
-const dashesRegex = /[\-]+/g
+const dashesRegex = /[-]+/g
 const gemRegex = /.gem$/i
 
 const validTypes = ['project', 'gem']
@@ -15,7 +12,6 @@ async function getEmeraldConfig(targetFolder, options = {}) {
   const {
     generateDefaultConfig = false,
     defaultConfigOptions = {},
-    debug = false,
     defaultOptions,
     type = 'project'
   } = options
@@ -34,9 +30,9 @@ async function getEmeraldConfig(targetFolder, options = {}) {
     output = { ...output /* Assign the default options */, ...result }
   }
 
-  if (!output.hasOwnProperty('name')) {
+  if (!('name' in output)) {
     // Assure it has a name
-    if (ourPackage && ourPackage.hasOwnProperty('name')) {
+    if (ourPackage && 'name' in ourPackage) {
       output.name = titleCase(ourPackage.name.split(dashesRegex).join(' ').trim())
     } else {
       output.name = titleCase(basename(targetFolder).split(dashesRegex).join(' ').trim())

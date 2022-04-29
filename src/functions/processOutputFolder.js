@@ -2,7 +2,6 @@ const processEmeraldLinks = require('./processEmeraldLinks')
 const populateEmeralds = require('./populateEmeralds')
 const processEmeraldScripts = require('./processEmeraldScripts')
 const getEmeraldConfig = require('./getEmeraldConfig')
-const { output } = require('../boilerplate/argsAliases')
 
 async function processOutputFolder(outputFolder, templateFolder, options = {}) {
   if (typeof options != 'object' || options === null) options = {}

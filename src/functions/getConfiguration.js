@@ -29,7 +29,7 @@ function getConfiguration(ensureConfigured = false) {
   }
   if (typeof result.launchCommand == 'string') result.launchCommand = result.launchCommand.trim()
   Object.entries(defaultOptions).forEach(([key, value]) => {
-    if (!result.hasOwnProperty(key)) {
+    if (!(key in result)) {
       setDefaultValue(result, key, value)
     }
   })

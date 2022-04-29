@@ -42,8 +42,7 @@ async function getAvailableGems(projectPath, options = {}) {
   await Promise.all(
     projectGems.map(async gemPath => {
       const config = await getEmeraldConfig(gemPath, { type: 'gem' })
-      if (sources.hasOwnProperty(config.pathName))
-        throw new Error(`Found duplicate gems: "${config.name}"`)
+      if (config.pathName in sources) throw new Error(`Found duplicate gems: "${config.name}"`)
       config.path = gemPath
       config.project = projectPath
       config.destination = relative(projectPath, resolve(gemPath, '..'))
