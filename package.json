@@ -41,7 +41,7 @@
     "deglob": "^4.0.1",
     "delete": "^1.1.0",
     "directory-exists": "^2.0.1",
-    "ejs": "^2.6.1",
+    "ejs": "^3.1.7",
     "fly-install": "0.0.2",
     "fs-extra": "^8.0.1",
     "ignore-walk": "^3.0.3",
@@ -64,7 +64,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-fs": "^2.0.0",
-    "mocha": "^8.4.0",
+    "mocha": "^9.2.2",
     "prettier": "^2.6.2"
   }
 }
