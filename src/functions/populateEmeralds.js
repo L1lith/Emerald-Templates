@@ -1,7 +1,4 @@
-const Mustache = require('mustache')
 const ejs = require('ejs')
-const Handlebars = require('handlebars')
-const nunjucks = require('nunjucks')
 const { basename, relative, dirname, extname } = require('path')
 const { readFile, writeFile } = require('fs-extra')
 const { readFileSync } = require('fs')
@@ -31,18 +28,7 @@ async function populateEmerald(outputFolder, filePath, templateEngine = 'ejs', o
     require: require,
     loadFile: path => readFileSync(path, 'uft8')
   }
-  let output
-  if (templateEngine === 'mustache') {
-    output = Mustache.render(rawFile, scriptArgs)
-  } else if (templateEngine === 'handlebars') {
-    output = Handlebars.compile(rawFile)(scriptArgs)
-  } else if (templateEngine === 'ejs') {
-    output = ejs.render(rawFile, scriptArgs)
-  } else if (templateEngine === 'nunjucks') {
-    output = nunjucks.renderString(rawFile, scriptArgs)
-  } else {
-    throw new Error('Unrecognized template engine')
-  }
+  const output = ejs.render(rawFile, scriptArgs)
   await writeFile(filePath, output)
   await rimraf(sourceFile, { force: true })
 }
