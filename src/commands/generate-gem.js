@@ -1,7 +1,6 @@
 const getEmeraldConfig = require('../functions/getEmeraldConfig')
 const findGem = require('../functions/findGem')
 const resolvePath = require('../functions/resolvePath')
-const askQuestion = require('../functions/askQuestion')
 const processOutputFolder = require('../functions/processOutputFolder')
 const findProjectRoot = require('../functions/findProjectRoot')
 const copyTemplate = require('../functions/copyTemplate')
@@ -11,7 +10,7 @@ const { join } = require('path')
 const { argPrompt } = require('command-functions')
 const getProjectStore = require('../functions/getProjectStore')
 
-async function generateGem(gemName, project, options = {}) {
+async function generateGem(gemName, project) {
   const dir = process.cwd()
   if (typeof project == 'string') {
     project = resolvePath(project, dir)
@@ -33,7 +32,7 @@ async function generateGem(gemName, project, options = {}) {
   let store = null
   global.GEMSTORE = getProjectStore(projectPath, config)
   //process.env.GEMSTORE = store
-  if (config.hasOwnProperty('args')) {
+  if ('args' in config) {
     Object.entries(config.args).forEach(([arg, argConfig]) => {
       const value = argPrompt(argConfig.prompt, argConfig)
       process.env['GEM_' + arg] = argsOutput[arg] = value

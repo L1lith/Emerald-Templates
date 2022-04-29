@@ -1,15 +1,11 @@
 const getEmeraldConfig = require('../functions/getEmeraldConfig')
 const findTemplateFolder = require('../functions/findTemplateFolder')
-const askQuestion = require('../functions/askQuestion')
-const { basename } = require('path')
 const chalk = require('chalk')
 
 async function describeTemplate(template) {
   const templateFolder = await findTemplateFolder(template)
   if (!templateFolder)
-    throw new Error(
-      chalk.bold(`Could not find the template ${chalk.red('"' + targetTemplate + '"')}`)
-    )
+    throw new Error(chalk.bold(`Could not find the template ${chalk.red('"' + template + '"')}`))
   const config = await getEmeraldConfig(templateFolder)
   console.log(`Template Name: ${chalk.green(chalk.bold(config.name))}${
     typeof config.description == 'string' ? '\nDescription: ' + chalk.green(config.description) : ''

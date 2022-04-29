@@ -22,6 +22,7 @@ async function removeTemplate(options) {
   let config = loadGlobalConfig()
   if (!Array.isArray(config.templatePaths) || !config.templatePaths.includes(templatePath))
     throw new Error('That folder has not been added')
+  const templatePaths = config.templatePaths
   let templatePathIndex = 0
   while (templatePathIndex >= 0) {
     templatePathIndex = templatePaths.indexOf(templatePath)

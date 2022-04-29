@@ -4,7 +4,7 @@ const { basename } = require('path')
 const chalk = require('chalk')
 const displayList = require('../functions/displayList')
 
-const excludedDirectoryNames = ['.git']
+//const excludedDirectoryNames = ['.git']
 
 async function listTemplates() {
   getConfiguration()

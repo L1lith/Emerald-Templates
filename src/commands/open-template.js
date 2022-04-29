@@ -23,7 +23,7 @@ async function openTemplate(options) {
   if (typeof launchCommand == 'string' && launchCommand.length > 0) {
     await exec(launchCommand, { cwd: templateFolder })
   } else {
-    await openExplorer(projectFolder)
+    await openExplorer(templateFolder)
   }
 }
 

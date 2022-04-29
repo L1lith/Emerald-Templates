@@ -1,10 +1,9 @@
 const { join, basename, dirname } = require('path')
-const sanitize = require('sanitize-filename')
 const chalk = require('chalk')
 const { promisify } = require('util')
 const rimraf = require('delete').promise
 const exec = promisify(require('child_process').exec)
-const { copy, readdir, rmdir, readFile, unlink, pathExists, ensureDir } = require('fs-extra')
+const { pathExists, ensureDir } = require('fs-extra')
 const getConfiguration = require('../functions/getConfiguration')
 const directoryExists = require('directory-exists')
 const resolvePath = require('../functions/resolvePath')
@@ -16,16 +15,13 @@ const askQuestion = require('../functions/askQuestion')
 const askYesOrNo = require('../functions/askYesOrNo')
 //const displayList = require('../functions/displayList')
 const getEmeraldConfig = require('../functions/getEmeraldConfig')
-const { output } = require('../boilerplate/argsAliases')
-const spawnAsync = require('../functions/spawnAsync')
 const getProjectStore = require('../functions/getProjectStore')
-const exists = require('../functions/exists')
 
 const pathSpacingRegex = /[\s\-]+/g
 const validPreexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
 async function createProject(args, options) {
-  const [templateFolder] = args
+  let [templateFolder] = args
   const outputFolder = args.slice(1).join(' ')
   const config = (process.env.EMERALD_CONFIG = getConfiguration())
   let { launchCommand } = config

@@ -29,8 +29,6 @@ async function removeRoot(options) {
   }
   if (config.rootFolders.length < 1) {
     delete config.rootFolders
-  } else {
-    config.rootFolders = config.rootFolders
   }
   saveGlobalConfig(config)
   console.log(chalk.green('Done!'))

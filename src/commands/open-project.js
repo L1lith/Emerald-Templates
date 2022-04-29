@@ -6,7 +6,7 @@ const openExplorer = require('../functions/openExplorerAsync')
 const getConfiguration = require('../functions/getConfiguration')
 const resolvePath = require('../functions/resolvePath')
 
-async function openProject(project, options) {
+async function openProject(project) {
   const projectFolder = await findProjectFolder(resolvePath(project, process.cwd()))
   const { launchCommand } = getConfiguration()
   if (typeof launchCommand == 'string' && launchCommand.length > 0) {
