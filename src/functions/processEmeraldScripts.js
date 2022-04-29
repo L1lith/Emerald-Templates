@@ -3,7 +3,6 @@ const rimraf = require('delete').promise
 const { promisify } = require('util')
 const { join, basename, dirname } = require('path')
 //const exec = promisify(require('child_process').exec)
-const { exec } = require('shelljs')
 const args = require('./getArgs')()
 const ensureArguments = require('./ensureArguments')
 const findFilesByExtension = require('../functions/findFilesByExtension')
