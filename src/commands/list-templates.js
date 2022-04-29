@@ -27,6 +27,6 @@ async function listTemplates() {
 
 module.exports = {
   handler: listTemplates,
-  aliases: ['list', 'templates'],
+  aliases: ['list', 'templates', 'l'],
   description: 'Lists the available templates'
 }

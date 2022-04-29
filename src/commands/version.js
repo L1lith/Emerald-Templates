@@ -7,4 +7,7 @@ function printVersion() {
   )
 }
 
-module.exports = printVersion
+module.exports = {
+  handler: printVersion,
+  aliases: ['v']
+}
