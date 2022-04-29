@@ -1,10 +1,7 @@
-const { promisify } = require('util')
-const deglob = promisify(require('deglob'))
-const { join, dirname, relative } = require('path')
-const { readFile, exists } = require('fs-extra')
+const { join, dirname } = require('path')
+const { exists } = require('fs-extra')
 const mkdirp = require('mkdirp')
 const mvdir = require('mvdir')
-const { isFile, isDirectory } = require('path-type')
 const walk = require('ignore-walk')
 const containsPath = require('contains-path')
 const gemRegex = /\.gem/i

@@ -5,7 +5,7 @@
   "scripts": {
     "test": "mocha ./test/**/*.test.js",
     "pretty": "prettier --write \"./**/*.js\"",
-    "lint": "npx eslint src",
+    "lint": "npx eslint --fix src",
     "prepublish": "pretty && lint && test"
   },
   "bin": {

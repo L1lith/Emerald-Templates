@@ -1,4 +1,3 @@
-const { join } = require('path')
 const loadGlobalConfig = require('../functions/loadGlobalConfig')
 const saveGlobalConfig = require('../functions/saveGlobalConfig')
 const resolvePath = require('../functions/resolvePath')

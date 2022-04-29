@@ -10,7 +10,7 @@ const getAvailableGems = require('./getAvailableGems')
 const pathCase = require('./pathCase')
 
 async function findGem(projectPath, gemName, options = {}) {
-  let { doLogging = true, templateFolders = null, availableGems = null } = options
+  let { availableGems = null } = options
   //const globalConfig = loadGlobalConfig()
   if (availableGems === null) availableGems = await getAvailableGems(projectPath)
   gemName = pathCase(gemName)

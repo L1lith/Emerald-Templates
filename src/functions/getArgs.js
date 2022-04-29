@@ -21,9 +21,9 @@ function getArgs(fresh = false) {
     }
   })
 
-  if (!args.hasOwnProperty('_')) args._ = []
+  if (!('_' in args)) args._ = []
 
-  let providedOptions = Object.entries(args)
+  //let providedOptions = Object.entries(args)
 
   let primaryOptions = Object.keys(args).filter(name => {
     return primaryOptionNames.includes(name)
@@ -35,7 +35,7 @@ function getArgs(fresh = false) {
       const newArgs = args._.slice(1)
       if (primaryOptionNames.includes(primaryOption)) {
         primaryOptions.push(primaryOption)
-        if (args.hasOwnProperty(primaryOption)) throw new Error('Unexpected State')
+        if (primaryOption in args) throw new Error('Unexpected State')
         if (args._.length > 1) {
           args[primaryOption] = newArgs
         } else {
@@ -44,7 +44,7 @@ function getArgs(fresh = false) {
         args._ = newArgs
       } else {
         primaryOptions.push('create-project')
-        if (args.hasOwnProperty('create-project')) throw new Error('Unexpected State')
+        if ('create-project' in args) throw new Error('Unexpected State')
       }
     } else {
       primaryOptions.push('help')

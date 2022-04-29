@@ -1,5 +1,5 @@
 const { lstat } = require('fs/promises')
-const { dirname, join, sep } = require('path')
+const { dirname, join } = require('path')
 
 async function findProjectRoot(
   workingDirectory,

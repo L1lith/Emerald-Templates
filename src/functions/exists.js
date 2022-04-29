@@ -1,7 +1,9 @@
+const { accessSync, constants } = require('fs')
+
 function exists(filepath) {
   let flag = true
   try {
-    fs.accessSync(filepath, fs.constants.F_OK)
+    accessSync(filepath, constants.F_OK)
   } catch (e) {
     flag = false
   }

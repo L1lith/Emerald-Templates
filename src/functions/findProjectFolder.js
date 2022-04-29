@@ -4,7 +4,7 @@ const getConfiguration = require('./getConfiguration')
 const getEmeraldConfig = require('../functions/getEmeraldConfig')
 
 const whitespaceRegex = /\s+/g
-const whitespaceOrDashRegex = /[\s\-]+/g
+const whitespaceOrDashRegex = /[\s-]+/g
 
 async function findProjectFolder(name) {
   if (typeof name != 'string' || name.length < 1)
