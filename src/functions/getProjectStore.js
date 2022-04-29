@@ -5,7 +5,7 @@ const resolvePath = require('../functions/resolvePath')
 function getProjectStore(projectPath, projectConfig = null) {
   if (typeof projectPath != 'string') throw new Error('Invalid Project Path')
   if (projectConfig === null) projectConfig = getEmeraldConfig(projectPath)
-  if (projectConfig.hasOwnProperty('store')) {
+  if ('store' in projectConfig) {
     let storePath
     let args = []
     if (Array.isArray(projectConfig.store)) {
@@ -21,7 +21,7 @@ function getProjectStore(projectPath, projectConfig = null) {
     }
     storePath = resolvePath(storePath, projectPath) // Make it relative to the supplied project directory
 
-    store = new Jabr(...args)
+    const store = new Jabr(...args)
     syncToJSON(store, storePath)
     return store
   } else {

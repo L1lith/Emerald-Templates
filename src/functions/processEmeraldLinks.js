@@ -1,10 +1,9 @@
 const findFilesByExtension = require('../functions/findFilesByExtension')
 const { basename, dirname, join, relative, extname } = require('path')
-const { readFile, exists } = require('fs-extra')
+const { readFile } = require('fs-extra')
 const areRelatedPaths = require('./areRelatedPaths')
 const mkdirp = require('mkdirp')
 const rimraf = require('delete').promise
-const mvdir = require('mvdir')
 const resolvePath = require('./resolvePath')
 const smartCopy = require('./smartCopy')
 
@@ -18,7 +17,7 @@ async function processEmeraldLink(linkPath, outputFolder, templateFolder) {
   const output = join(linkFolder, fileName.replace(endingEmeraldLinkRegex, ''))
   const sourceCode = (await readFile(linkPath)).toString()
   const sourceLines = sourceCode
-    .split(/[\n\,]+/g)
+    .split(/[\n,]+/g)
     .map(line => line.trim())
     .filter(line => line.length > 0 && !line.startsWith('#')) // ignore comment lines
   if (sourceLines.length < 0) throw new Error('Must supply a source path')
@@ -49,12 +48,7 @@ async function processEmeraldLinks(outputFolder, templateFolder, projectConfig, 
       if (!silent)
         console.log(`Processing ${firstRun ? 'the' : 'additional'} .emerald-link link files`)
       for (const emeraldLink of emeraldLinks) {
-        try {
-          await processEmeraldLink(emeraldLink, outputFolder, templateFolder)
-        } catch (error) {
-          //console.log('AAAA ', emeraldLink, outputFolder, templateFolder)
-          throw error
-        }
+        await processEmeraldLink(emeraldLink, outputFolder, templateFolder)
       }
     }
   }

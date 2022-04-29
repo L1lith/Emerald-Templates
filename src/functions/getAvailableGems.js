@@ -1,4 +1,4 @@
-const { join, relative, resolve } = require('path')
+const { relative, resolve } = require('path')
 const findTemplateFolder = require('./findTemplateFolder')
 const getTemplateFolders = require('./getTemplateFolders')
 const getEmeraldConfig = require('./getEmeraldConfig')

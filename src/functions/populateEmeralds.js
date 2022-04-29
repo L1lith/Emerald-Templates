@@ -1,5 +1,5 @@
 const ejs = require('ejs')
-const { basename, relative, dirname, extname } = require('path')
+const { relative, dirname } = require('path')
 const { readFile, writeFile } = require('fs-extra')
 const { readFileSync } = require('fs')
 const rimraf = require('delete').promise
@@ -7,13 +7,13 @@ const findFilesByExtension = require('../functions/findFilesByExtension')
 const getConfiguration = require('./getConfiguration')
 const args = require('./getArgs')()
 
-async function populateEmerald(outputFolder, filePath, templateEngine = 'ejs', options) {
-  const silent = !!options?.silent
+async function populateEmerald(outputFolder, filePath) {
+  //const silent = !!options?.silent
   const sourceFile = filePath
   const rawFile = await readFile(filePath, 'utf8')
   filePath = filePath.replace(/.emerald$/, '')
   const relativePath = relative(outputFolder, filePath)
-  const fileName = basename(filePath, extname(filePath))
+  //const fileName = basename(filePath, extname(filePath))
   const parentFolder = dirname(filePath)
 
   const location = {

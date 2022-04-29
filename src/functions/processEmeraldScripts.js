@@ -5,7 +5,6 @@ const { join, basename, dirname } = require('path')
 // const args = require('./getArgs')()
 // const ensureArguments = require('./ensureArguments')
 const findFilesByExtension = require('../functions/findFilesByExtension')
-const { TempInstaller } = require('fly-install')
 const spawnAsync = require('./spawnAsync')
 
 // const installer = new TempInstaller()
