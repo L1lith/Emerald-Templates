@@ -10,7 +10,7 @@ async function removeProject(options) {
   let projectPath = options['remove-project'][0]
   if (typeof projectPath != 'string' || projectPath.length < 1) {
     projectPath = (
-      await askQuestion("Please enter the path to your project folder you'd like to remove\n> ")
+      await askQuestion('Please enter the path to your project folder you\'d like to remove\n> ')
     ).trim()
   }
   if (typeof projectPath != 'string' || projectPath.length < 1)

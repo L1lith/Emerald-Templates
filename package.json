@@ -4,7 +4,9 @@
   "description": "Intelligent Template Generation & Project Management",
   "scripts": {
     "test": "mocha ./test/**/*.test.js",
-    "pretty": "prettier --write \"./**/*.js\""
+    "pretty": "prettier --write \"./**/*.js\"",
+    "lint": "npx eslint src",
+    "prepublish": "pretty && lint && test"
   },
   "bin": {
     "emerald-templates": "./src/index.js",
@@ -63,6 +65,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-fs": "^2.0.0",
+    "eslint": "^8.14.0",
     "mocha": "^9.2.2",
     "prettier": "^2.6.2"
   }

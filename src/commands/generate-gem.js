@@ -19,7 +19,7 @@ async function generateGem(gemName, project, options = {}) {
     project = dir
   }
   project = await findProjectRoot(project)
-  if (!project) throw new Error("Could not find the 'emerald-config.js' file")
+  if (!project) throw new Error('Could not find the \'emerald-config.js\' file')
   if (typeof gemName != 'string')
     throw new Error('Must supply a valid gem name string, got: ' + inspect(gemName))
   gemName = gemName.trim()

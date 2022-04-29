@@ -9,7 +9,7 @@ async function resetConfig(options) {
   if (
     options.force !== true &&
     !(await askYesOrNo(
-      chalk.green("Are you sure you'd like to reset your Emerald Templates config? (yes/no)\n") +
+      chalk.green('Are you sure you\'d like to reset your Emerald Templates config? (yes/no)\n') +
         '> '
     ))
   ) {

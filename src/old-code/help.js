@@ -91,12 +91,12 @@ const commandHelp = {
     chalk.cyan('$COMMAND'),
   'add-source':
     chalk.green('Function: ') +
-    "Adds a template to the project's sources so that you can use it's gems" +
+    'Adds a template to the project\'s sources so that you can use it\'s gems' +
     chalk.green('\nSyntax: ') +
     chalk.cyan('$COMMAND <source path>'),
   'remove-source':
     chalk.green('Function: ') +
-    "Removes a template from the project's sources so that you can unlink it's gems" +
+    'Removes a template from the project\'s sources so that you can unlink it\'s gems' +
     chalk.green('\nSyntax: ') +
     chalk.cyan('$COMMAND <source path>'),
   'generate-gem':
@@ -136,7 +136,7 @@ function help(options) {
     return
   } else if (commandRequest !== true) {
     throw new Error(
-      "Invalid Help Value, please either leave it blank or specify a command you'd like to know more about"
+      'Invalid Help Value, please either leave it blank or specify a command you\'d like to know more about'
     )
   }
   console.log(

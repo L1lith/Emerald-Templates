@@ -87,7 +87,7 @@ async function createProject(args, options) {
     if (overwriteMode === 'erase') {
       if (options.force !== true) {
         const answer = await askYesOrNo(
-          "Are you sure you'd like to erase the entire project? (yes/no)\n> "
+          'Are you sure you\'d like to erase the entire project? (yes/no)\n> '
         )
         if (answer === false) {
           if (!silent) console.log('Exiting...')

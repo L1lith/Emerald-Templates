@@ -11,7 +11,7 @@ async function removeRoot(options) {
   if (typeof rootPath != 'string' || rootPath.length < 1) {
     rootPath = (
       await askQuestion(
-        "Please enter the path to your root templates storage folder you'd like to remove\n> "
+        'Please enter the path to your root templates storage folder you\'d like to remove\n> '
       )
     ).trim()
   }

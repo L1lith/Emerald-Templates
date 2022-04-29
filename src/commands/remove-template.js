@@ -11,7 +11,7 @@ async function removeTemplate(options) {
   if (typeof templateFolder != 'string' || templateFolder.length < 1) {
     templateFolder = (
       await askQuestion(
-        "Please enter the path to your template templates storage folder you'd like to remove\n> "
+        'Please enter the path to your template templates storage folder you\'d like to remove\n> '
       )
     ).trim()
     if (typeof templateFolder != 'string' || templateFolder.length < 1)

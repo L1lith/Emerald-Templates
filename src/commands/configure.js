@@ -148,7 +148,7 @@ async function configure(options) {
 
   const launchCommandResponse = await askQuestion(
     chalk.green(
-      `What launch command would you like to run after generating a new project? (To open atom for example, try "atom .")`
+      'What launch command would you like to run after generating a new project? (To open atom for example, try "atom .")'
     ) + '\n> '
   )
   if (launchCommandResponse.length > 0) {

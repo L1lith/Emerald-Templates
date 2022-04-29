@@ -1,16 +1,15 @@
-const { copy, readdir, rmdir, readFile, exists } = require('fs-extra')
+const { readFile } = require('fs-extra')
 const rimraf = require('delete').promise
-const { promisify } = require('util')
 const { join, basename, dirname } = require('path')
 //const exec = promisify(require('child_process').exec)
-const args = require('./getArgs')()
-const ensureArguments = require('./ensureArguments')
+// const args = require('./getArgs')()
+// const ensureArguments = require('./ensureArguments')
 const findFilesByExtension = require('../functions/findFilesByExtension')
 const { TempInstaller } = require('fly-install')
 const spawnAsync = require('./spawnAsync')
 
-const installer = new TempInstaller()
-const packageNameRegex = /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/
+// const installer = new TempInstaller()
+// const packageNameRegex = /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/
 
 async function processEmeraldScript(scriptPath, options) {
   const silent = !!options?.silent
