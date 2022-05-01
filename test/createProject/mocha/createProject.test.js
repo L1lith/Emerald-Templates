@@ -12,12 +12,16 @@ const directoryExists = require('directory-exists')
 
 const tests = [
   {
-    name: 'test-1',
+    name: 'rollup',
     sourceTemplate: 'rollup-test',
-    description: 'Project creation working properly',
+    description: 'rollup template working properly',
     subTests: {
       'no-input': {
         description: 'a basic rollup project with no cli arguments'
+      },
+      'no-install': {
+        description: 'a basic rollup project without installing the dependencies',
+        options: { noInstall: true }
       }
     }
   }
@@ -61,10 +65,14 @@ tests.forEach(test => {
         const outputGitPath = join(tempOutputPath, '.git')
         const nodeModulesPath = join(tempOutputPath, 'node_modules')
         // To Do: Actually generate the project
+        let options = { noLaunch: true, silent: true }
+        const subOptions = subTestOptions.options
+        if (typeof subOptions == 'object' && subOptions !== null)
+          options = { ...options, ...subOptions }
         await createProject(
           join(sourcesDirectory, sourceTemplate),
           tempOutputPath,
-          new Options({ noLaunch: true, silent: true })
+          new Options(options)
         )
         try {
           await rm(outputGitPath, { recursive: true }) // delete the .git folder for comparison

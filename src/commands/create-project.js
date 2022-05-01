@@ -83,7 +83,7 @@ async function createProject(args, options) {
     if (overwriteMode === 'erase') {
       if (options.force !== true) {
         const answer = await askYesOrNo(
-          'Are you sure you\'d like to erase the entire project? (yes/no)\n> '
+          "Are you sure you'd like to erase the entire project? (yes/no)\n> "
         )
         if (answer === false) {
           if (!silent) console.log('Exiting...')
@@ -125,7 +125,7 @@ async function createProject(args, options) {
   } catch (error) {
     if (!silent) console.log('Could not find or access the package.json')
   }
-  if (config.automaticallyInstallDependencies !== false && packageJSON) {
+  if (!options.noInstall && config.automaticallyInstallDependencies !== false && packageJSON) {
     if (!silent) console.log('Installing Dependencies')
     await exec('npm install', { cwd: outputFolderPath })
   }
