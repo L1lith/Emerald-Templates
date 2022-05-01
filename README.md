@@ -50,7 +50,7 @@ emt <template folder name> <output folder (relative or absolute)>
 Any additional cli arguments supplied (use --) will be passed to your templates as variables
 
 ```bash
-emt <template folder name> <output folder (relative or absolute)> --age 12ej
+emt <template folder name> <output folder (relative or absolute)> --age 12
 ```
 
 ## Command Documentation
