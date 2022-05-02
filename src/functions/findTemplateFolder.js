@@ -1,10 +1,11 @@
 const { basename } = require('path')
 const getTemplateFolders = require('./getTemplateFolders')
 const chalk = require('chalk')
-
+const { pathExists } = require('fs-extra')
 const whitespaceRegex = /\s+/g
 
 async function findTemplateFolder(name, templateFolders = null) {
+  if (await pathExists(name)) return name
   if (typeof name != 'string' || name.length < 1)
     throw new Error('Template name is not a non-empty string')
   name = name.toLowerCase().replace(whitespaceRegex, '-')

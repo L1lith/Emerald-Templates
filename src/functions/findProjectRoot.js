@@ -27,7 +27,6 @@ async function findProjectRoot(
 
 function checkParent(childDirectory, targetConfigs) {
   const parent = dirname(childDirectory)
-  console.log('f', childDirectory, parent)
   if (parent === childDirectory) return null
   return findProjectRoot(parent, targetConfigs)
 }

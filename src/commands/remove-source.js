@@ -26,6 +26,7 @@ async function removeSource(options) {
   const projectConfig = await getEmeraldConfig(projectPath)
   const sources = projectConfig.source || []
   if (!sources.includes(sourceName)) return console.warn('You have not added this source')
+  // if (!sources.includes(sourceName)) throw new Error('You have not added this source')
   projectConfig.sources = projectConfig.sources.filter(source => source !== sourceName)
 
   await saveEmeraldConfig(join(projectPath, 'emerald-config.json'), projectConfig)

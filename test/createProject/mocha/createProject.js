@@ -1,19 +1,19 @@
 const { join } = require('path')
-const { removeSync } = require('fs-extra')
-const { rmSync } = require('fs')
 const { rm } = require('fs/promises')
 const chai = require('chai')
 const { expect } = chai
 chai.use(require('chai-fs'))
-const { createProject } = require('../../../src/index.js')
+const { createProject, generateGem } = require('../../../src/index.js')
 const { Options } = require('command-functions')
 // const { output } = require('../../../src/boilerplate/argsAliases')
 // const directoryExists = require('directory-exists')
+const { promisify } = require('util')
+const exec = promisify(require('child_process').exec)
 
 const tests = [
   {
     name: 'rollup',
-    sourceTemplate: 'rollup-test',
+    sourceTemplate: 'rollup',
     description: 'rollup template working properly',
     subTests: {
       'no-input': {
@@ -22,6 +22,17 @@ const tests = [
       'no-install': {
         description: 'a basic rollup project without installing the dependencies',
         options: { noInstall: true }
+      }
+    }
+  },
+  {
+    name: 'gems',
+    sourceTemplate: 'gems',
+    description: 'gems are functioning correctly',
+    subTests: {
+      banana: {
+        description: 'we can use a gem to do a basic file copy',
+        gems: ['banana']
       }
     }
   }
@@ -66,20 +77,24 @@ tests.forEach(test => {
         const nodeModulesPath = join(tempOutputPath, 'node_modules')
         // To Do: Actually generate the project
         let options = { noLaunch: true, silent: true }
-        const subOptions = subTestOptions.options
-        if (typeof subOptions == 'object' && subOptions !== null)
-          options = { ...options, ...subOptions }
-        await createProject(
-          join(sourcesDirectory, sourceTemplate),
-          tempOutputPath,
-          new Options(options)
-        )
+        if (typeof subTestOptions == 'object' && subTestOptions !== null)
+          options = { ...options, ...subTestOptions }
+        const sourceTemplatePath = join(sourcesDirectory, sourceTemplate)
+        await createProject(sourceTemplatePath, tempOutputPath, new Options(options))
         try {
           await rm(outputGitPath, { recursive: true }) // delete the .git folder for comparison
         } catch (err) {}
         try {
           await rm(nodeModulesPath, { recursive: true }) // delete the node_modules  folder for comparison
         } catch (err) {}
+
+        if (Array.isArray(options.gems)) {
+          for (let i = 0, l = options.gems.length; i < l; i++) {
+            const gem = options.gems[i]
+            await exec(`emt gem ${gem}`, { cwd: tempOutputPath })
+          }
+        }
+
         expect(tempOutputPath).to.be.a.directory().and.equal(testComparisonDirectory)
       })
     })

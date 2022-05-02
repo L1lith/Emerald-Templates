@@ -19,6 +19,10 @@ async function getAvailableGems(projectPath, options = {}) {
   await Promise.all(
     templateSources.map(async source => {
       const templatePath = await findTemplateFolder(source, templateDirectories)
+      if (!templatePath) {
+        throw new Error('Could not find the template: ' + source)
+      }
+
       const gems = await findFilesByExtension(templatePath, '.gem', {
         matchFolders: true,
         matchFiles: false

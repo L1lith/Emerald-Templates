@@ -3,7 +3,7 @@
   "version": "0.4.6",
   "description": "Intelligent Template Generation & Project Management",
   "scripts": {
-    "test": "mocha ./test/**/*.test.js",
+    "test": "mocha ./test/createProject/mocha/**/*.js",
     "pretty": "prettier --write \"./**/*.js\"",
     "lint": "npx eslint --fix src",
     "prepublish": "npm run pretty && npm run lint && test"

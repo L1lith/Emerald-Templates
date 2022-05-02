@@ -64,7 +64,7 @@ async function configure() {
     ) + '\n> ',
     { validAnswers: templateEngines.concat(['', 'delete']) }
   )
-  console.log(templateEngineResponse)
+  //console.log(templateEngineResponse)
   if (templateEngineResponse) {
     if (templateEngineResponse !== 'delete') {
       config.templateEngine = templateEngineResponse

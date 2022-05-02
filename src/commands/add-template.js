@@ -15,7 +15,6 @@ async function addTemplate(templateFolder) {
     }
   }
   const templateFolderPath = resolvePath(templateFolder, process.cwd())
-  console.log(templateFolderPath)
   if (!(await directoryExists(templateFolderPath)))
     throw new Error(`The folder "${templateFolder}" does not exist`)
   let config = getConfiguration(templateFolderPath, { generateDefaultConfig: true })
