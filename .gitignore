@@ -3,3 +3,5 @@ node_modules/
 /templates/
 tmp/
 node_modules_bak/
+/script-dependencies/
+!/script-dependencies/package.json

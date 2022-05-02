@@ -1,6 +1,5 @@
-const { join, extname, basename, sep } = require('path')
+const { join, sep } = require('path')
 const { readdir, stat } = require('fs-extra')
-const {seg}
 
 const gemRegex = /.gem/i
 
@@ -28,7 +27,8 @@ async function findFilesByExtension(directory, extensions, options = {}) {
     }
     const fileExtensions = getExtensions(filePath)
     if (
-      ((isDir ? matchFolders : matchFiles) && fileExtensions.some(extension => extensions.includes(extension)))
+      (isDir ? matchFolders : matchFiles) &&
+      fileExtensions.some(extension => extensions.includes(extension))
     ) {
       output.push(filePath)
     }
@@ -37,9 +37,12 @@ async function findFilesByExtension(directory, extensions, options = {}) {
 }
 
 function getExtensions(path) {
-  const parts = filePath.split(sep)
+  const parts = path.split(sep)
   const filePath = parts[parts.length - 1]
-  const extensions = filePath.split('.').slice(1).map(value => "." + value)
+  const extensions = filePath
+    .split('.')
+    .slice(1)
+    .map(value => '.' + value)
   return extensions
 }
 

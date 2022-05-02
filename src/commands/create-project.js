@@ -1,8 +1,8 @@
 const { join, basename, dirname } = require('path')
 const chalk = require('chalk')
 const { promisify } = require('util')
-const rimraf = require('delete').promise
 const exec = promisify(require('child_process').exec)
+const rimraf = require('delete').promise
 const { pathExists, ensureDir } = require('fs-extra')
 const getConfiguration = require('../functions/getConfiguration')
 const directoryExists = require('directory-exists')

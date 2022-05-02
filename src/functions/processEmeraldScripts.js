@@ -29,7 +29,7 @@ async function processEmeraldScript(scriptPath, options) {
       output = await output
     } catch (error) {
       error.message =
-        'The following error occured while processing a .emerald-script (this script will continue anyways): ' +
+        'The following error occured while processing a .emerald-script (this command will continue anyways): ' +
         error.message
       console.error(error)
     }
@@ -49,6 +49,7 @@ async function processEmeraldScript(scriptPath, options) {
       try {
         await spawnAsync(line, { cwd: join(scriptPath, '..'), async: true, silent: false })
       } catch (error) {
+        error.message = 'Error inside .emerald-script.js file: ' + error.message
         console.error(error)
         break // Stop running the script on the first failure
       }

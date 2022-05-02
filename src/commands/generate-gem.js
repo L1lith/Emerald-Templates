@@ -9,6 +9,7 @@ const { inspect } = require('util')
 const { join } = require('path')
 const { argPrompt } = require('command-functions')
 const getProjectStore = require('../functions/getProjectStore')
+const installScriptDependency = require('../functions/installScriptDependency')
 
 async function generateGem(gemName, project) {
   const dir = process.cwd()
@@ -18,7 +19,7 @@ async function generateGem(gemName, project) {
     project = dir
   }
   project = await findProjectRoot(project)
-  if (!project) throw new Error('Could not find the \'emerald-config.js\' file')
+  if (!project) throw new Error("Could not find the 'emerald-config.js' file")
   if (typeof gemName != 'string')
     throw new Error('Must supply a valid gem name string, got: ' + inspect(gemName))
   gemName = gemName.trim()
@@ -30,6 +31,7 @@ async function generateGem(gemName, project) {
   const config = await getEmeraldConfig(gem.path, { type: 'gem' })
   let argsOutput = {}
   let store = null
+  // TODO: Use config.dependencies
   global.GEMSTORE = getProjectStore(projectPath, config)
   //process.env.GEMSTORE = store
   if ('args' in config) {
@@ -47,6 +49,13 @@ async function generateGem(gemName, project) {
     overwrite: false,
     allowGems: true
   })
+  if (Array.isArray(config.dependencies) && config.dependencies.length > 0) {
+    await Promise.all(
+      config.dependencies.map(dependency => {
+        return installScriptDependency(dependency)
+      })
+    )
+  }
   console.log('Handling any scripts, links, etc')
   await processOutputFolder(projectPath, gem.path)
   console.log(chalk.green('Gem Generated Successfully!'))
