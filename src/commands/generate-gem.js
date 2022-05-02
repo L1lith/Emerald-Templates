@@ -52,7 +52,7 @@ async function generateGem(gemName, project) {
   if (Array.isArray(config.dependencies) && config.dependencies.length > 0) {
     await Promise.all(
       config.dependencies.map(dependency => {
-        return installScriptDependency(dependency)
+        return installScriptDependency(dependency, destination)
       })
     )
   }

@@ -3,17 +3,17 @@ const { parseArgsStringToArgv } = require('string-argv')
 
 const defaultOptions = { stdio: 'inherit', stdin: 'inherit', shell: true }
 
-const fs = require('fs')
-function getFiles(dir) {
-  return fs.readdirSync(dir).flatMap(item => {
-    const path = `${dir}/${item}`
-    if (fs.statSync(path).isDirectory()) {
-      return getFiles(path)
-    }
+// const fs = require('fs')
+// function getFiles(dir) {
+//   return fs.readdirSync(dir).flatMap(item => {
+//     const path = `${dir}/${item}`
+//     if (fs.statSync(path).isDirectory()) {
+//       return getFiles(path)
+//     }
 
-    return path
-  })
-}
+//     return path
+//   })
+// }
 
 function spawnAsync(command, optionsIn = {}) {
   return new Promise((resolve, reject) => {

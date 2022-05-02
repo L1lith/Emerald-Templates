@@ -1,5 +1,8 @@
 {
   "name": "script-dependencies",
   "version": "0.0.1",
-  "description": "a fake package.json for script dependencies"
+  "description": "a fake package.json for script dependencies",
+  "dependencies": {
+    "fs-extra": "^10.1.0"
+  }
 }
