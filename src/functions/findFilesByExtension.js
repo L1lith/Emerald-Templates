@@ -8,7 +8,7 @@ async function findFilesByExtension(directory, extensions, options = {}) {
   if (!Array.isArray(extensions)) extensions = [extensions]
   extensions.forEach(extension => {
     if (typeof extension != 'string' || extension.length < 2 || !extension.startsWith('.'))
-      throw new Error("The extension must be a string of at least 2 characters starting with '.'")
+      throw new Error('The extension must be a string of at least 2 characters starting with "."')
   })
   const files = await readdir(directory)
   let output = []

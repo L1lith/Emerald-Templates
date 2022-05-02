@@ -83,6 +83,7 @@ async function createProject(args, options) {
     if (overwriteMode === 'erase') {
       if (options.force !== true) {
         const answer = await askYesOrNo(
+          // eslint-disable-next-line quotes
           "Are you sure you'd like to erase the entire project? (yes/no)\n> "
         )
         if (answer === false) {
