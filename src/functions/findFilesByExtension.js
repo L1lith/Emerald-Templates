@@ -1,5 +1,6 @@
-const { join, extname, basename } = require('path')
+const { join, extname, basename, sep } = require('path')
 const { readdir, stat } = require('fs-extra')
+const {seg}
 
 const gemRegex = /.gem/i
 
@@ -8,7 +9,7 @@ async function findFilesByExtension(directory, extensions, options = {}) {
   if (!Array.isArray(extensions)) extensions = [extensions]
   extensions.forEach(extension => {
     if (typeof extension != 'string' || extension.length < 2 || !extension.startsWith('.'))
-      throw new Error('The extension must be a string of at least 2 characters starting with \'.\'')
+      throw new Error("The extension must be a string of at least 2 characters starting with '.'")
   })
   const files = await readdir(directory)
   let output = []
@@ -25,14 +26,21 @@ async function findFilesByExtension(directory, extensions, options = {}) {
         continue // Don't look for templates in the node modules
       output = output.concat(await findFilesByExtension(filePath, extensions, options))
     }
+    const fileExtensions = getExtensions(filePath)
     if (
-      ((isDir ? matchFolders : matchFiles) && extensions.includes(extname(fileName))) ||
-      extensions.includes(basename(fileName))
+      ((isDir ? matchFolders : matchFiles) && fileExtensions.some(extension => extensions.includes(extension)))
     ) {
       output.push(filePath)
     }
   }
   return output
+}
+
+function getExtensions(path) {
+  const parts = filePath.split(sep)
+  const filePath = parts[parts.length - 1]
+  const extensions = filePath.split('.').slice(1).map(value => "." + value)
+  return extensions
 }
 
 module.exports = findFilesByExtension
