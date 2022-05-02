@@ -7,7 +7,7 @@ const app = new CommandFunctions(commands, { exports: { symbols } })
 
 if (require.main === module) {
   // It's being run by the terminal
-  //throw process.argv
+  //throw process.argve
   app
     .runCLI(process.argv)
     .then(() => {

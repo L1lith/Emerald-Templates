@@ -7,8 +7,8 @@ const { expect } = chai
 chai.use(require('chai-fs'))
 const { createProject } = require('../../../src/index.js')
 const { Options } = require('command-functions')
-const { output } = require('../../../src/boilerplate/argsAliases')
-const directoryExists = require('directory-exists')
+// const { output } = require('../../../src/boilerplate/argsAliases')
+// const directoryExists = require('directory-exists')
 
 const tests = [
   {
