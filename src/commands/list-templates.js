@@ -16,10 +16,10 @@ async function listTemplates() {
       )} to get started.`
     )
   displayList(
-    templateFolders
-      .map(path => basename(path))
+    Object.values(templateFolders)
+      .map(config => config.pathName)
       .sort()
-      .map(value => chalk.cyan(value)),
+      .map(path => chalk.cyan(path)),
     'Available Templates'
   )
   //console.log(chalk.bold(" Available Templates:\n- ") + templateFolders.map(path => basename(path)).sort().map(value => chalk.green(value)).join(', '))

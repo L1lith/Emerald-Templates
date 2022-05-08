@@ -1,6 +1,7 @@
-const getConfiguration = require('../functions/getConfiguration')
+const getConfiguration = require('./getConfiguration')
 const directoryExists = require('directory-exists')
-const getChildDirectories = require('../functions/getChildDirectories')
+const getChildDirectories = require('./getChildDirectories')
+const getEmeraldConfig = require('./getEmeraldConfig')
 const { exists } = require('fs-extra')
 const { join } = require('path')
 
@@ -8,7 +9,7 @@ const excludedDirectoryNames = ['.git', 'node_modules']
 
 async function getTemplateFolders() {
   const { rootFolders, templateFolders } = getConfiguration()
-  const outputFolders = []
+  const outputFolders = {}
   for (const rootFolder of rootFolders) {
     if (!(await directoryExists(rootFolder)))
       throw new Error(
@@ -19,7 +20,9 @@ async function getTemplateFolders() {
     for (const childDirectory of childDirectories) {
       const fullPath = join(rootFolder, childDirectory)
       if (await exists(join(fullPath, '.noemerald'))) continue // ignore because it has a .noemerald file
-      if (!outputFolders.includes(fullPath)) outputFolders.push(fullPath)
+      const config = await getEmeraldConfig(fullPath)
+      config.path = fullPath
+      outputFolders[config.name] = config
     }
   }
   for (const templateFolder of templateFolders) {
@@ -27,7 +30,11 @@ async function getTemplateFolders() {
       (await directoryExists(templateFolder)) &&
       !(await exists(join(templateFolder, '.noemerald')))
     ) {
-      if (!outputFolders.includes(templateFolder)) outputFolders.push(templateFolder)
+      console.log('a', templateFolder)
+
+      const config = await getEmeraldConfig(templateFolder)
+      config.path = templateFolder
+      outputFolders[config.pathName] = config
     }
   }
   return outputFolders
