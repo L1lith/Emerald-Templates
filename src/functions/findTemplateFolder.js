@@ -7,13 +7,11 @@ const getEmeraldConfig = require('./getEmeraldConfig')
 async function findTemplateFolder(name, templateFolders = null) {
   if (await pathExists(name)) {
     const output = getEmeraldConfig(name)
-    console.log('o', output)
     return output
   }
   if (typeof name != 'string' || name.length < 1)
     throw new Error('Template name is not a non-empty string')
   if (templateFolders === null) templateFolders = await getTemplateFolders()
-  console.log(name, templateFolders)
   if (templateFolders.length < 1)
     console.warn(chalk.red('Warning: Found no template folders, try setting some up first'))
   return templateFolders[getPathName(name)] || null
