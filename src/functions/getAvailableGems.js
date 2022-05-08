@@ -18,21 +18,19 @@ async function getAvailableGems(projectPath, options = {}) {
 
   await Promise.all(
     templateSources.map(async source => {
-      const templatePath = await findTemplateFolder(source, templateDirectories)
-      if (!templatePath) {
+      const templateConfig = await findTemplateFolder(source, templateDirectories)
+      if (!templateConfig) {
         throw new Error('Could not find the template: ' + source)
       }
 
-      const gems = await findFilesByExtension(templatePath, '.gem', {
+      const gems = await findFilesByExtension(templateConfig.path, '.gem', {
         matchFolders: true,
         matchFiles: false
       })
       await Promise.all(
         gems.map(async gemPath => {
           const config = await getEmeraldConfig(gemPath, { type: 'gem' })
-          config.path = gemPath
-          config.project = templatePath
-          config.destination = relative(templatePath, resolve(gemPath, '..'))
+          config.destination = relative(templateConfig.path, resolve(gemPath, '..'))
           sources[config.pathName] = config
         })
       )
