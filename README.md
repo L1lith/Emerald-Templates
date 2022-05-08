@@ -2,6 +2,9 @@
 
 Intelligent Template Generation & Project Management
 
+### A list of useful templates
+- [My Babel Template](https://github.com/L1lith/Babel-Template)
+
 ### Getting Started
 
 To install emerald templates run the following command in your console
