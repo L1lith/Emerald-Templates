@@ -21,7 +21,6 @@ const pathSpacingRegex = /[\s-]+/g
 const validPreexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
 async function createProject(templateFolder, outputFolder, options) {
-  console.log({ templateFolder, outputFolder })
   const config = (process.env.EMERALD_CONFIG = getConfiguration())
   let { launchCommand } = config
 
