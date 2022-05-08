@@ -20,26 +20,21 @@ const getProjectStore = require('../functions/getProjectStore')
 const pathSpacingRegex = /[\s-]+/g
 const validPreexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
-async function createProject(args, options) {
-  let [templateFolder] = args
-  let outputFolder = args.slice(1).join(' ')
+async function createProject(templateFolder, outputFolder, options) {
+  console.log({ templateFolder, outputFolder })
   const config = (process.env.EMERALD_CONFIG = getConfiguration())
   let { launchCommand } = config
 
   // const rootTemplateFolder = config.templateFolder
   // if (!(await directoryExists(rootTemplateFolder))) throw new Error("The folder configured to contain the templates does not exist")
-  while (!templateFolder) templateFolder = await askQuestion(chalk.green('') + '\n> ')
+  while (!templateFolder)
+    templateFolder = await askQuestion(chalk.green('Which Template?') + '\n> ')
   if (Array.isArray(templateFolder)) templateFolder = templateFolder[0]
   if (typeof templateFolder != 'string')
     throw new Error('Please specify which template folder you would like to use')
-  const templateFolderPath = (await directoryExists(templateFolder))
-    ? templateFolder
-    : await findTemplateFolder(templateFolder)
-  if (templateFolderPath === null)
-    throw new Error(
-      chalk.bold(`Could not find the template ${chalk.red('"' + templateFolder + '"')}`)
-    )
-  process.env.TEMPLATE_FOLDER = templateFolderPath
+  const templateConfig = await findTemplateFolder(templateFolder)
+  if (templateConfig === null) throw new Error('Could not find the template: ' + templateFolder)
+  process.env.TEMPLATE_FOLDER = templateConfig.path
 
   /*let outputFolder =
     options['project'] ||
@@ -100,14 +95,14 @@ async function createProject(args, options) {
   }
   if (!silent) console.log('Copying The Template')
   //console.log(templateFolderPath, outputFolderPath)
-  await copyTemplate(templateFolderPath, outputFolderPath, {
+  await copyTemplate(templateConfig.path, outputFolderPath, {
     overwrite: overwriteMode === 'overwrite'
   })
   if (!silent) console.log('Generating the default emerald config')
   const projectConfig = await getEmeraldConfig(outputFolderPath, {
     generateDefaultConfig: true,
     defaultOptions: {
-      sources: [templateFolder]
+      sources: [templateConfig.path]
     }
   }) // Generate the default .emerald-config.json
 
@@ -119,7 +114,7 @@ async function createProject(args, options) {
   }
   global.PROJECT_STORE = getProjectStore(outputFolderPath, projectConfig)
 
-  await processOutputFolder(outputFolderPath, templateFolderPath, { silent })
+  await processOutputFolder(outputFolderPath, templateConfig.path, { silent })
   let packageJSON = null
   try {
     packageJSON = require(join(outputFolderPath, 'package.json'))
@@ -156,7 +151,7 @@ module.exports = {
   handler: createProject,
   aliases: ['generate', 'gen', 'g'],
   allowBonusArgs: true,
-  spreadArgs: false,
+  spreadArgs: true,
   args: {
     templateFolder: {
       format: String,

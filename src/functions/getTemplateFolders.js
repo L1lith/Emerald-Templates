@@ -22,7 +22,7 @@ async function getTemplateFolders() {
       if (await exists(join(fullPath, '.noemerald'))) continue // ignore because it has a .noemerald file
       const config = await getEmeraldConfig(fullPath)
       config.path = fullPath
-      outputFolders[config.name] = config
+      outputFolders[config.pathName] = config
     }
   }
   for (const templateFolder of templateFolders) {
@@ -30,8 +30,6 @@ async function getTemplateFolders() {
       (await directoryExists(templateFolder)) &&
       !(await exists(join(templateFolder, '.noemerald')))
     ) {
-      console.log('a', templateFolder)
-
       const config = await getEmeraldConfig(templateFolder)
       config.path = templateFolder
       outputFolders[config.pathName] = config
