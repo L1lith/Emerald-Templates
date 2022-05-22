@@ -44,7 +44,3 @@ describe('the library has the correct exports', () => {
     expect(inspect(details(lib, exportsFormat))).to.equal('null')
   })
 })
-
-describe('the library is exported correctly', () => {
-  it('exports the library correctly', () => {})
-})
