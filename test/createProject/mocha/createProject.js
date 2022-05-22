@@ -3,7 +3,7 @@ const { rm } = require('fs/promises')
 const chai = require('chai')
 const { expect } = chai
 chai.use(require('chai-fs'))
-const { createProject, generateGem } = require('../../../src/index.js')
+const { createProject } = require('../../../src/index.js')
 const { Options } = require('command-functions')
 // const { output } = require('../../../src/boilerplate/argsAliases')
 // const directoryExists = require('directory-exists')
