@@ -3,18 +3,28 @@ const getConfiguration = require('../functions/getConfiguration')
 const getEmeraldConfig = require('../functions/getEmeraldConfig')
 const displayList = require('../functions/displayList')
 
-async function listProjects() {
+async function listProjects(options) {
+  const { mode } = options
   const { projectFolders } = getConfiguration()
   if (projectFolders.length < 1) {
     throw new Error('There are no saved project folders')
   }
-  const projectList = await Promise.all(
-    projectFolders.sort().map(async projectPath => {
+  if (mode === 'cli') {
+    const projectList = await Promise.all(
+      projectFolders.sort().map(async projectPath => {
+        const projectConfig = await getEmeraldConfig(projectPath)
+        return chalk.cyan(projectConfig.name + ': "' + projectPath + '"')
+      })
+    )
+    displayList(projectList, 'Project Folders')
+  } else {
+    const output = {}
+    projectFolders.forEach(async projectPath => {
       const projectConfig = await getEmeraldConfig(projectPath)
-      return chalk.cyan(projectConfig.name + ': "' + projectPath + '"')
+      output[projectConfig.pathName] = projectConfig
     })
-  )
-  displayList(projectList, 'Project Folders')
+    return output
+  }
   //console.log(` Configured for the following root folders:\n${).join('\n')}`)
 }
 
