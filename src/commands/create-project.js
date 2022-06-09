@@ -18,6 +18,7 @@ const getEmeraldConfig = require('../functions/getEmeraldConfig')
 const getProjectStore = require('../functions/getProjectStore')
 
 const pathSpacingRegex = /[\s-]+/g
+const remoteRegex = /^(git|http(?:s)?):\/\//
 const validPreexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
 async function createProject(templateFolder, outputFolder, options) {
@@ -31,6 +32,9 @@ async function createProject(templateFolder, outputFolder, options) {
   if (Array.isArray(templateFolder)) templateFolder = templateFolder[0]
   if (typeof templateFolder != 'string')
     throw new Error('Please specify which template folder you would like to use')
+  if (remoteRegex.test(templateFolder)) {
+    // Remote Repo
+  }
   const templateConfig = await findTemplateFolder(templateFolder)
   if (templateConfig === null) throw new Error('Could not find the template: ' + templateFolder)
   process.env.TEMPLATE_FOLDER = templateConfig.path
