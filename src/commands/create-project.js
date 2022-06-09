@@ -3,6 +3,7 @@ const chalk = require('chalk')
 const { promisify } = require('util')
 const exec = promisify(require('child_process').exec)
 const rimraf = require('delete').promise
+const { mkdir, cleanup, track } = require('temp')
 const { pathExists, ensureDir } = require('fs-extra')
 const getConfiguration = require('../functions/getConfiguration')
 const directoryExists = require('directory-exists')
@@ -16,6 +17,7 @@ const askYesOrNo = require('../functions/askYesOrNo')
 //const displayList = require('../functions/displayList')
 const getEmeraldConfig = require('../functions/getEmeraldConfig')
 const getProjectStore = require('../functions/getProjectStore')
+const temp = require('temp')
 
 const pathSpacingRegex = /[\s-]+/g
 const remoteRegex = /^(git|http(?:s)?):\/\//
@@ -32,8 +34,15 @@ async function createProject(templateFolder, outputFolder, options) {
   if (Array.isArray(templateFolder)) templateFolder = templateFolder[0]
   if (typeof templateFolder != 'string')
     throw new Error('Please specify which template folder you would like to use')
+  let tempDir = null
   if (remoteRegex.test(templateFolder)) {
     // Remote Repo
+    track()
+    const url = new URL(templateFolder)
+    console.log('Cloning the repository to use as a template')
+    tempDir = await mkdir('remote-template')
+    await exec(`git clone "${url}" target && open target`, { cwd: tempDir })
+    templateFolder = join(tempDir, 'target')
   }
   const templateConfig = await findTemplateFolder(templateFolder)
   if (templateConfig === null) throw new Error('Could not find the template: ' + templateFolder)
@@ -147,12 +156,13 @@ async function createProject(templateFolder, outputFolder, options) {
     config.projectFolders = projectFolders.concat([outputFolderPath])
     saveGlobalConfig(config)
   }
+  if (tempDir !== null) await cleanup()
   if (!silent) console.log(chalk.green('Project Generated Successfully!'))
 }
 
 module.exports = {
   handler: createProject,
-  aliases: ['generate', 'gen', 'g'],
+  aliases: ['generate', 'gen', 'g', 'clone'],
   allowBonusArgs: true,
   spreadArgs: true,
   args: {
