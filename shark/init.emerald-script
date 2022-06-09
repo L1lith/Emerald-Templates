@@ -1,2 +1,0 @@
-npm create astro@latest project-temp
-cp -R project-temp/. . && rm -rf project-temp
