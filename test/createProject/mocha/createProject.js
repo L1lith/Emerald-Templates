@@ -10,6 +10,8 @@ const { Options } = require('command-functions')
 const { promisify } = require('util')
 const exec = promisify(require('child_process').exec)
 
+const remoteRegex = /^(git|http(?:s)?):\/\//
+
 const tests = [
   {
     name: 'rollup',
@@ -23,6 +25,16 @@ const tests = [
       'no-install': {
         description: 'a basic rollup project without installing the dependencies',
         options: { noInstall: true }
+      }
+    }
+  },
+  {
+    name: 'remote',
+    sourceTemplate: 'https://github.com/L1lith/EMT-Static-Test-Template',
+    description: 'Cloning remote templates',
+    subTests: {
+      plain: {
+        description: 'we can do a basic clone'
       }
     }
   },
@@ -76,13 +88,16 @@ tests.forEach(test => {
         const tempOutputPath = join(tempDirectory, name, subTestName)
         const outputGitPath = join(tempOutputPath, '.git')
         const nodeModulesPath = join(tempOutputPath, 'node_modules')
+        const emcPath = join(tempOutputPath, 'emerald-config.json')
         // To Do: Actually generate the project
         let options = { noLaunch: true, silent: true, noInstall: true }
         if (typeof subTestOptions == 'object' && subTestOptions !== null)
           options = { ...options, ...subTestOptions }
         const gems = options?.gems
         delete options.gems
-        const sourceTemplatePath = join(sourcesDirectory, sourceTemplate)
+        const sourceTemplatePath = remoteRegex.test(sourceTemplate)
+          ? sourceTemplate
+          : join(sourcesDirectory, sourceTemplate)
         await createProject(sourceTemplatePath, tempOutputPath, new Options(options))
         try {
           await rm(outputGitPath, { recursive: true }) // delete the .git folder for comparison
@@ -96,6 +111,11 @@ tests.forEach(test => {
             const gem = gems[i]
             await exec(`emt gem ${gem}`, { cwd: tempOutputPath })
           }
+        }
+        try {
+          await rm(emcPath)
+        } catch (err) {
+          console.error(err)
         }
 
         expect(tempOutputPath).to.be.a.directory().and.equal(testComparisonDirectory)

@@ -35,6 +35,7 @@ async function createProject(templateFolder, outputFolder, options) {
   if (typeof templateFolder != 'string')
     throw new Error('Please specify which template folder you would like to use')
   let tempDir = null
+
   if (remoteRegex.test(templateFolder)) {
     // Remote Repo
     track()
@@ -44,6 +45,7 @@ async function createProject(templateFolder, outputFolder, options) {
     await exec(`git clone "${url}" target && open target`, { cwd: tempDir })
     templateFolder = join(tempDir, 'target')
   }
+
   const templateConfig = await findTemplateFolder(templateFolder)
   if (templateConfig === null) throw new Error('Could not find the template: ' + templateFolder)
   process.env.TEMPLATE_FOLDER = templateConfig.path
