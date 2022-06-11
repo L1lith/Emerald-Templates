@@ -5,12 +5,11 @@ const directoryExists = require('directory-exists')
 const askQuestion = require('../functions/askQuestion')
 const chalk = require('chalk')
 
-async function removeTemplate(options) {
-  let templateFolder = options['remove-template'][0]
+async function removeTemplate(templateFolder) {
   if (typeof templateFolder != 'string' || templateFolder.length < 1) {
     templateFolder = (
       await askQuestion(
-        'Please enter the path to your template templates storage folder you\'d like to remove\n> '
+        "Please enter the path to your template templates storage folder you'd like to remove\n> "
       )
     ).trim()
     if (typeof templateFolder != 'string' || templateFolder.length < 1)
@@ -33,4 +32,12 @@ async function removeTemplate(options) {
   console.log(chalk.green('Done!'))
 }
 
-module.exports = removeTemplate
+module.exports = {
+  handler: removeTemplate,
+  args: {
+    templateFolder: {
+      argsPosition: 0,
+      format: String
+    }
+  }
+}

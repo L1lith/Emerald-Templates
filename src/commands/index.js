@@ -19,6 +19,7 @@ const removeTemplate = require('./remove-template')
 const resetConfig = require('./reset-config')
 const templateDirectory = require('./template-directory')
 const version = require('./version')
+const installTemplate = require('./install-template')
 
 module.exports = {
   addRoot,
@@ -29,6 +30,7 @@ module.exports = {
   createProject,
   describeTemplate,
   generateGem,
+  installTemplate,
   listGems,
   listProjects,
   listRoots,

@@ -42,7 +42,7 @@ async function createProject(templateFolder, outputFolder, options) {
     const url = new URL(templateFolder)
     console.log('Cloning the repository to use as a template')
     tempDir = await mkdir('remote-template')
-    await exec(`git clone "${url}" target && open target`, { cwd: tempDir })
+    await exec(`git clone "${url}" target`, { cwd: tempDir })
     templateFolder = join(tempDir, 'target')
   }
 
