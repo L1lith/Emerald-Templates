@@ -1,8 +1,5 @@
 const loadGlobalConfig = require('../functions/loadGlobalConfig')
 const saveGlobalConfig = require('../functions/saveGlobalConfig')
-const resolvePath = require('../functions/resolvePath')
-const directoryExists = require('directory-exists')
-const askQuestion = require('../functions/askQuestion')
 const chalk = require('chalk')
 const findTemplateFolder = require('../functions/findTemplateFolder')
 
