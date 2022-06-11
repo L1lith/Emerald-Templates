@@ -34,5 +34,8 @@ module.exports = {
   'command-alias': 'command-aliases',
   ca: 'command-aliases',
   'remove-config': 'reset-config',
-  gems: 'list-gems'
+  gems: 'list-gems',
+  remove: 'remove-template',
+  update: 'update-template',
+  install: 'install-template'
 }
