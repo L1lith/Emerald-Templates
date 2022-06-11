@@ -1,10 +1,9 @@
-const { promisify } = require('util')
 const findTemplateFolder = require('../functions/findTemplateFolder')
-const exec = promisify(require('child_process').exec)
+const gitPull = require('../functions/gitPull')
 
 async function updateTemplate(templateFolder) {
   const template = await findTemplateFolder(templateFolder)
-  await exec('git pull', { cwd: template.path })
+  await gitPull(template.path)
   console.log(`Template "${template.name}" updated!`)
 }
 

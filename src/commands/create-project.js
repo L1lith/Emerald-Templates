@@ -18,6 +18,7 @@ const askYesOrNo = require('../functions/askYesOrNo')
 const getEmeraldConfig = require('../functions/getEmeraldConfig')
 const getProjectStore = require('../functions/getProjectStore')
 const temp = require('temp')
+const gitPull = require('../functions/gitPull')
 
 const pathSpacingRegex = /[\s-]+/g
 const remoteRegex = /^(git|http(?:s)?):\/\//
@@ -39,6 +40,11 @@ async function createProject(templateFolder, outputFolder, options) {
   }
 
   const templateConfig = await findTemplateFolder(templateFolder)
+  if (tempDir === null) {
+    // Update the template
+    console.log('Checking for updates')
+    await gitPull(templateConfig.path)
+  }
   if (templateConfig === null) throw new Error('Could not find the template: ' + templateFolder)
   process.env.TEMPLATE_FOLDER = templateConfig.path
   if (Array.isArray(outputFolder)) outputFolder = outputFolder[0]
