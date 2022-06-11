@@ -17,7 +17,6 @@ const askYesOrNo = require('../functions/askYesOrNo')
 //const displayList = require('../functions/displayList')
 const getEmeraldConfig = require('../functions/getEmeraldConfig')
 const getProjectStore = require('../functions/getProjectStore')
-const temp = require('temp')
 const gitPull = require('../functions/gitPull')
 
 const pathSpacingRegex = /[\s-]+/g
