@@ -11,7 +11,8 @@ async function installTemplate(url, dir) {
   if (destination === null)
     throw new Error('It seems there was an issue with cloning: ' + output.stderr)
   destination = join(dir, destination[0])
-  addTemplate(destination)
+  await addTemplate(destination)
+  console.log('Installation Successful!')
 }
 
 const remoteRegex = /^(git|http(?:s)?):\/\//

@@ -4,25 +4,23 @@ const resolvePath = require('../functions/resolvePath')
 const directoryExists = require('directory-exists')
 const askQuestion = require('../functions/askQuestion')
 const chalk = require('chalk')
+const findTemplateFolder = require('../functions/findTemplateFolder')
 
 async function removeTemplate(templateFolder) {
-  if (typeof templateFolder != 'string' || templateFolder.length < 1)
-    throw new Error('Invalid Template Path supplied')
-  const templatePath = resolvePath(templateFolder, process.cwd())
-  if (!(await directoryExists(templatePath)))
-    throw new Error(`The folder "${templatePath}" does not exist`)
+  const { path, name } = await findTemplateFolder(templateFolder)
   let config = loadGlobalConfig()
-  if (!Array.isArray(config.templatePaths) || !config.templatePaths.includes(templatePath))
-    throw new Error('That folder has not been added')
-  const templatePaths = config.templatePaths
-  let templatePathIndex = 0
+  console.log(path)
+  if (!Array.isArray(config.templateFolders) || !config.templateFolders.includes(path))
+    throw new Error('That template could not be found')
+  const templateFolders = config.templateFolders
+  let templatePathIndex = templateFolders.indexOf(path)
   while (templatePathIndex >= 0) {
-    templatePathIndex = templatePaths.indexOf(templatePath)
-    templatePaths.splice(templatePathIndex, 1)
+    templateFolders.splice(templatePathIndex, 1)
+    templatePathIndex = templateFolders.indexOf(path)
   }
-  if (config.templatePaths.length < 1) delete config.templatePaths
+  if (config.templateFolders.length < 1) delete config.templateFolders
   saveGlobalConfig(config)
-  console.log(chalk.green('Done!'))
+  console.log(chalk.green(`The template "${name}" has been unregisted!`))
 }
 
 module.exports = {
@@ -31,8 +29,9 @@ module.exports = {
     templateFolder: {
       argsPosition: 0,
       format: String,
-      prompt: 'Which template would you like to use?',
+      prompt: 'Which template would you like to remove?',
       required: true
     }
-  }
+  },
+  aliases: ['remove']
 }
