@@ -6,15 +6,8 @@ const askQuestion = require('../functions/askQuestion')
 const chalk = require('chalk')
 
 async function removeTemplate(templateFolder) {
-  if (typeof templateFolder != 'string' || templateFolder.length < 1) {
-    templateFolder = (
-      await askQuestion(
-        "Please enter the path to your template templates storage folder you'd like to remove\n> "
-      )
-    ).trim()
-    if (typeof templateFolder != 'string' || templateFolder.length < 1)
-      throw new Error('Invalid Template Path supplied')
-  }
+  if (typeof templateFolder != 'string' || templateFolder.length < 1)
+    throw new Error('Invalid Template Path supplied')
   const templatePath = resolvePath(templateFolder, process.cwd())
   if (!(await directoryExists(templatePath)))
     throw new Error(`The folder "${templatePath}" does not exist`)
@@ -37,7 +30,9 @@ module.exports = {
   args: {
     templateFolder: {
       argsPosition: 0,
-      format: String
+      format: String,
+      prompt: 'Which template would you like to use?',
+      required: true
     }
   }
 }

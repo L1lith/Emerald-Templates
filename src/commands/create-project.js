@@ -27,18 +27,10 @@ async function createProject(templateFolder, outputFolder, options) {
   const config = (process.env.EMERALD_CONFIG = getConfiguration())
   let { launchCommand } = config
 
-  // const rootTemplateFolder = config.templateFolder
-  // if (!(await directoryExists(rootTemplateFolder))) throw new Error("The folder configured to contain the templates does not exist")
-  while (!templateFolder)
-    templateFolder = await askQuestion(chalk.green('Which Template?') + '\n> ')
-  if (Array.isArray(templateFolder)) templateFolder = templateFolder[0]
-  if (typeof templateFolder != 'string')
-    throw new Error('Please specify which template folder you would like to use')
   let tempDir = null
-
   if (remoteRegex.test(templateFolder)) {
     // Remote Repo
-    track()
+    track(true)
     const url = new URL(templateFolder)
     console.log('Cloning the repository to use as a template')
     tempDir = await mkdir('remote-template')
@@ -49,17 +41,10 @@ async function createProject(templateFolder, outputFolder, options) {
   const templateConfig = await findTemplateFolder(templateFolder)
   if (templateConfig === null) throw new Error('Could not find the template: ' + templateFolder)
   process.env.TEMPLATE_FOLDER = templateConfig.path
-
-  /*let outputFolder =
-    options['project'] ||
-    options['projectPath'] ||
-    (Array.isArray(options._) && options._.length >= 2
-      ? options._.slice(1).join(' ')
-      : await askQuestion(chalk.green() + '\n> ')) */
   if (Array.isArray(outputFolder)) outputFolder = outputFolder[0]
   if (typeof outputFolder != 'string') throw new Error('You must specify the output folder')
-  // .replace(/\s+/g, '-')
   let outputFolderPath = resolvePath(outputFolder, process.cwd())
+  // strip the spaces
   outputFolderPath = join(
     dirname(outputFolderPath),
     basename(outputFolderPath).trim().toLowerCase().replace(pathSpacingRegex, '-')
@@ -78,7 +63,6 @@ async function createProject(templateFolder, outputFolder, options) {
   const exists = await directoryExists(outputFolderPath)
   let overwriteMode = null
   if (exists) {
-    //throw new Error(`The output folder "${outputFolderPath}" already exists and is not empty.`)
     while (!validPreexistingOptions.includes(overwriteMode))
       overwriteMode = (
         await askQuestion(
@@ -108,7 +92,6 @@ async function createProject(templateFolder, outputFolder, options) {
     }
   }
   if (!silent) console.log('Copying The Template')
-  //console.log(templateFolderPath, outputFolderPath)
   await copyTemplate(templateConfig.path, outputFolderPath, {
     overwrite: overwriteMode === 'overwrite'
   })
@@ -158,13 +141,16 @@ async function createProject(templateFolder, outputFolder, options) {
     config.projectFolders = projectFolders.concat([outputFolderPath])
     saveGlobalConfig(config)
   }
-  if (tempDir !== null) await cleanup()
+  if (tempDir !== null) {
+    await cleanup()
+    track(false)
+  }
   if (!silent) console.log(chalk.green('Project Generated Successfully!'))
 }
 
 module.exports = {
   handler: createProject,
-  aliases: ['generate', 'gen', 'g', 'clone'],
+  aliases: ['generate', 'gen', 'g', 'clone', 'create'],
   allowBonusArgs: true,
   spreadArgs: true,
   args: {

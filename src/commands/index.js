@@ -20,6 +20,7 @@ const resetConfig = require('./reset-config')
 const templateDirectory = require('./template-directory')
 const version = require('./version')
 const installTemplate = require('./install-template')
+const updateTemplate = require('./update-template')
 
 module.exports = {
   addRoot,
@@ -43,5 +44,6 @@ module.exports = {
   removeTemplate,
   resetConfig,
   templateDirectory,
+  updateTemplate,
   version
 }
