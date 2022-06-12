@@ -4,6 +4,7 @@ Intelligent Template Generation & Project Management
 
 ### A list of useful templates
 - [My Babel Template](https://github.com/L1lith/Babel-Template)
+- [Purple](https://github.com/L1lith/Purple) is a flexible web app template
 
 ### Getting Started
 
