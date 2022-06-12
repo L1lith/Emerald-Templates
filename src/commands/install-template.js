@@ -2,10 +2,13 @@ const { promisify } = require('util')
 const exec = promisify(require('child_process').exec)
 const addTemplate = require('./add-template').handler
 const { join } = require('path')
+const findTemplateFolder = require('../functions/findTemplateFolder')
 
 const destinationRegex = /(?<=Cloning into ')[^']+(?='[^\n]*\n$)/
 
-async function installTemplate(url, dir) {
+async function installTemplate(url, dir, templateName) {
+  if (typeof templateName == 'string' && findTemplateFolder(templateName) !== null)
+    throw new Error('That template has already been added')
   const output = await exec(`git clone "${url}"`, { cwd: dir })
   let destination = output.stderr.match(destinationRegex)
   if (destination === null)
@@ -29,6 +32,13 @@ module.exports = {
       argsPosition: 1,
       format: String,
       default: process.cwd()
+    },
+    templateName: {
+      argsPosition: 2,
+      format: {
+        _: String,
+        trimmed: true
+      }
     }
   },
   aliases: ['install']

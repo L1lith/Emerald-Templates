@@ -1,6 +1,6 @@
 {
   "name": "emerald-templates",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "description": "Intelligent Template Generation & Project Management",
   "scripts": {
     "test": "mocha ./test/**/mocha/**/*.js",
