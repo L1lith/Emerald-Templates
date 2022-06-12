@@ -18,13 +18,15 @@ const askYesOrNo = require('../functions/askYesOrNo')
 const getEmeraldConfig = require('../functions/getEmeraldConfig')
 const getProjectStore = require('../functions/getProjectStore')
 const gitPull = require('../functions/gitPull')
+const installScriptDependency = require('../functions/installScriptDependency')
 
 const pathSpacingRegex = /[\s-]+/g
 const remoteRegex = /^(git|http(?:s)?):\/\//
 const validPreexistingOptions = ['overwrite', 'erase', 'stop', 'available']
 
 async function createProject(templateFolder, outputFolder, options) {
-  const config = (process.env.EMERALD_CONFIG = getConfiguration())
+  const env = {}
+  const config = (env.EMERALD_CONFIG = getConfiguration())
   let { launchCommand } = config
 
   let tempDir = null
@@ -45,7 +47,7 @@ async function createProject(templateFolder, outputFolder, options) {
     await gitPull(templateConfig.path)
   }
   if (templateConfig === null) throw new Error('Could not find the template: ' + templateFolder)
-  process.env.TEMPLATE_FOLDER = templateConfig.path
+  env.TEMPLATE_FOLDER = templateConfig.path
   if (Array.isArray(outputFolder)) outputFolder = outputFolder[0]
   if (typeof outputFolder != 'string') throw new Error('You must specify the output folder')
   let outputFolderPath = resolvePath(outputFolder, process.cwd())
@@ -64,7 +66,7 @@ async function createProject(templateFolder, outputFolder, options) {
       chalk.green('Creating a new project at ') + chalk.cyan('"' + outputFolderPath + '"')
     )
 
-  process.env.OUTPUT_FOLDER = outputFolderPath
+  env.OUTPUT_FOLDER = outputFolderPath
   const exists = await directoryExists(outputFolderPath)
   let overwriteMode = null
   if (exists) {
@@ -114,8 +116,18 @@ async function createProject(templateFolder, outputFolder, options) {
     )
     console.log('Handling any scripts, links, etc')
   }
-  global.PROJECT_STORE = getProjectStore(outputFolderPath, projectConfig)
-
+  env.PROJECT_STORE = getProjectStore(outputFolderPath, projectConfig)
+  // Assign our env
+  Object.assign(process.env, env)
+  Object.assign(global, env)
+  if (Array.isArray(templateConfig.installDependencies)) {
+    templateConfig.installDependencies
+      .map(value => (typeof value == 'string' ? value.trim() : value))
+      .filter(value => typeof value == 'string')
+      .forEach(dependency => {
+        installScriptDependency(dependency, outputFolderPath)
+      })
+  }
   await processOutputFolder(outputFolderPath, templateConfig.path, { silent })
   let packageJSON = null
   try {

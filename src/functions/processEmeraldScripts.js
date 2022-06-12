@@ -44,14 +44,19 @@ async function processEmeraldScript(scriptPath, options) {
       }
     }
   } else {
-    for (let x = 0; x < lines.length; x++) {
+    for (let x = 0, l = lines.length; x < l; x++) {
       const line = lines[x]
       try {
-        await spawnAsync(line, { cwd: join(scriptPath, '..'), async: true, silent: false })
+        await spawnAsync(line, {
+          cwd: join(scriptPath, '..'),
+          async: true,
+          silent: false
+          //env: options.env || {}
+        })
       } catch (error) {
-        error.message = 'Error inside .emerald-script.js file: ' + error.message
+        error.message = 'Error inside .emerald-script.js file: "' + error.message + '" (continuing)'
         console.error(error)
-        break // Stop running the script on the first failure
+        continue // TODO: Add an option to stop running the script on the first failure
       }
     }
   }
