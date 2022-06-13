@@ -1,6 +1,6 @@
 # Emerald Templates
 
-Intelligent Template Generation & Project Management
+The powerful project generator
 
 ### A list of useful templates
 - [My Babel Template](https://github.com/L1lith/Babel-Template)
