@@ -53,7 +53,12 @@ async function createProject(templateFolder, outputFolder, options) {
   if (tempDir === null) {
     // Update the template
     console.log('Checking for updates')
-    await gitPull(templateConfig.path)
+    try {
+      await gitPull(templateConfig.path)
+    } catch (err) {
+      console.error('Pull failed')
+      throw err
+    }
   }
   if (templateConfig === null) throw new Error('Could not find the template: ' + templateFolder)
   env.TEMPLATE_FOLDER = templateConfig.path
