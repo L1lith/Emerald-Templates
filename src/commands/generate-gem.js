@@ -10,6 +10,10 @@ const { join } = require('path')
 const { argPrompt } = require('command-functions')
 const getProjectStore = require('../functions/getProjectStore')
 const installScriptDependency = require('../functions/installScriptDependency')
+const remoteRegex = /^(git|http(?:s)?):\/\//
+const { promisify } = require('util')
+const exec = promisify(require('child_process').exec)
+const tmp = require('tmp')
 
 async function generateGem(gemName, project) {
   const dir = process.cwd()
@@ -20,13 +24,27 @@ async function generateGem(gemName, project) {
   }
   project = await findProjectRoot(project)
   if (!project) throw new Error('Could not find the "emerald-config.js" file')
+  let gem = null
   if (typeof gemName != 'string')
     throw new Error('Must supply a valid gem name string, got: ' + inspect(gemName))
-  gemName = gemName.trim()
-  if (gemName.length < 1) throw new Error('The gem name string must not be empty')
-  let projectPath = project ? resolvePath(project, dir) : dir
+  let tempObj = null
+  let tempDir = null
+  if (remoteRegex.text(gemName)) {
+    // It's actually a remote gem, begin clone process
+    const url = new URL(gemName)
+    console.log('Cloning the repository to use as a template')
+    tempObj = tmp.dirSync()
+    tempDir = tempObj.name
+    console.log('x', tempDir)
+    await exec(`git clone "${url}" target`, { cwd: tempDir })
+    gem = join(tempDir, 'target')
+  } else {
+    gemName = gemName.trim()
+    if (gemName.length < 1) throw new Error('The gem name string must not be empty')
+    let projectPath = project ? resolvePath(project, dir) : dir
 
-  const gem = await findGem(projectPath, gemName)
+    gem = await findGem(projectPath, gemName)
+  }
   if (gem === null) throw new Error('Could not find a matching gem')
   const config = await getEmeraldConfig(gem.path, { type: 'gem' })
   let argsOutput = {}
