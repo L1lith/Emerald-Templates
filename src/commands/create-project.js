@@ -19,7 +19,7 @@ const getEmeraldConfig = require('../functions/getEmeraldConfig')
 const getProjectStore = require('../functions/getProjectStore')
 const gitPull = require('../functions/gitPull')
 const installScriptDependency = require('../functions/installScriptDependency')
-
+const tmp = require('tmp')
 const pathSpacingRegex = /[\s-]+/g
 const remoteRegex = /^(git|http(?:s)?):\/\//
 const validPreexistingOptions = ['overwrite', 'erase', 'stop', 'available']
@@ -30,13 +30,21 @@ async function createProject(templateFolder, outputFolder, options) {
   let { launchCommand } = config
 
   let tempDir = null
+  let tempObj = null
   if (remoteRegex.test(templateFolder)) {
     // Remote Repo
     track(true)
     const url = new URL(templateFolder)
     console.log('Cloning the repository to use as a template')
-    tempDir = await mkdir('remote-template')
-    await exec(`git clone "${url}" target`, { cwd: tempDir })
+    tempObj = tmp.dirSync()
+    tempDir = join(tempObj.name, 'remote-template')
+    // try {
+    //   await rimraf(tempDir)
+    // } catch (err) {
+    //   /*Do Nothing Ig */
+    // }
+    await mkdir(tempDir)
+    await exec(`git clone "${url}" target`, { shell: true, cwd: tempDir })
     templateFolder = join(tempDir, 'target')
   }
 
@@ -163,6 +171,7 @@ async function createProject(templateFolder, outputFolder, options) {
     track(false)
   }
   if (!silent) console.log(chalk.green('Project Generated Successfully!'))
+  if (tempObj) tempObj.removeCallback()
 }
 
 module.exports = {
