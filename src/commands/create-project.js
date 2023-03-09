@@ -31,6 +31,7 @@ async function createProject(templateFolder, outputFolder, options) {
 
   let tempDir = null
   let tempObj = null
+  console.log('tf', templateFolder)
   if (remoteRegex.test(templateFolder)) {
     // Remote Repo
     track(true)
