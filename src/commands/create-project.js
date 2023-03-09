@@ -176,7 +176,14 @@ async function createProject(templateFolder, outputFolder, options) {
     track(false)
   }
   if (!silent) console.log(chalk.green('Project Generated Successfully!'))
-  if (tempObj) tempObj.removeCallback()
+  if (tempObj) {
+    try {
+      tempObj.removeCallback()
+    } catch (err) {
+      console.error('There was an error while trying to remove the callback')
+      console.error(err)
+    }
+  }
 }
 
 module.exports = {
