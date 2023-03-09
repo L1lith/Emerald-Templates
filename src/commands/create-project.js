@@ -31,7 +31,6 @@ async function createProject(templateFolder, outputFolder, options) {
 
   let tempDir = null
   let tempObj = null
-  console.log('tf', templateFolder)
   if (remoteRegex.test(templateFolder)) {
     // Remote Repo
     track(true)
@@ -45,7 +44,6 @@ async function createProject(templateFolder, outputFolder, options) {
     //   /*Do Nothing Ig */
     // }
     //await mkdir(tempDir)
-    console.log('x', tempDir)
     await exec(`git clone "${url}" target`, { cwd: tempDir })
     templateFolder = join(tempDir, 'target')
   }
