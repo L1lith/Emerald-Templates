@@ -37,14 +37,15 @@ async function createProject(templateFolder, outputFolder, options) {
     const url = new URL(templateFolder)
     console.log('Cloning the repository to use as a template')
     tempObj = tmp.dirSync()
-    tempDir = join(tempObj.name, 'remote-template')
+    tempDir = tempObj.name
     // try {
     //   await rimraf(tempDir)
     // } catch (err) {
     //   /*Do Nothing Ig */
     // }
-    await mkdir(tempDir)
-    await exec(`git clone "${url}" target`, { shell: true, cwd: tempDir })
+    //await mkdir(tempDir)
+    console.log('x', tempDir)
+    await exec(`git clone "${url}" target`, { cwd: tempDir })
     templateFolder = join(tempDir, 'target')
   }
 
